@@ -1,4 +1,4 @@
-%% IA - SBC
+## IA - SBC
 
 Fase 1: domini i cobertura: entrenaments / enunciat
 
