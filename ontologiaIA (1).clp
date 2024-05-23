@@ -42,6 +42,9 @@
     (slot EsValid
         (type SYMBOL)
         (create-accessor read-write))
+    (multislot ObjectiusComplerts
+        (type SYMBOL)
+        (create-accessor read-write))
 )
 
 ;;; Define other classes after Exercici
@@ -193,6 +196,8 @@
         (create-accessor read-write))
 )
 
+musculacio posar_en_forma baixar_pes equilibrat flexibilitat manteniment
+; un exercici no pot ser equilibrat per si sol, equilibrat vol dir que un conjunt d'exercicis utilitzen diferents grups musculars
 (definstances my-exercises
     (caminar of Cardio
         (Dificultat easy)
@@ -202,7 +207,8 @@
         (KcalMinuteMax 6)
         (RepsMax 1)
         (RepsMin 1)
-        (EsValid si))
+        (EsValid si)
+        (ObjectiusComplerts manteniment baixar_pes))
 
     (correr of Cardio
         (Dificultat easy)
@@ -212,7 +218,8 @@
         (KcalMinuteMax 10)
         (RepsMax 1)
         (RepsMin 1)
-        (EsValid si))
+        (EsValid si)
+        (ObjectiusComplerts manteniment baixar_pes))
 
     (correr-intens of Cardio
         (Dificultat moderate)
@@ -222,7 +229,8 @@
         (KcalMinuteMax 15)
         (RepsMax 1)
         (RepsMin 1)
-        (EsValid si))
+        (EsValid si)
+        (ObjectiusComplerts manteniment baixar_pes posar_en_forma))
 
     (sprint of Cardio
         (Dificultat moderate)
@@ -232,7 +240,8 @@
         (KcalMinuteMax 19)
         (RepsMax 1)
         (RepsMin 1)
-        (EsValid si))
+        (EsValid si)
+        (ObjectiusComplerts baixar_pes posar_en_forma musculacio))
 
     (bicicleta of Cardio
         (Dificultat easy)
@@ -242,7 +251,8 @@
         (KcalMinuteMax 8)
         (RepsMax 1)
         (RepsMin 1)
-        (EsValid si))
+        (EsValid si)
+        (ObjectiusComplerts manteniment baixar_pes))
 
     (bicicleta-intensa of Cardio
         (Dificultat moderate)
@@ -252,7 +262,8 @@
         (KcalMinuteMax 16)
         (RepsMax 1)
         (RepsMin 1)
-        (EsValid si))
+        (EsValid si)
+        (ObjectiusComplerts manteniment baixar_pes posar_en_forma musculacio))
 
     (rem of Cardio
         (Dificultat easy)
@@ -262,7 +273,8 @@
         (KcalMinuteMax 8)
         (RepsMax 1)
         (RepsMin 1)
-        (EsValid si))
+        (EsValid si)
+        (ObjectiusComplerts manteniment baixar_pes posar_en_forma))
 
     (rem-intens of Cardio
         (Dificultat moderate)
@@ -272,7 +284,8 @@
         (KcalMinuteMax 15)
         (RepsMax 1)
         (RepsMin 1)
-        (EsValid si))
+        (EsValid si)
+        (ObjectiusComplerts manteniment baixar_pes posar_en_forma musculacio))
 
     (stepper of Cardio
         (Dificultat easy)
@@ -282,7 +295,8 @@
         (KcalMinuteMax 12)
         (RepsMax 1)
         (RepsMin 1)
-        (EsValid si))
+        (EsValid si)
+        (ObjectiusComplerts manteniment baixar_pes))
 
     (eliptica of Cardio
         (Dificultat easy)
@@ -292,7 +306,8 @@
         (KcalMinuteMax 11)
         (RepsMax 1)
         (RepsMin 1)
-        (EsValid si))
+        (EsValid si)
+        (ObjectiusComplerts manteniment baixar_pes))
 
     (press-banca of Forca
         (Dificultat hard)
@@ -302,7 +317,8 @@
         (KcalMinuteMax 8)
         (RepsMax 20)
         (RepsMin 5)
-        (EsValid si))
+        (EsValid si)
+        (ObjectiusComplerts musculacio posar_en_forma))
 
     (sentadilles-amb-pes of Forca
         (Dificultat hard)
@@ -312,7 +328,8 @@
         (KcalMinuteMax 10)
         (RepsMax 20)
         (RepsMin 5)
-        (EsValid si))
+        (EsValid si)
+        (ObjectiusComplerts musculacio posar_en_forma))
 
     (flexions of Forca
         (Dificultat easy)
@@ -322,7 +339,8 @@
         (KcalMinuteMax 5)
         (RepsMax 50)
         (RepsMin 5)
-        (EsValid si))
+        (EsValid si)
+        (ObjectiusComplerts posar_en_forma))
 
     (rem-amb-pes of Forca
         (Dificultat moderate)
@@ -332,7 +350,8 @@
         (KcalMinuteMax 8)
         (RepsMax 20)
         (RepsMin 5)
-        (EsValid si))
+        (EsValid si)
+        (ObjectiusComplerts musculacio posar_en_forma))
 
     (curl-biceps of Forca
         (Dificultat moderate)
@@ -342,7 +361,8 @@
         (KcalMinuteMax 5)
         (RepsMax 20)
         (RepsMin 5)
-        (EsValid si))
+        (EsValid si)
+        (ObjectiusComplerts musculacio posar_en_forma))
 
     (press-militar of Forca
         (Dificultat hard)
@@ -352,7 +372,8 @@
         (KcalMinuteMax 7)
         (RepsMax 20)
         (RepsMin 5)
-        (EsValid si))
+        (EsValid si)
+        (ObjectiusComplerts musculacio posar_en_forma))
 
     (extensio-triceps of Forca
         (Dificultat moderate)
@@ -362,7 +383,8 @@
         (KcalMinuteMax 5)
         (RepsMax 20)
         (RepsMin 5)
-        (EsValid si))
+        (EsValid si)
+        (ObjectiusComplerts musculacio posar_en_forma))
 
     (aixecament-lateral of Forca
         (Dificultat moderate)
@@ -372,7 +394,8 @@
         (KcalMinuteMax 6)
         (RepsMax 20)
         (RepsMin 5)
-        (EsValid si))
+        (EsValid si)
+        (ObjectiusComplerts musculacio posar_en_forma))
 
     (lunges-amb-pes of Forca
         (Dificultat moderate)
@@ -382,7 +405,8 @@
         (KcalMinuteMax 9)
         (RepsMax 20)
         (RepsMin 5)
-        (EsValid si))
+        (EsValid si)
+        (ObjectiusComplerts musculacio posar_en_forma))
 
     (pes-mort of Forca
         (Dificultat hard)
@@ -392,7 +416,8 @@
         (KcalMinuteMax 11)
         (RepsMax 20)
         (RepsMin 5)
-        (EsValid si))
+        (EsValid si)
+        (ObjectiusComplerts musculacio posar_en_forma))
 
     (abdominals of Forca
         (Dificultat easy)
@@ -402,7 +427,8 @@
         (KcalMinuteMax 6)
         (RepsMax 50)
         (RepsMin 5)
-        (EsValid si))
+        (EsValid si)
+        (ObjectiusComplerts posar_en_forma baixar_pes manteniment))
 
     (burpees of Forca
         (Dificultat hard)
@@ -412,7 +438,8 @@
         (KcalMinuteMax 15)
         (RepsMax 20)
         (RepsMin 5)
-        (EsValid si))
+        (EsValid si)
+        (ObjectiusComplerts posar_en_forma baixar_pes manteniment))
 
     (planxa of Forca
         (Dificultat easy)
@@ -422,7 +449,8 @@
         (KcalMinuteMax 4)
         (RepsMax 1)
         (RepsMin 1)
-        (EsValid si))
+        (EsValid si)
+        (ObjectiusComplerts posar_en_forma baixar_pes manteniment))
 
     (dominades of Forca
         (Dificultat hard)
@@ -432,7 +460,8 @@
         (KcalMinuteMax 10)
         (RepsMax 20)
         (RepsMin 1)
-        (EsValid si))
+        (EsValid si)
+        (ObjectiusComplerts posar_en_forma  manteniment))
 
     (estirament1 of Flex
         (Dificultat easy)
@@ -442,7 +471,8 @@
         (KcalMinuteMax 4)
         (RepsMax 1)
         (RepsMin 1)
-        (EsValid si))
+        (EsValid si)
+        (ObjectiusComplerts flexibilitat manteniment))
 
     (estirament2 of Flex
         (Dificultat easy)
@@ -452,7 +482,8 @@
         (KcalMinuteMax 4)
         (RepsMax 1)
         (RepsMin 1)
-        (EsValid si))
+        (EsValid si)
+        (ObjectiusComplerts flexibilitat manteniment))
 
     (estirament3 of Flex
         (Dificultat easy)
@@ -462,7 +493,8 @@
         (KcalMinuteMax 4)
         (RepsMax 1)
         (RepsMin 1)
-        (EsValid si))
+        (EsValid si)
+        (ObjectiusComplerts flexibilitat manteniment))
 
     (estirament4 of Flex
         (Dificultat easy)
@@ -472,7 +504,8 @@
         (KcalMinuteMax 4)
         (RepsMax 1)
         (RepsMin 1)
-        (EsValid si))
+        (EsValid si)
+        (ObjectiusComplerts flexibilitat manteniment))
 
     (estirament5 of Flex
         (Dificultat easy)
@@ -482,7 +515,8 @@
         (KcalMinuteMax 4)
         (RepsMax 1)
         (RepsMin 1)
-        (EsValid si))      
+        (EsValid si)
+        (ObjectiusComplerts flexibilitat manteniment))      
       
     (estirament6 of Flex
         (Dificultat easy)
@@ -492,7 +526,8 @@
         (KcalMinuteMax 4)
         (RepsMax 1)
         (RepsMin 1)
-        (EsValid si))
+        (EsValid si)
+        (ObjectiusComplerts flexibilitat manteniment))
 
     (estirament7 of Flex
         (Dificultat easy)
@@ -502,7 +537,8 @@
         (KcalMinuteMax 4)
         (RepsMax 1)
         (RepsMin 1)
-        (EsValid si))
+        (EsValid si)
+        (ObjectiusComplerts flexibilitat manteniment))
 
     (estirament8 of Flex
         (Dificultat easy)
@@ -512,7 +548,8 @@
         (KcalMinuteMax 4)
         (RepsMax 1)
         (RepsMin 1)
-        (EsValid si))
+        (EsValid si)
+        (ObjectiusComplerts flexibilitat manteniment))
 
     (estirament9 of Flex
         (Dificultat easy)
@@ -522,8 +559,10 @@
         (KcalMinuteMax 4)
         (RepsMax 1)
         (RepsMin 1)
-        (EsValid si)) 
+        (EsValid si)
+        (ObjectiusComplerts flexibilitat manteniment))
 )
+
 
 
 (deffunction member (?item $?list)
@@ -845,6 +884,7 @@
 
 (defrule generar-ejercicios-lunes
     ?obj <- (object (is-a Objectiu) (TempsDiari ?tiempo-max&:(<> ?tiempo-max 0)))
+    (diaNoGenerat ?dia)
     =>
     (printout t "Entrenament Dilluns: " crlf)
     (bind ?tiempo-disponible ?tiempo-max)
@@ -875,7 +915,7 @@
 
 (defrule generar-ejercicios-martes
     ?obj <- (object (is-a Objectius) (TempsDiari ?tiempo-max&:(<> ?tiempo-max 0)))
-    (dillunsGenerat)
+    (dillunsGenerat) (?dia)
     =>
     (printout t "Entrenament Dimarts: " crlf)
     (bind ?tiempo-disponible ?tiempo-max)
