@@ -196,7 +196,7 @@
         (create-accessor read-write))
 )
 
-musculacio posar_en_forma baixar_pes equilibrat flexibilitat manteniment
+;musculacio posar_en_forma baixar_pes equilibrat flexibilitat manteniment
 ; un exercici no pot ser equilibrat per si sol, equilibrat vol dir que un conjunt d'exercicis utilitzen diferents grups musculars
 (definstances my-exercises
     (caminar of Cardio
@@ -863,59 +863,92 @@ musculacio posar_en_forma baixar_pes equilibrat flexibilitat manteniment
 
 (deffunction obtener-ejercicio-aleatorio ()
    ;; Encuentra todas las instancias de la clase Exercici
-   (bind ?ejercicios (find-all-instances ((?e Exercici)) (eq (send ?e get-EsValid) si)))
+    (bind ?ejercicios (find-all-instances ((?e Exercici)) (eq (send ?e get-EsValid) si)))
+    (printout t "Numero elems: " (length$ ?ejercicios) crlf)
    ;; Verifica si hay instancias disponibles
       ;; Selecciona un índice aleatorio
-    (bind ?index (random 0 (length$ ?ejercicios)))
+    (bind ?i (random 0 (- (length$ ?ejercicios) 1)))
       ;; Obtiene la instancia de Exercici en el índice aleatorio
-    (bind ?ejercicio (nth$ (+ ?index 1) ?ejercicios)) ;; nth$ es 1-indexed
+    (printout t "Elem Escollit: " (+ ?i 1) crlf)
+    (bind ?ejercicio (nth$ (+ ?i 1) ?ejercicios)) ;; nth$ es 1-indexed
+    
     (return ?ejercicio)
 
 )
 
-(deffunction calcular-duracion-aleatoria (?ejercicio)
-    (bind ?mi (send ?ejercicio get-DuracioMin))
-    (bind ?ma (send ?ejercicio get-DuracioMax))
-    (bind ?duracion (random ?mi ?ma))
-    (return ?duracion)
+(deffunction calcular-duracion_repes (?ejercicio ?temps-max)
+    (bind ?Dmin (send ?ejercicio get-DuracioMin))
+    (bind ?Dmax (send ?ejercicio get-DuracioMax))
+
+    (bind ?Rmin (send ?ejercicio get-RepsMin))
+    (bind ?Rmax (send ?ejercicio get-RepsMax))
+
+    ;; Calcula el factor de escala basado en ?temps-max
+    (bind ?scale-factor (/ (- ?temps-max 30) 90)) ;; Escalar entre 0 y 1, ya que 120 - 3 = 117
+    ;; Ajusta ?Dmax en función de ?scale-factor
+    (bind ?adjusted-Dmax (integer(+ ?Dmin (* ?scale-factor (- ?Dmax ?Dmin)))))
+    ;; Calcula ?duracion basado en ?adjusted-Dmax
+    (bind ?duracion ?adjusted-Dmax)
+    (bind ?reps (integer(+ ?Rmin (* ?scale-factor (- ?Rmax ?Rmin)))))
+    (return (create$ ?duracion ?reps))
 )
 
 
 
 (defrule generar-ejercicios-lunes
-    ?obj <- (object (is-a Objectiu) (TempsDiari ?tiempo-max&:(<> ?tiempo-max 0)))
-    (diaNoGenerat ?dia)
+    ?obj <- (object (is-a Objectius) (TempsDiari ?tiempo-max&:(<> ?tiempo-max 0)))
+    ;(diaNoGenerat ?dia)
     =>
     (printout t "Entrenament Dilluns: " crlf)
     (bind ?tiempo-disponible ?tiempo-max)
     (bind $?ejercicios-seleccionados (create$))
+    
     (bind $?duraciones (create$))
     (bind ?duracionTotal 0)
 
     (bind ?ejercicio (obtener-ejercicio-aleatorio))
     
-    (while (and(> ?tiempo-disponible -10) (< ?duracionTotal (- ?tiempo-max 10)) (not(eq ?ejercicio nil))  ) do
-        
-        (if (not (member$ ?ejercicio $?ejercicios-seleccionados)) then
-            (bind ?duracion (calcular-duracion-aleatoria ?ejercicio))
-            (if (<= ?duracion ?tiempo-disponible) then
-                (bind $?ejercicios-seleccionados (create$ $?ejercicios-seleccionados ?ejercicio))
-                (bind $?duraciones (create$ $?duraciones ?duracion))
-                (bind ?duracionTotal (+ ?duracionTotal ?duracion))
-                (bind ?tiempo-disponible (- ?tiempo-disponible ?duracion))
-                (printout t "Exercici: " ?ejercicio ", Temps: " ?duracion " minuts" crlf)
-            )
+    (while (and(> ?tiempo-disponible -10) (< ?duracionTotal (- ?tiempo-max 10)) (not(eq ?ejercicio nil)) (not (member$ ?ejercicio $?ejercicios-seleccionados))) do
+ 
+        (bind ?dnr (calcular-duracion_repes ?ejercicio ?tiempo-max))
+        (bind ?duracion (nth$ 1 ?dnr))
+        (bind ?reps (nth$ 2 ?dnr))
+        (if (<= ?duracion ?tiempo-disponible) then
+            (bind $?ejercicios-seleccionados (create$ $?ejercicios-seleccionados ?ejercicio))
+            (bind $?duraciones (create$ $?duraciones ?duracion))
+            (bind ?duracionTotal (+ ?duracionTotal ?duracion))
+            (bind ?tiempo-disponible (- ?tiempo-disponible ?duracion))
+            (printout t "Exercici: " ?ejercicio ", Temps: " ?duracion " minuts, Reps: " ?reps  crlf)
         )
+        
         (bind ?ejercicio (obtener-ejercicio-aleatorio))
     )
+
+    (bind ?ejercicio (obtener-ejercicio-aleatorio))
+    (while (and(> ?tiempo-disponible -10) (< ?duracionTotal (- ?tiempo-max 10)) (not(eq ?ejercicio nil))) do
+        (bind ?dnr (calcular-duracion_repes ?ejercicio ?tiempo-max))
+        (bind ?duracion (nth$ 1 ?dnr))
+        (bind ?reps (nth$ 2 ?dnr))
+        (if (<= ?duracion ?tiempo-disponible) then
+            (bind $?ejercicios-seleccionados (create$ $?ejercicios-seleccionados ?ejercicio))
+            (bind $?duraciones (create$ $?duraciones ?duracion))
+            (bind ?duracionTotal (+ ?duracionTotal ?duracion))
+            (bind ?tiempo-disponible (- ?tiempo-disponible ?duracion))
+            (printout t "Exercici: " ?ejercicio ", Temps: " ?duracion " minuts, Reps: " ?reps  crlf)
+        )
+        
+        (bind ?ejercicio (obtener-ejercicio-aleatorio))
+    )
+
     (assert (dillunsGenerat))
     (printout t "Total d'exercicis seleccionats: " (length$ ?ejercicios-seleccionados) crlf)
+    (printout t "Temps Total: " ?duracionTotal crlf)
 
 )
 
 (defrule generar-ejercicios-martes
     ?obj <- (object (is-a Objectius) (TempsDiari ?tiempo-max&:(<> ?tiempo-max 0)))
-    (dillunsGenerat) (?dia)
+    (dillunsGenerat) ;(?dia)
     =>
     (printout t "Entrenament Dimarts: " crlf)
     (bind ?tiempo-disponible ?tiempo-max)
@@ -925,22 +958,38 @@ musculacio posar_en_forma baixar_pes equilibrat flexibilitat manteniment
 
     (bind ?ejercicio (obtener-ejercicio-aleatorio))
     
-    (while (and(> ?tiempo-disponible 0) (not(eq ?ejercicio nil)) ) do
-        
-        (if (not (member$ ?ejercicio $?ejercicios-seleccionados)) then
-            (bind ?duracion (calcular-duracion-aleatoria ?ejercicio))
-            (if (<= ?duracion ?tiempo-disponible) then
-                (bind $?ejercicios-seleccionados (create$ $?ejercicios-seleccionados ?ejercicio))
-                (bind $?duraciones (create$ $?duraciones ?duracion))
-                (bind $?duracionTotal (+ ?duracionTotal ?duracion))
-                (bind ?tiempo-disponible (- ?tiempo-disponible ?duracion))
-                (printout t "Exercici: " ?ejercicio ", Temps: " ?duracion " minuts" crlf)
-            )
+    (while (and(> ?tiempo-disponible -10) (< ?duracionTotal (- ?tiempo-max 10)) (not(eq ?ejercicio nil)) (not (member$ ?ejercicio $?ejercicios-seleccionados))) do
+ 
+        (bind ?dnr (calcular-duracion_repes ?ejercicio ?tiempo-max))
+        (bind ?duracion (nth$ 1 ?dnr))
+        (bind ?reps (nth$ 2 ?dnr))
+        (if (<= ?duracion ?tiempo-disponible) then
+            (bind $?ejercicios-seleccionados (create$ $?ejercicios-seleccionados ?ejercicio))
+            (bind $?duraciones (create$ $?duraciones ?duracion))
+            (bind ?duracionTotal (+ ?duracionTotal ?duracion))
+            (bind ?tiempo-disponible (- ?tiempo-disponible ?duracion))
+            (printout t "Exercici: " ?ejercicio ", Temps: " ?duracion " minuts, Reps: " ?reps  crlf)
         )
+        
         (bind ?ejercicio (obtener-ejercicio-aleatorio))
-        ;(bind ?ejercicioNombre (send ?ejercicio get-Nom))
+    )
+    (bind ?ejercicio (obtener-ejercicio-aleatorio))
+    (while (and(> ?tiempo-disponible -10) (< ?duracionTotal (- ?tiempo-max 10)) (not(eq ?ejercicio nil))) do
+        (bind ?dnr (calcular-duracion_repes ?ejercicio ?tiempo-max))
+        (bind ?duracion (nth$ 1 ?dnr))
+        (bind ?reps (nth$ 2 ?dnr))
+        (if (<= ?duracion ?tiempo-disponible) then
+            (bind $?ejercicios-seleccionados (create$ $?ejercicios-seleccionados ?ejercicio))
+            (bind $?duraciones (create$ $?duraciones ?duracion))
+            (bind ?duracionTotal (+ ?duracionTotal ?duracion))
+            (bind ?tiempo-disponible (- ?tiempo-disponible ?duracion))
+            (printout t "Exercici: " ?ejercicio ", Temps: " ?duracion " minuts, Reps: " ?reps  crlf)
+        )
+        
+        (bind ?ejercicio (obtener-ejercicio-aleatorio))
     )
     (printout t "Total d'exercicis seleccionats: " (length$ ?ejercicios-seleccionados) crlf)
+    (printout t "Temps Total: " ?duracionTotal crlf)
 
 )
 
