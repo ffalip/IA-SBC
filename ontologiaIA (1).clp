@@ -203,6 +203,7 @@
         (create-accessor read-write))
 )
 
+;------------------------EXERCICIS------------------------
 ;musculacio posar_en_forma baixar_pes equilibrat flexibilitat manteniment
 ; un exercici no pot ser equilibrat per si sol, equilibrat vol dir que un conjunt d'exercicis utilitzen diferents grups musculars
 (definstances my-exercises
@@ -873,6 +874,7 @@
         (bind ?answer (read)))
     ?answer)
 
+;------------------------DEMANAR-DADES-PERSONA------------------------
 (defglobal ?*persona* = (make-instance [you] of Persona))
 
 (defrule determina-edat
@@ -894,6 +896,56 @@
    (send ?*persona* put-Pes ?answer)
    (assert (pesAssignat)))
 
+(defrule determina-PressioSangMin
+    =>
+    (bind ?answer (ask-integer-question "Entra la teva pressio sanguinia minima:" ))
+    (send ?*persona* put-PressioSangMax ?answer)
+)
+
+(defrule determina-PressioSangMax
+    =>
+    (bind ?answer (ask-integer-question "Entra la teva pressio sanguinia maxima:" ))
+    (send ?*persona* put-PressioSangMin ?answer)
+)
+
+
+(defrule pressio-alta
+    ?p <- (object (is-a Persona)
+            (PressioSangMax ?max)
+            (PressioSangMin ?min))
+    (test (or (> ?max 130) (> ?min 90)))
+    =>
+    (assert (personaTePressioAlta))
+)
+
+(defrule pressio-molt-alta
+    ?p <- (object (is-a Persona)
+            (PressioSangMax ?max)
+            (PressioSangMin ?min))
+    (test (or (> ?max 145) (> ?min 95)))
+    =>
+    (assert (personaTePressioMoltAlta))
+)
+
+(defrule determinar-aptitud-pressio-alta
+    ?e <- (object (is-a Exercici)
+            (Dificultat ?dificultat)
+            (Nom ?exerciseName))
+    (personaTePressioAlta)
+    (test (eq ?dificultat hard))
+    =>
+    (send ?e put-EsValid no)
+)
+
+(defrule determinar-aptitud-pressio-molt-alta
+    ?e <- (object (is-a Exercici)
+            (Dificultat ?dificultat)
+            (Nom ?exerciseName))
+    (personaTePressioMoltAlta)
+    (test (eq ?dificultat moderate))
+    =>
+    (send ?e put-EsValid no)
+)
 
 (defrule calcula-IMC
    ?p <- (object (is-a Persona)
@@ -954,6 +1006,14 @@
    =>
    (send ?e put-EsValid no))
 
+(defrule determina-activitat-fisica
+   =>
+   (bind ?answer (ask-question "Quin nivell d'activitat física fas al dia a dia (a la feina, aficions, tasques doméstiques...) \n sent 1 una rutina molt poc o gens activa i 5 una rutina molt activa " 1 2 3 4 5))
+   (send ?*persona* put-ActivitatFisica ?answer)
+   (assert (activitatFisicaAssignada))
+)
+
+;----------------ASSIGNAR-EXERCICIS-VALIDS-SEGONS-MAL----------------
 (defrule esquena-dolor-3
    ?e <-(object (is-a Exercici)
            (Dificultat ?dif)
@@ -1109,6 +1169,7 @@
    =>
    (send ?e put-EsValid no))
 
+;------------------------DEMANAR-DOLORS------------------------
 (defrule mal-esquena
    =>
    (bind ?answer (ask-question "Quant de mal et fa l'esquena del 0 (minim) al 3 (maxim): " 0 1 2 3))
@@ -1134,6 +1195,7 @@
    (bind ?answer (ask-question "Quant de mal et fan els abdominals del 0 (minim) al 3 (maxim): " 0 1 2 3))
    (assert (fa-mal abd ?answer)))
 
+;------------------------SELECCIONAR-OBJECTIU------------------------
 (defrule dir-objectiu
    =>
    (bind ?answer (ask-question "Quin objectiu tens per l'entrenament (musculacio, posar_en_forma, baixar_pes, equilibrat, flexibilitat o manteniment):" musculacio posar_en_forma baixar_pes equilibrat flexibilitat manteniment))
@@ -1157,6 +1219,7 @@
     (send [Manteniment] put-Nom Manteniment))
 )
 
+;------------------------DEMANAR-TEMPS-OBJECTIU------------------------
 (defrule definir-temps-diari
    ?obj <- (object (is-a Objectius)
                 (TempsDiari ?temps&:(eq ?temps 0)))
@@ -1179,6 +1242,7 @@
    =>
    (send ?e put-EsValid no))
 
+;----------------OBTENIR-EXERCICIS-BONS-DE-CADA-OBJECTIU----------------
 (deffunction obtener-ejercicio-por-objetivo (?obj)
 
     (bind ?nomObj (send ?obj get-Nom))
@@ -1263,7 +1327,8 @@
     (return ?ejercicio)
 )
 
-(deffunction calcular-duracion_repes (?ejercicio ?temps-max)
+;----------------CALCULAR-DURACIO-I-REPS-D'UN-EXERCICI---------------
+(deffunction calcular-duracion_repes (?ejercicio ?temps-max ?persona)
     (bind ?Dmin (send ?ejercicio get-DuracioMin))
     (bind ?Dmax (send ?ejercicio get-DuracioMax))
 
@@ -1275,9 +1340,30 @@
 
     (bind ?duracion ?adjusted-Dmax)
     (bind ?reps (integer(+ ?Rmin (* ?scale-factor (- ?Rmax ?Rmin)))))
-    (return (create$ ?duracion ?reps))
+
+    (bind ?act (send ?persona get-ActivitatFisica))
+    (bind ?scale (*(- ?act  3) 0.1))
+    (bind ?duracion (+ ?duracion (* ?duracion ?scale))) 
+    (bind ?reps (+ ?reps (* ?reps ?scale)))
+    
+    (if (> ?duracion ?Dmax) 
+        then (bind ?duracion ?Dmax)
+        else (if (< ?duracion ?Dmin) 
+            then (bind ?duracion ?Dmin))
+    ) 
+
+    (if (> ?reps ?Rmax) 
+        then (bind ?reps ?Rmax)
+        else (if (< ?reps ?Rmin) 
+            then (bind ?reps ?Rmin))
+    )
+
+    (return (create$ (integer ?duracion) (integer ?reps)))
 )
 
+;--------------------------------ASSIGNACIO-D'EXERCICIS--------------------------------
+
+;------------------------DILLUNS------------------------
 (defrule generar-ejercicios-lunes-objectiu
     ?obj <- (object (is-a Objectius) (TempsDiari ?tiempo-max&:(<> ?tiempo-max 0)))
     =>
@@ -1290,9 +1376,9 @@
 
     (bind ?ejercicio (obtener-ejercicio-por-objetivo ?obj))
     
-    (while (and(> ?tiempo-disponible -10) (< ?duracionTotal (- ?tiempo-max 10)) (not(eq ?ejercicio nil)) (not (member$ ?ejercicio $?ejercicios-seleccionados))) do
+    (while (and(> ?tiempo-disponible -5) (< ?duracionTotal (- ?tiempo-max 10)) (not(eq ?ejercicio nil)) (not (member$ ?ejercicio $?ejercicios-seleccionados))) do
  
-        (bind ?dnr (calcular-duracion_repes ?ejercicio ?tiempo-max))
+        (bind ?dnr (calcular-duracion_repes ?ejercicio ?tiempo-max ?*persona*))
         (bind ?duracion (nth$ 1 ?dnr))
         (bind ?reps (nth$ 2 ?dnr))
         (if (<= ?duracion ?tiempo-disponible) then
@@ -1307,8 +1393,8 @@
     )
 
     (bind ?ejercicio (obtener-ejercicio-aleatorio-forca))
-    (while (and(> ?tiempo-disponible -10) (< ?duracionTotal (- ?tiempo-max 20)) (not(eq ?ejercicio nil))) do
-        (bind ?dnr (calcular-duracion_repes ?ejercicio ?tiempo-max))
+    (while (and(> ?tiempo-disponible -5) (< ?duracionTotal (- ?tiempo-max 20)) (not(eq ?ejercicio nil))) do
+        (bind ?dnr (calcular-duracion_repes ?ejercicio ?tiempo-max ?*persona*))
         (bind ?duracion (nth$ 1 ?dnr))
         (bind ?reps (nth$ 2 ?dnr))
         (if (<= ?duracion ?tiempo-disponible) then
@@ -1323,8 +1409,8 @@
     )
 
     (bind ?ejercicio (obtener-ejercicio-aleatorio-flex))
-    (while (and(> ?tiempo-disponible -10) (< ?duracionTotal (- ?tiempo-max 5)) (not(eq ?ejercicio nil))) do
-        (bind ?dnr (calcular-duracion_repes ?ejercicio ?tiempo-max))
+    (while (and(> ?tiempo-disponible -5) (< ?duracionTotal (- ?tiempo-max 5)) (not(eq ?ejercicio nil))) do
+        (bind ?dnr (calcular-duracion_repes ?ejercicio ?tiempo-max ?*persona*))
         (bind ?duracion (nth$ 1 ?dnr))
         (bind ?reps (nth$ 2 ?dnr))
         (if (<= ?duracion ?tiempo-disponible) then
@@ -1344,6 +1430,7 @@
     (printout t crlf)
 )
 
+;------------------------DIMARTS------------------------
 (defrule generar-ejercicios-dimarts-objectiu
     ?obj <- (object (is-a Objectius) (TempsDiari ?tiempo-max&:(<> ?tiempo-max 0)))
     (dillunsGenerat)
@@ -1357,9 +1444,9 @@
 
     (bind ?ejercicio (obtener-ejercicio-por-objetivo ?obj))
     
-    (while (and(> ?tiempo-disponible -10) (< ?duracionTotal (- ?tiempo-max 10)) (not(eq ?ejercicio nil)) (not (member$ ?ejercicio $?ejercicios-seleccionados))) do
+    (while (and(> ?tiempo-disponible -5) (< ?duracionTotal (- ?tiempo-max 10)) (not(eq ?ejercicio nil)) (not (member$ ?ejercicio $?ejercicios-seleccionados))) do
  
-        (bind ?dnr (calcular-duracion_repes ?ejercicio ?tiempo-max))
+        (bind ?dnr (calcular-duracion_repes ?ejercicio ?tiempo-max ?*persona*))
         (bind ?duracion (nth$ 1 ?dnr))
         (bind ?reps (nth$ 2 ?dnr))
         (if (<= ?duracion ?tiempo-disponible) then
@@ -1374,8 +1461,8 @@
     )
 
     (bind ?ejercicio (obtener-ejercicio-aleatorio-forca))
-    (while (and(> ?tiempo-disponible -10) (< ?duracionTotal (- ?tiempo-max 20)) (not(eq ?ejercicio nil))) do
-        (bind ?dnr (calcular-duracion_repes ?ejercicio ?tiempo-max))
+    (while (and(> ?tiempo-disponible -5) (< ?duracionTotal (- ?tiempo-max 20)) (not(eq ?ejercicio nil))) do
+        (bind ?dnr (calcular-duracion_repes ?ejercicio ?tiempo-max ?*persona*))
         (bind ?duracion (nth$ 1 ?dnr))
         (bind ?reps (nth$ 2 ?dnr))
         (if (<= ?duracion ?tiempo-disponible) then
@@ -1390,8 +1477,8 @@
     )
 
     (bind ?ejercicio (obtener-ejercicio-aleatorio-flex))
-    (while (and(> ?tiempo-disponible -10) (< ?duracionTotal (- ?tiempo-max 5)) (not(eq ?ejercicio nil))) do
-        (bind ?dnr (calcular-duracion_repes ?ejercicio ?tiempo-max))
+    (while (and(> ?tiempo-disponible -5) (< ?duracionTotal (- ?tiempo-max 5)) (not(eq ?ejercicio nil))) do
+        (bind ?dnr (calcular-duracion_repes ?ejercicio ?tiempo-max ?*persona*))
         (bind ?duracion (nth$ 1 ?dnr))
         (bind ?reps (nth$ 2 ?dnr))
         (if (<= ?duracion ?tiempo-disponible) then
@@ -1411,6 +1498,7 @@
     (printout t crlf)
 )
 
+;------------------------DIMECRES------------------------
 (defrule generar-ejercicios-dimecres-objectiu
     ?obj <- (object (is-a Objectius) (TempsDiari ?tiempo-max&:(<> ?tiempo-max 0)))
     (dimartsGenerat)
@@ -1424,9 +1512,9 @@
 
     (bind ?ejercicio (obtener-ejercicio-por-objetivo ?obj))
     
-    (while (and(> ?tiempo-disponible -10) (< ?duracionTotal (- ?tiempo-max 10)) (not(eq ?ejercicio nil)) (not (member$ ?ejercicio $?ejercicios-seleccionados))) do
+    (while (and(> ?tiempo-disponible -5) (< ?duracionTotal (- ?tiempo-max 10)) (not(eq ?ejercicio nil)) (not (member$ ?ejercicio $?ejercicios-seleccionados))) do
  
-        (bind ?dnr (calcular-duracion_repes ?ejercicio ?tiempo-max))
+        (bind ?dnr (calcular-duracion_repes ?ejercicio ?tiempo-max ?*persona*))
         (bind ?duracion (nth$ 1 ?dnr))
         (bind ?reps (nth$ 2 ?dnr))
         (if (<= ?duracion ?tiempo-disponible) then
@@ -1441,8 +1529,8 @@
     )
 
     (bind ?ejercicio (obtener-ejercicio-aleatorio-forca))
-    (while (and(> ?tiempo-disponible -10) (< ?duracionTotal (- ?tiempo-max 20)) (not(eq ?ejercicio nil))) do
-        (bind ?dnr (calcular-duracion_repes ?ejercicio ?tiempo-max))
+    (while (and(> ?tiempo-disponible -5) (< ?duracionTotal (- ?tiempo-max 20)) (not(eq ?ejercicio nil))) do
+        (bind ?dnr (calcular-duracion_repes ?ejercicio ?tiempo-max ?*persona*))
         (bind ?duracion (nth$ 1 ?dnr))
         (bind ?reps (nth$ 2 ?dnr))
         (if (<= ?duracion ?tiempo-disponible) then
@@ -1457,8 +1545,8 @@
     )
 
     (bind ?ejercicio (obtener-ejercicio-aleatorio-flex))
-    (while (and(> ?tiempo-disponible -10) (< ?duracionTotal (- ?tiempo-max 5)) (not(eq ?ejercicio nil))) do
-        (bind ?dnr (calcular-duracion_repes ?ejercicio ?tiempo-max))
+    (while (and(> ?tiempo-disponible -5) (< ?duracionTotal (- ?tiempo-max 5)) (not(eq ?ejercicio nil))) do
+        (bind ?dnr (calcular-duracion_repes ?ejercicio ?tiempo-max ?*persona*))
         (bind ?duracion (nth$ 1 ?dnr))
         (bind ?reps (nth$ 2 ?dnr))
         (if (<= ?duracion ?tiempo-disponible) then
@@ -1478,6 +1566,7 @@
     (printout t crlf)
 )
 
+;------------------------DIJOUS------------------------
 (defrule generar-ejercicios-dijous-objectiu
     ?obj <- (object (is-a Objectius) (TempsDiari ?tiempo-max&:(<> ?tiempo-max 0)))
     (dimecresGenerat)
@@ -1491,9 +1580,9 @@
 
     (bind ?ejercicio (obtener-ejercicio-por-objetivo ?obj))
     
-    (while (and(> ?tiempo-disponible -10) (< ?duracionTotal (- ?tiempo-max 10)) (not(eq ?ejercicio nil)) (not (member$ ?ejercicio $?ejercicios-seleccionados))) do
+    (while (and(> ?tiempo-disponible -5) (< ?duracionTotal (- ?tiempo-max 10)) (not(eq ?ejercicio nil)) (not (member$ ?ejercicio $?ejercicios-seleccionados))) do
  
-        (bind ?dnr (calcular-duracion_repes ?ejercicio ?tiempo-max))
+        (bind ?dnr (calcular-duracion_repes ?ejercicio ?tiempo-max ?*persona*))
         (bind ?duracion (nth$ 1 ?dnr))
         (bind ?reps (nth$ 2 ?dnr))
         (if (<= ?duracion ?tiempo-disponible) then
@@ -1508,8 +1597,8 @@
     )
 
     (bind ?ejercicio (obtener-ejercicio-aleatorio-forca))
-    (while (and(> ?tiempo-disponible -10) (< ?duracionTotal (- ?tiempo-max 20)) (not(eq ?ejercicio nil))) do
-        (bind ?dnr (calcular-duracion_repes ?ejercicio ?tiempo-max))
+    (while (and(> ?tiempo-disponible -5) (< ?duracionTotal (- ?tiempo-max 20)) (not(eq ?ejercicio nil))) do
+        (bind ?dnr (calcular-duracion_repes ?ejercicio ?tiempo-max ?*persona*))
         (bind ?duracion (nth$ 1 ?dnr))
         (bind ?reps (nth$ 2 ?dnr))
         (if (<= ?duracion ?tiempo-disponible) then
@@ -1524,8 +1613,8 @@
     )
 
     (bind ?ejercicio (obtener-ejercicio-aleatorio-flex))
-    (while (and(> ?tiempo-disponible -10) (< ?duracionTotal (- ?tiempo-max 5)) (not(eq ?ejercicio nil))) do
-        (bind ?dnr (calcular-duracion_repes ?ejercicio ?tiempo-max))
+    (while (and(> ?tiempo-disponible -5) (< ?duracionTotal (- ?tiempo-max 5)) (not(eq ?ejercicio nil))) do
+        (bind ?dnr (calcular-duracion_repes ?ejercicio ?tiempo-max ?*persona*))
         (bind ?duracion (nth$ 1 ?dnr))
         (bind ?reps (nth$ 2 ?dnr))
         (if (<= ?duracion ?tiempo-disponible) then
@@ -1545,6 +1634,7 @@
     (printout t crlf)
 )
 
+;------------------------DIVENDRES------------------------
 (defrule generar-ejercicios-divendres-objectiu
     ?obj <- (object (is-a Objectius) (TempsDiari ?tiempo-max&:(<> ?tiempo-max 0)))
     (dijousGenerat)
@@ -1558,9 +1648,9 @@
 
     (bind ?ejercicio (obtener-ejercicio-por-objetivo ?obj))
     
-    (while (and(> ?tiempo-disponible -10) (< ?duracionTotal (- ?tiempo-max 10)) (not(eq ?ejercicio nil)) (not (member$ ?ejercicio $?ejercicios-seleccionados))) do
+    (while (and(> ?tiempo-disponible -5) (< ?duracionTotal (- ?tiempo-max 10)) (not(eq ?ejercicio nil)) (not (member$ ?ejercicio $?ejercicios-seleccionados))) do
  
-        (bind ?dnr (calcular-duracion_repes ?ejercicio ?tiempo-max))
+        (bind ?dnr (calcular-duracion_repes ?ejercicio ?tiempo-max ?*persona*))
         (bind ?duracion (nth$ 1 ?dnr))
         (bind ?reps (nth$ 2 ?dnr))
         (if (<= ?duracion ?tiempo-disponible) then
@@ -1575,8 +1665,8 @@
     )
 
     (bind ?ejercicio (obtener-ejercicio-aleatorio-forca))
-    (while (and(> ?tiempo-disponible -10) (< ?duracionTotal (- ?tiempo-max 20)) (not(eq ?ejercicio nil))) do
-        (bind ?dnr (calcular-duracion_repes ?ejercicio ?tiempo-max))
+    (while (and(> ?tiempo-disponible -5) (< ?duracionTotal (- ?tiempo-max 20)) (not(eq ?ejercicio nil))) do
+        (bind ?dnr (calcular-duracion_repes ?ejercicio ?tiempo-max ?*persona*))
         (bind ?duracion (nth$ 1 ?dnr))
         (bind ?reps (nth$ 2 ?dnr))
         (if (<= ?duracion ?tiempo-disponible) then
@@ -1591,8 +1681,8 @@
     )
 
     (bind ?ejercicio (obtener-ejercicio-aleatorio-flex))
-    (while (and(> ?tiempo-disponible -10) (< ?duracionTotal (- ?tiempo-max 5)) (not(eq ?ejercicio nil))) do
-        (bind ?dnr (calcular-duracion_repes ?ejercicio ?tiempo-max))
+    (while (and(> ?tiempo-disponible -5) (< ?duracionTotal (- ?tiempo-max 5)) (not(eq ?ejercicio nil))) do
+        (bind ?dnr (calcular-duracion_repes ?ejercicio ?tiempo-max ?*persona*))
         (bind ?duracion (nth$ 1 ?dnr))
         (bind ?reps (nth$ 2 ?dnr))
         (if (<= ?duracion ?tiempo-disponible) then
@@ -1612,6 +1702,7 @@
     (printout t crlf)
 )
 
+;------------------------DISSABTE------------------------
 (defrule generar-ejercicios-dissabte-objectiu
     ?obj <- (object (is-a Objectius) (TempsDiari ?tiempo-max&:(<> ?tiempo-max 0)))
     (divendresGenerat)
@@ -1625,9 +1716,9 @@
 
     (bind ?ejercicio (obtener-ejercicio-por-objetivo ?obj))
     
-    (while (and(> ?tiempo-disponible -10) (< ?duracionTotal (- ?tiempo-max 10)) (not(eq ?ejercicio nil)) (not (member$ ?ejercicio $?ejercicios-seleccionados))) do
+    (while (and(> ?tiempo-disponible -5) (< ?duracionTotal (- ?tiempo-max 10)) (not(eq ?ejercicio nil)) (not (member$ ?ejercicio $?ejercicios-seleccionados))) do
  
-        (bind ?dnr (calcular-duracion_repes ?ejercicio ?tiempo-max))
+        (bind ?dnr (calcular-duracion_repes ?ejercicio ?tiempo-max ?*persona*))
         (bind ?duracion (nth$ 1 ?dnr))
         (bind ?reps (nth$ 2 ?dnr))
         (if (<= ?duracion ?tiempo-disponible) then
@@ -1642,8 +1733,8 @@
     )
 
     (bind ?ejercicio (obtener-ejercicio-aleatorio-forca))
-    (while (and(> ?tiempo-disponible -10) (< ?duracionTotal (- ?tiempo-max 20)) (not(eq ?ejercicio nil))) do
-        (bind ?dnr (calcular-duracion_repes ?ejercicio ?tiempo-max))
+    (while (and(> ?tiempo-disponible -5) (< ?duracionTotal (- ?tiempo-max 20)) (not(eq ?ejercicio nil))) do
+        (bind ?dnr (calcular-duracion_repes ?ejercicio ?tiempo-max ?*persona*))
         (bind ?duracion (nth$ 1 ?dnr))
         (bind ?reps (nth$ 2 ?dnr))
         (if (<= ?duracion ?tiempo-disponible) then
@@ -1658,8 +1749,8 @@
     )
 
     (bind ?ejercicio (obtener-ejercicio-aleatorio-flex))
-    (while (and(> ?tiempo-disponible -10) (< ?duracionTotal (- ?tiempo-max 5)) (not(eq ?ejercicio nil))) do
-        (bind ?dnr (calcular-duracion_repes ?ejercicio ?tiempo-max))
+    (while (and(> ?tiempo-disponible -5) (< ?duracionTotal (- ?tiempo-max 5)) (not(eq ?ejercicio nil))) do
+        (bind ?dnr (calcular-duracion_repes ?ejercicio ?tiempo-max ?*persona*))
         (bind ?duracion (nth$ 1 ?dnr))
         (bind ?reps (nth$ 2 ?dnr))
         (if (<= ?duracion ?tiempo-disponible) then
@@ -1679,6 +1770,7 @@
     (printout t crlf)
 )
 
+;------------------------DIUMENGE------------------------
 (defrule generar-ejercicios-diumenge-objectiu
     ?obj <- (object (is-a Objectius) (TempsDiari ?tiempo-max&:(<> ?tiempo-max 0)))
     (dissabteGenerat)
@@ -1692,9 +1784,9 @@
 
     (bind ?ejercicio (obtener-ejercicio-por-objetivo ?obj))
     
-    (while (and(> ?tiempo-disponible -10) (< ?duracionTotal (- ?tiempo-max 10)) (not(eq ?ejercicio nil)) (not (member$ ?ejercicio $?ejercicios-seleccionados))) do
+    (while (and(> ?tiempo-disponible -5) (< ?duracionTotal (- ?tiempo-max 10)) (not(eq ?ejercicio nil)) (not (member$ ?ejercicio $?ejercicios-seleccionados))) do
  
-        (bind ?dnr (calcular-duracion_repes ?ejercicio ?tiempo-max))
+        (bind ?dnr (calcular-duracion_repes ?ejercicio ?tiempo-max ?*persona*))
         (bind ?duracion (nth$ 1 ?dnr))
         (bind ?reps (nth$ 2 ?dnr))
         (if (<= ?duracion ?tiempo-disponible) then
@@ -1709,8 +1801,8 @@
     )
 
     (bind ?ejercicio (obtener-ejercicio-aleatorio-forca))
-    (while (and(> ?tiempo-disponible -10) (< ?duracionTotal (- ?tiempo-max 20)) (not(eq ?ejercicio nil))) do
-        (bind ?dnr (calcular-duracion_repes ?ejercicio ?tiempo-max))
+    (while (and(> ?tiempo-disponible -5) (< ?duracionTotal (- ?tiempo-max 20)) (not(eq ?ejercicio nil))) do
+        (bind ?dnr (calcular-duracion_repes ?ejercicio ?tiempo-max ?*persona*))
         (bind ?duracion (nth$ 1 ?dnr))
         (bind ?reps (nth$ 2 ?dnr))
         (if (<= ?duracion ?tiempo-disponible) then
@@ -1725,8 +1817,8 @@
     )
 
     (bind ?ejercicio (obtener-ejercicio-aleatorio-flex))
-    (while (and(> ?tiempo-disponible -10) (< ?duracionTotal (- ?tiempo-max 5)) (not(eq ?ejercicio nil))) do
-        (bind ?dnr (calcular-duracion_repes ?ejercicio ?tiempo-max))
+    (while (and(> ?tiempo-disponible -5) (< ?duracionTotal (- ?tiempo-max 5)) (not(eq ?ejercicio nil))) do
+        (bind ?dnr (calcular-duracion_repes ?ejercicio ?tiempo-max ?*persona*))
         (bind ?duracion (nth$ 1 ?dnr))
         (bind ?reps (nth$ 2 ?dnr))
         (if (<= ?duracion ?tiempo-disponible) then
