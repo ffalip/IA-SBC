@@ -45,6 +45,9 @@
     (multislot ObjectiusComplerts
         (type SYMBOL)
         (create-accessor read-write))
+    (slot TeImpacte
+        (type SYMBOL)
+        (create-accessor read-write))
 )
 
 ;;; Define other classes after Exercici
@@ -234,7 +237,9 @@
         (RepsMax 1)
         (RepsMin 1)
         (EsValid si)
-        (ObjectiusComplerts manteniment baixar_pes posar_en_forma))
+        (ObjectiusComplerts manteniment baixar_pes posar_en_forma)
+        (TeImpacte si))
+        
 
     (sprint of Cardio
         (Dificultat moderate)
@@ -245,7 +250,8 @@
         (RepsMax 1)
         (RepsMin 1)
         (EsValid si)
-        (ObjectiusComplerts baixar_pes posar_en_forma musculacio))
+        (ObjectiusComplerts baixar_pes posar_en_forma musculacio)
+        (TeImpacte si))
 
     (bicicleta of Cardio
         (Dificultat easy)
@@ -300,7 +306,8 @@
         (RepsMax 1)
         (RepsMin 1)
         (EsValid si)
-        (ObjectiusComplerts manteniment baixar_pes))
+        (ObjectiusComplerts manteniment baixar_pes)
+        (TeImpacte si))
 
     (eliptica of Cardio
         (Dificultat easy)
@@ -344,7 +351,8 @@
         (RepsMax 20)
         (RepsMin 5)
         (EsValid si)
-        (ObjectiusComplerts musculacio posar_en_forma))
+        (ObjectiusComplerts musculacio posar_en_forma)
+        (TeImpacte si))
 
     (sentadilles-amb-pes-lleuger of Forca
         (Dificultat easy)
@@ -377,7 +385,8 @@
         (RepsMax 15)
         (RepsMin 5)
         (EsValid si)
-        (ObjectiusComplerts musculacio posar_en_forma))
+        (ObjectiusComplerts musculacio posar_en_forma)
+        (TeImpacte si))
 
     (flexions-amb-genolls of Forca
         (Dificultat easy)
@@ -410,7 +419,8 @@
         (RepsMax 50)
         (RepsMin 5)
         (EsValid si)
-        (ObjectiusComplerts posar_en_forma))
+        (ObjectiusComplerts posar_en_forma)
+        (TeImpacte si))
 
     (rem-amb-pes-lleuger of Forca
         (Dificultat easy)
@@ -443,7 +453,8 @@
         (RepsMax 15)
         (RepsMin 5)
         (EsValid si)
-        (ObjectiusComplerts musculacio posar_en_forma))
+        (ObjectiusComplerts musculacio posar_en_forma)
+        (TeImpacte si))
 
     (curl-biceps-lleuger of Forca
         (Dificultat easy)
@@ -476,7 +487,8 @@
         (RepsMax 15)
         (RepsMin 5)
         (EsValid si)
-        (ObjectiusComplerts musculacio posar_en_forma))
+        (ObjectiusComplerts musculacio posar_en_forma)
+        (TeImpacte si))
 
     (press-militar-lleuger of Forca
         (Dificultat easy)
@@ -509,7 +521,8 @@
         (RepsMax 15)
         (RepsMin 5)
         (EsValid si)
-        (ObjectiusComplerts musculacio posar_en_forma))
+        (ObjectiusComplerts musculacio posar_en_forma)
+        (TeImpacte si))
 
     (extensio-triceps-lleuger of Forca
         (Dificultat easy)
@@ -542,7 +555,8 @@
         (RepsMax 10)
         (RepsMin 5)
         (EsValid si)
-        (ObjectiusComplerts musculacio posar_en_forma))
+        (ObjectiusComplerts musculacio posar_en_forma)
+        (TeImpacte si))
 
     (aixecament-lateral-lleuger of Forca
         (Dificultat moderate)
@@ -575,7 +589,8 @@
         (RepsMax 20)
         (RepsMin 5)
         (EsValid si)
-        (ObjectiusComplerts musculacio posar_en_forma))
+        (ObjectiusComplerts musculacio posar_en_forma)
+        (TeImpacte si))
 
     (lunges-amb-pes-lleuger of Forca
         (Dificultat easy)
@@ -608,7 +623,8 @@
         (RepsMax 15)
         (RepsMin 5)
         (EsValid si)
-        (ObjectiusComplerts musculacio posar_en_forma))
+        (ObjectiusComplerts musculacio posar_en_forma)
+        (TeImpacte si))
 
     (pes-mort-lleuger of Forca
         (Dificultat easy)
@@ -641,7 +657,8 @@
         (RepsMax 10)
         (RepsMin 5)
         (EsValid si)
-        (ObjectiusComplerts musculacio posar_en_forma))
+        (ObjectiusComplerts musculacio posar_en_forma)
+        (TeImpacte si))
 
     (abdominals of Forca
         (Dificultat easy)
@@ -666,7 +683,7 @@
         (ObjectiusComplerts musculacio posar_en_forma manteniment))
 
     (burpees of Forca
-        (Dificultat hard)
+        (Dificultat moderate)
         (DuracioMax 10)
         (DuracioMin 5)
         (GrupsMusculars cames bracos pit abd)
@@ -674,7 +691,8 @@
         (RepsMax 20)
         (RepsMin 5)
         (EsValid si)
-        (ObjectiusComplerts posar_en_forma baixar_pes manteniment))
+        (ObjectiusComplerts posar_en_forma baixar_pes manteniment)
+        (TeImpacte si))
 
     (planxa of Forca
         (Dificultat easy)
@@ -904,6 +922,20 @@
            (Nom ?exerciseName))
    (cansamentMareig)
    (test (not(eq ?dificultad easy)))
+   =>
+   (send ?e put-EsValid no))
+
+(defrule determina-problemes-articulars
+   =>
+   (if (yes-or-no-p "Tens problemes articulars? ")  then (assert (problemesArticulars)))
+)
+
+(defrule determina-exercicis-articulars
+   ?e <- (object (is-a Exercici)
+           (TeImpacte ?impacte)
+           (Nom ?exerciseName))
+   (problemesArticulars)
+   (test (eq ?impacte si))
    =>
    (send ?e put-EsValid no))
 
