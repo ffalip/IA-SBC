@@ -351,7 +351,7 @@
         (KcalMinuteMax 8)
         (RepsMax 20)
         (RepsMin 5)
-        (EsValid si)
+        (EsValid no)
         (ObjectiusComplerts musculacio posar_en_forma)
         (TeImpacte si))
 
@@ -385,7 +385,7 @@
         (KcalMinuteMax 10)
         (RepsMax 15)
         (RepsMin 5)
-        (EsValid si)
+        (EsValid no)
         (ObjectiusComplerts musculacio posar_en_forma)
         (TeImpacte si))
 
@@ -419,7 +419,7 @@
         (KcalMinuteMax 8)
         (RepsMax 50)
         (RepsMin 5)
-        (EsValid si)
+        (EsValid no)
         (ObjectiusComplerts posar_en_forma)
         (TeImpacte si))
 
@@ -453,7 +453,7 @@
         (KcalMinuteMax 10)
         (RepsMax 15)
         (RepsMin 5)
-        (EsValid si)
+        (EsValid no)
         (ObjectiusComplerts musculacio posar_en_forma)
         (TeImpacte si))
 
@@ -487,7 +487,7 @@
         (KcalMinuteMax 6)
         (RepsMax 15)
         (RepsMin 5)
-        (EsValid si)
+        (EsValid no)
         (ObjectiusComplerts musculacio posar_en_forma)
         (TeImpacte si))
 
@@ -521,7 +521,7 @@
         (KcalMinuteMax 9)
         (RepsMax 15)
         (RepsMin 5)
-        (EsValid si)
+        (EsValid no)
         (ObjectiusComplerts musculacio posar_en_forma)
         (TeImpacte si))
 
@@ -555,7 +555,7 @@
         (KcalMinuteMax 7)
         (RepsMax 10)
         (RepsMin 5)
-        (EsValid si)
+        (EsValid no)
         (ObjectiusComplerts musculacio posar_en_forma)
         (TeImpacte si))
 
@@ -589,7 +589,7 @@
         (KcalMinuteMax 7)
         (RepsMax 20)
         (RepsMin 5)
-        (EsValid si)
+        (EsValid no)
         (ObjectiusComplerts musculacio posar_en_forma)
         (TeImpacte si))
 
@@ -623,7 +623,7 @@
         (KcalMinuteMax 12)
         (RepsMax 15)
         (RepsMin 5)
-        (EsValid si)
+        (EsValid no)
         (ObjectiusComplerts musculacio posar_en_forma)
         (TeImpacte si))
 
@@ -657,7 +657,7 @@
         (KcalMinuteMax 11)
         (RepsMax 10)
         (RepsMin 5)
-        (EsValid si)
+        (EsValid no)
         (ObjectiusComplerts musculacio posar_en_forma)
         (TeImpacte si))
 
@@ -736,7 +736,7 @@
         (KcalMinuteMax 10)
         (RepsMax 20)
         (RepsMin 1)
-        (EsValid si)
+        (EsValid no)
         (ObjectiusComplerts musculacio posar_en_forma))
 
     (estirament1 of Flex
@@ -748,7 +748,7 @@
         (RepsMax 1)
         (RepsMin 1)
         (EsValid si)
-        (ObjectiusComplerts flexibilitat manteniment))
+        (ObjectiusComplerts flexibilitat ))
 
     (estirament2 of Flex
         (Dificultat easy)
@@ -759,7 +759,7 @@
         (RepsMax 1)
         (RepsMin 1)
         (EsValid si)
-        (ObjectiusComplerts flexibilitat manteniment))
+        (ObjectiusComplerts flexibilitat ))
 
     (estirament3 of Flex
         (Dificultat easy)
@@ -770,7 +770,7 @@
         (RepsMax 1)
         (RepsMin 1)
         (EsValid si)
-        (ObjectiusComplerts flexibilitat manteniment))
+        (ObjectiusComplerts flexibilitat ))
 
     (estirament4 of Flex
         (Dificultat easy)
@@ -781,7 +781,7 @@
         (RepsMax 1)
         (RepsMin 1)
         (EsValid si)
-        (ObjectiusComplerts flexibilitat manteniment))
+        (ObjectiusComplerts flexibilitat ))
 
     (estirament5 of Flex
         (Dificultat easy)
@@ -792,7 +792,7 @@
         (RepsMax 1)
         (RepsMin 1)
         (EsValid si)
-        (ObjectiusComplerts flexibilitat manteniment))      
+        (ObjectiusComplerts flexibilitat ))      
       
     (estirament6 of Flex
         (Dificultat easy)
@@ -803,7 +803,7 @@
         (RepsMax 1)
         (RepsMin 1)
         (EsValid si)
-        (ObjectiusComplerts flexibilitat manteniment))
+        (ObjectiusComplerts flexibilitat ))
 
     (estirament7 of Flex
         (Dificultat easy)
@@ -814,7 +814,7 @@
         (RepsMax 1)
         (RepsMin 1)
         (EsValid si)
-        (ObjectiusComplerts flexibilitat manteniment))
+        (ObjectiusComplerts flexibilitat ))
 
     (estirament8 of Flex
         (Dificultat easy)
@@ -825,7 +825,7 @@
         (RepsMax 1)
         (RepsMin 1)
         (EsValid si)
-        (ObjectiusComplerts flexibilitat manteniment))
+        (ObjectiusComplerts flexibilitat ))
 
     (estirament9 of Flex
         (Dificultat easy)
@@ -836,7 +836,7 @@
         (RepsMax 1)
         (RepsMin 1)
         (EsValid si)
-        (ObjectiusComplerts flexibilitat manteniment))
+        (ObjectiusComplerts flexibilitat ))
 )
 
 (deffunction member (?item $?list)
@@ -899,13 +899,13 @@
 (defrule determina-PressioSangMin
     =>
     (bind ?answer (ask-integer-question "Entra la teva pressio sanguinia minima:" ))
-    (send ?*persona* put-PressioSangMax ?answer)
+    (send ?*persona* put-PressioSangMin ?answer)
 )
 
 (defrule determina-PressioSangMax
     =>
     (bind ?answer (ask-integer-question "Entra la teva pressio sanguinia maxima:" ))
-    (send ?*persona* put-PressioSangMin ?answer)
+    (send ?*persona* put-PressioSangMax ?answer)
 )
 
 
@@ -950,8 +950,8 @@
 (defrule calcula-IMC
    ?p <- (object (is-a Persona)
            (name ?name)
-           (Pes ?pes&:(<> ?pes 0))
-           (Altura ?altura&:(<> ?altura 0)))
+           (Pes ?pes)
+           (Altura ?altura))
    (alturaAssignada)
    (pesAssignat)
    =>
@@ -960,7 +960,19 @@
    (if (> ?imc 30) then (assert(personaTeObesitat)))
    (if (and(< ?imc 30) (> ?imc 25)) then (assert(personaTeSobrePes)))
    (if (< ?imc 20) then (assert(personaTeInfraPes)))
-   (printout t "The IMC of " ?name " is " ?imc crlf))
+   (printout t "The IMC of " ?name " is " ?imc crlf)
+)
+
+(defrule determina-exercicis-IMC
+
+   (or (personaTeInfraPes) (personaTeObesitat) (personaTeSobrePes))
+   ?e <- (object (is-a Exercici)
+           (Dificultat ?dificultad)
+           (Nom ?exerciseName))
+    (test(eq ?dificultad hard))
+   =>
+   (send ?e put-EsValid no)
+)
 
 (defrule determina-cansament
    =>
@@ -1008,12 +1020,25 @@
 
 (defrule determina-activitat-fisica
    =>
-   (bind ?answer (ask-question "Quin nivell d'activitat física fas al dia a dia (a la feina, aficions, tasques doméstiques...) \n sent 1 una rutina molt poc o gens activa i 5 una rutina molt activa " 1 2 3 4 5))
+   (bind ?answer (ask-question "Quin nivell d'activitat física fas al dia a dia (a la feina, aficions, tasques doméstiques...) (sent 1 una rutina molt poc o gens activa i 5 una rutina molt activa )" 1 2 3 4 5))
    (send ?*persona* put-ActivitatFisica ?answer)
    (assert (activitatFisicaAssignada))
 )
 
 ;----------------ASSIGNAR-EXERCICIS-VALIDS-SEGONS-MAL----------------
+(defrule deterimar-si-noapte-es-apte
+   (activitatFisicaAssignada)
+   ?e <- (object (is-a Exercici)
+           (Dificultat ?dificultad))
+    ?p <- (object (is-a Persona)
+           (ActivitatFisica ?actFis))
+   (or (test (eq ?actFis 5)) (test (eq ?actFis 4)) )
+   (not (problemesArticulars))
+   (not (cansamentMareig))
+   (not (personaTePressioMoltAlta))
+   =>
+   (send ?e put-EsValid si)
+)
 (defrule esquena-dolor-3
    ?e <-(object (is-a Exercici)
            (Dificultat ?dif)
@@ -1236,7 +1261,7 @@
    ?obj <- (object (is-a Objectius)
             (Nom ?nomObj))
        
-   (impacte baix)
+   (or(impacte baix personaTeInfraPes))
    (test (> ?kcalmax 12))
    (test(not(eq ?nomObj BaixarPes)))
    =>
@@ -1254,7 +1279,7 @@
                 
         (bind ?i (random 0 (- (length$ ?ejercicios) 1)))
         (bind ?ejercicio (nth$ (+ ?i 1) ?ejercicios)) 
-        (printout t "Ejercicio" ?nomObj ?ejercicio crlf)
+        ;(printout t "Ejercicio" ?nomObj ?ejercicio crlf)
         (return ?ejercicio)
     )
     (if (eq ?nomObj Musculacio) then
@@ -1265,7 +1290,7 @@
                 
         (bind ?i (random 0 (- (length$ ?ejercicios) 1)))
         (bind ?ejercicio (nth$ (+ ?i 1) ?ejercicios)) 
-        (printout t "Ejercicio" ?nomObj ?ejercicio crlf)
+        ;(printout t "Ejercicio" ?nomObj ?ejercicio crlf)
         (return ?ejercicio)
     )
     (if (eq ?nomObj EnForma) then
@@ -1276,7 +1301,7 @@
                 
         (bind ?i (random 0 (- (length$ ?ejercicios) 1)))
         (bind ?ejercicio (nth$ (+ ?i 1) ?ejercicios)) 
-        (printout t "Ejercicio" ?nomObj ?ejercicio crlf)
+        ;(printout t "Ejercicio" ?nomObj ?ejercicio crlf)
         (return ?ejercicio)
     )
     (if (eq ?nomObj BaixarPes) then
@@ -1287,7 +1312,7 @@
                 
         (bind ?i (random 0 (- (length$ ?ejercicios) 1)))
         (bind ?ejercicio (nth$ (+ ?i 1) ?ejercicios)) 
-        (printout t "Ejercicio" ?nomObj ?ejercicio crlf)
+        ;(printout t "Ejercicio" ?nomObj ?ejercicio crlf)
         (return ?ejercicio)
     )
     (if (eq ?nomObj Flexibilitat) then
@@ -1298,10 +1323,56 @@
                 
         (bind ?i (random 0 (- (length$ ?ejercicios) 1)))
         (bind ?ejercicio (nth$ (+ ?i 1) ?ejercicios)) 
-        (printout t "Ejercicio" ?nomObj ?ejercicio crlf)
+        ;(printout t "Ejercicio" ?nomObj ?ejercicio crlf)
         (return ?ejercicio)
     )
 
+    (return nil)
+)
+
+(deffunction obtener-todos-ejercicios-por-objetivo (?obj)
+
+    (bind ?nomObj (send ?obj get-Nom))
+    (if (eq ?nomObj Manteniment) then
+        (bind ?ejercicios (find-all-instances ((?e Exercici))
+            (and
+                (eq (send ?e get-EsValid) si)
+                (member$ manteniment (send ?e get-ObjectiusComplerts)))))
+                
+        (return ?ejercicios)
+    )
+    (if (eq ?nomObj Musculacio) then
+        (bind ?ejercicios (find-all-instances ((?e Exercici))
+            (and
+                (eq (send ?e get-EsValid) si)
+                (member$ musculacio (send ?e get-ObjectiusComplerts)))))
+                
+        (return ?ejercicios)
+    )
+    (if (eq ?nomObj EnForma) then
+        (bind ?ejercicios (find-all-instances ((?e Exercici))
+            (and
+                (eq (send ?e get-EsValid) si)
+                (member$ posar_en_forma (send ?e get-ObjectiusComplerts)))))
+                
+        (return ?ejercicios)
+    )
+    (if (eq ?nomObj BaixarPes) then
+        (bind ?ejercicios (find-all-instances ((?e Exercici))
+            (and
+                (eq (send ?e get-EsValid) si)
+                (member$ baixar_pes (send ?e get-ObjectiusComplerts)))))
+                
+        (return ?ejercicios)
+    )
+    (if (eq ?nomObj Flexibilitat) then
+        (bind ?ejercicios (find-all-instances ((?e Exercici))
+            (and
+                (eq (send ?e get-EsValid) si)
+                (member$ flexibilitat (send ?e get-ObjectiusComplerts)))))
+                
+        (return ?ejercicios)
+    )
     (return nil)
 )
 
@@ -1370,18 +1441,18 @@
     (printout t "Entrenament Dilluns Objectiu: " crlf)
     (bind ?tiempo-disponible ?tiempo-max)
     (bind $?ejercicios-seleccionados (create$))
-    
+    (bind $?ejercicios-objetivo-completos (obtener-todos-ejercicios-por-objetivo ?obj))
     (bind $?duraciones (create$))
     (bind ?duracionTotal 0)
 
     (bind ?ejercicio (obtener-ejercicio-por-objetivo ?obj))
     
-    (while (and(> ?tiempo-disponible -5) (< ?duracionTotal (- ?tiempo-max 10)) (not(eq ?ejercicio nil)) (not (member$ ?ejercicio $?ejercicios-seleccionados))) do
+    (while (and(> ?tiempo-disponible -5) (< ?duracionTotal (- ?tiempo-max 15)) (not(eq ?ejercicio nil))  (not(eq $?ejercicios-seleccionados $?ejercicios-objetivo-completos))) do
  
         (bind ?dnr (calcular-duracion_repes ?ejercicio ?tiempo-max ?*persona*))
         (bind ?duracion (nth$ 1 ?dnr))
         (bind ?reps (nth$ 2 ?dnr))
-        (if (<= ?duracion ?tiempo-disponible) then
+        (if (and (<= ?duracion ?tiempo-disponible) (not (member$ ?ejercicio $?ejercicios-seleccionados))) then
             (bind $?ejercicios-seleccionados (create$ $?ejercicios-seleccionados ?ejercicio))
             (bind $?duraciones (create$ $?duraciones ?duracion))
             (bind ?duracionTotal (+ ?duracionTotal ?duracion))
@@ -1438,18 +1509,18 @@
     (printout t "Entrenament Dimarts Objectiu: " crlf)
     (bind ?tiempo-disponible ?tiempo-max)
     (bind $?ejercicios-seleccionados (create$))
-    
+    (bind $?ejercicios-objetivo-completos (obtener-todos-ejercicios-por-objetivo ?obj))
     (bind $?duraciones (create$))
     (bind ?duracionTotal 0)
 
     (bind ?ejercicio (obtener-ejercicio-por-objetivo ?obj))
     
-    (while (and(> ?tiempo-disponible -5) (< ?duracionTotal (- ?tiempo-max 10)) (not(eq ?ejercicio nil)) (not (member$ ?ejercicio $?ejercicios-seleccionados))) do
+    (while (and(> ?tiempo-disponible -5) (< ?duracionTotal (- ?tiempo-max 15)) (not(eq ?ejercicio nil))  (not(eq $?ejercicios-seleccionados $?ejercicios-objetivo-completos))) do
  
         (bind ?dnr (calcular-duracion_repes ?ejercicio ?tiempo-max ?*persona*))
         (bind ?duracion (nth$ 1 ?dnr))
         (bind ?reps (nth$ 2 ?dnr))
-        (if (<= ?duracion ?tiempo-disponible) then
+        (if (and (<= ?duracion ?tiempo-disponible) (not (member$ ?ejercicio $?ejercicios-seleccionados))) then
             (bind $?ejercicios-seleccionados (create$ $?ejercicios-seleccionados ?ejercicio))
             (bind $?duraciones (create$ $?duraciones ?duracion))
             (bind ?duracionTotal (+ ?duracionTotal ?duracion))
@@ -1459,6 +1530,7 @@
         
         (bind ?ejercicio (obtener-ejercicio-por-objetivo ?obj))
     )
+
 
     (bind ?ejercicio (obtener-ejercicio-aleatorio-forca))
     (while (and(> ?tiempo-disponible -5) (< ?duracionTotal (- ?tiempo-max 20)) (not(eq ?ejercicio nil))) do
@@ -1506,18 +1578,18 @@
     (printout t "Entrenament Dimecres Objectiu: " crlf)
     (bind ?tiempo-disponible ?tiempo-max)
     (bind $?ejercicios-seleccionados (create$))
-    
+    (bind $?ejercicios-objetivo-completos (obtener-todos-ejercicios-por-objetivo ?obj))
     (bind $?duraciones (create$))
     (bind ?duracionTotal 0)
 
     (bind ?ejercicio (obtener-ejercicio-por-objetivo ?obj))
     
-    (while (and(> ?tiempo-disponible -5) (< ?duracionTotal (- ?tiempo-max 10)) (not(eq ?ejercicio nil)) (not (member$ ?ejercicio $?ejercicios-seleccionados))) do
+    (while (and(> ?tiempo-disponible -5) (< ?duracionTotal (- ?tiempo-max 15)) (not(eq ?ejercicio nil))  (not(eq $?ejercicios-seleccionados $?ejercicios-objetivo-completos))) do
  
         (bind ?dnr (calcular-duracion_repes ?ejercicio ?tiempo-max ?*persona*))
         (bind ?duracion (nth$ 1 ?dnr))
         (bind ?reps (nth$ 2 ?dnr))
-        (if (<= ?duracion ?tiempo-disponible) then
+        (if (and (<= ?duracion ?tiempo-disponible) (not (member$ ?ejercicio $?ejercicios-seleccionados))) then
             (bind $?ejercicios-seleccionados (create$ $?ejercicios-seleccionados ?ejercicio))
             (bind $?duraciones (create$ $?duraciones ?duracion))
             (bind ?duracionTotal (+ ?duracionTotal ?duracion))
@@ -1527,6 +1599,7 @@
         
         (bind ?ejercicio (obtener-ejercicio-por-objetivo ?obj))
     )
+
 
     (bind ?ejercicio (obtener-ejercicio-aleatorio-forca))
     (while (and(> ?tiempo-disponible -5) (< ?duracionTotal (- ?tiempo-max 20)) (not(eq ?ejercicio nil))) do
@@ -1574,18 +1647,18 @@
     (printout t "Entrenament Dijous Objectiu: " crlf)
     (bind ?tiempo-disponible ?tiempo-max)
     (bind $?ejercicios-seleccionados (create$))
-    
+    (bind $?ejercicios-objetivo-completos (obtener-todos-ejercicios-por-objetivo ?obj))
     (bind $?duraciones (create$))
     (bind ?duracionTotal 0)
 
     (bind ?ejercicio (obtener-ejercicio-por-objetivo ?obj))
     
-    (while (and(> ?tiempo-disponible -5) (< ?duracionTotal (- ?tiempo-max 10)) (not(eq ?ejercicio nil)) (not (member$ ?ejercicio $?ejercicios-seleccionados))) do
+    (while (and(> ?tiempo-disponible -5) (< ?duracionTotal (- ?tiempo-max 15)) (not(eq ?ejercicio nil))  (not(eq $?ejercicios-seleccionados $?ejercicios-objetivo-completos))) do
  
         (bind ?dnr (calcular-duracion_repes ?ejercicio ?tiempo-max ?*persona*))
         (bind ?duracion (nth$ 1 ?dnr))
         (bind ?reps (nth$ 2 ?dnr))
-        (if (<= ?duracion ?tiempo-disponible) then
+        (if (and (<= ?duracion ?tiempo-disponible) (not (member$ ?ejercicio $?ejercicios-seleccionados))) then
             (bind $?ejercicios-seleccionados (create$ $?ejercicios-seleccionados ?ejercicio))
             (bind $?duraciones (create$ $?duraciones ?duracion))
             (bind ?duracionTotal (+ ?duracionTotal ?duracion))
@@ -1595,6 +1668,7 @@
         
         (bind ?ejercicio (obtener-ejercicio-por-objetivo ?obj))
     )
+
 
     (bind ?ejercicio (obtener-ejercicio-aleatorio-forca))
     (while (and(> ?tiempo-disponible -5) (< ?duracionTotal (- ?tiempo-max 20)) (not(eq ?ejercicio nil))) do
@@ -1642,18 +1716,18 @@
     (printout t "Entrenament Divendres Objectiu: " crlf)
     (bind ?tiempo-disponible ?tiempo-max)
     (bind $?ejercicios-seleccionados (create$))
-    
+    (bind $?ejercicios-objetivo-completos (obtener-todos-ejercicios-por-objetivo ?obj))
     (bind $?duraciones (create$))
     (bind ?duracionTotal 0)
 
     (bind ?ejercicio (obtener-ejercicio-por-objetivo ?obj))
     
-    (while (and(> ?tiempo-disponible -5) (< ?duracionTotal (- ?tiempo-max 10)) (not(eq ?ejercicio nil)) (not (member$ ?ejercicio $?ejercicios-seleccionados))) do
+    (while (and(> ?tiempo-disponible -5) (< ?duracionTotal (- ?tiempo-max 15)) (not(eq ?ejercicio nil))  (not(eq $?ejercicios-seleccionados $?ejercicios-objetivo-completos))) do
  
         (bind ?dnr (calcular-duracion_repes ?ejercicio ?tiempo-max ?*persona*))
         (bind ?duracion (nth$ 1 ?dnr))
         (bind ?reps (nth$ 2 ?dnr))
-        (if (<= ?duracion ?tiempo-disponible) then
+        (if (and (<= ?duracion ?tiempo-disponible) (not (member$ ?ejercicio $?ejercicios-seleccionados))) then
             (bind $?ejercicios-seleccionados (create$ $?ejercicios-seleccionados ?ejercicio))
             (bind $?duraciones (create$ $?duraciones ?duracion))
             (bind ?duracionTotal (+ ?duracionTotal ?duracion))
@@ -1663,6 +1737,7 @@
         
         (bind ?ejercicio (obtener-ejercicio-por-objetivo ?obj))
     )
+
 
     (bind ?ejercicio (obtener-ejercicio-aleatorio-forca))
     (while (and(> ?tiempo-disponible -5) (< ?duracionTotal (- ?tiempo-max 20)) (not(eq ?ejercicio nil))) do
@@ -1710,18 +1785,18 @@
     (printout t "Entrenament Dissabte Objectiu: " crlf)
     (bind ?tiempo-disponible ?tiempo-max)
     (bind $?ejercicios-seleccionados (create$))
-    
+    (bind $?ejercicios-objetivo-completos (obtener-todos-ejercicios-por-objetivo ?obj))
     (bind $?duraciones (create$))
     (bind ?duracionTotal 0)
 
     (bind ?ejercicio (obtener-ejercicio-por-objetivo ?obj))
     
-    (while (and(> ?tiempo-disponible -5) (< ?duracionTotal (- ?tiempo-max 10)) (not(eq ?ejercicio nil)) (not (member$ ?ejercicio $?ejercicios-seleccionados))) do
+    (while (and(> ?tiempo-disponible -5) (< ?duracionTotal (- ?tiempo-max 15)) (not(eq ?ejercicio nil))  (not(eq $?ejercicios-seleccionados $?ejercicios-objetivo-completos))) do
  
         (bind ?dnr (calcular-duracion_repes ?ejercicio ?tiempo-max ?*persona*))
         (bind ?duracion (nth$ 1 ?dnr))
         (bind ?reps (nth$ 2 ?dnr))
-        (if (<= ?duracion ?tiempo-disponible) then
+        (if (and (<= ?duracion ?tiempo-disponible) (not (member$ ?ejercicio $?ejercicios-seleccionados))) then
             (bind $?ejercicios-seleccionados (create$ $?ejercicios-seleccionados ?ejercicio))
             (bind $?duraciones (create$ $?duraciones ?duracion))
             (bind ?duracionTotal (+ ?duracionTotal ?duracion))
@@ -1731,6 +1806,7 @@
         
         (bind ?ejercicio (obtener-ejercicio-por-objetivo ?obj))
     )
+
 
     (bind ?ejercicio (obtener-ejercicio-aleatorio-forca))
     (while (and(> ?tiempo-disponible -5) (< ?duracionTotal (- ?tiempo-max 20)) (not(eq ?ejercicio nil))) do
@@ -1778,18 +1854,18 @@
     (printout t "Entrenament Diumenge Objectiu: " crlf)
     (bind ?tiempo-disponible ?tiempo-max)
     (bind $?ejercicios-seleccionados (create$))
-    
+    (bind $?ejercicios-objetivo-completos (obtener-todos-ejercicios-por-objetivo ?obj))
     (bind $?duraciones (create$))
     (bind ?duracionTotal 0)
 
     (bind ?ejercicio (obtener-ejercicio-por-objetivo ?obj))
     
-    (while (and(> ?tiempo-disponible -5) (< ?duracionTotal (- ?tiempo-max 10)) (not(eq ?ejercicio nil)) (not (member$ ?ejercicio $?ejercicios-seleccionados))) do
+    (while (and(> ?tiempo-disponible -5) (< ?duracionTotal (- ?tiempo-max 15)) (not(eq ?ejercicio nil))  (not(eq $?ejercicios-seleccionados $?ejercicios-objetivo-completos))) do
  
         (bind ?dnr (calcular-duracion_repes ?ejercicio ?tiempo-max ?*persona*))
         (bind ?duracion (nth$ 1 ?dnr))
         (bind ?reps (nth$ 2 ?dnr))
-        (if (<= ?duracion ?tiempo-disponible) then
+        (if (and (<= ?duracion ?tiempo-disponible) (not (member$ ?ejercicio $?ejercicios-seleccionados))) then
             (bind $?ejercicios-seleccionados (create$ $?ejercicios-seleccionados ?ejercicio))
             (bind $?duraciones (create$ $?duraciones ?duracion))
             (bind ?duracionTotal (+ ?duracionTotal ?duracion))
@@ -1800,8 +1876,9 @@
         (bind ?ejercicio (obtener-ejercicio-por-objetivo ?obj))
     )
 
+
     (bind ?ejercicio (obtener-ejercicio-aleatorio-forca))
-    (while (and(> ?tiempo-disponible -5) (< ?duracionTotal (- ?tiempo-max 20)) (not(eq ?ejercicio nil))) do
+    (while (and(> ?tiempo-disponible -5) (< ?duracionTotal (- ?tiempo-max 15)) (not(eq ?ejercicio nil))) do
         (bind ?dnr (calcular-duracion_repes ?ejercicio ?tiempo-max ?*persona*))
         (bind ?duracion (nth$ 1 ?dnr))
         (bind ?reps (nth$ 2 ?dnr))
