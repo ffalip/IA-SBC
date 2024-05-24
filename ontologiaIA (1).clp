@@ -908,7 +908,14 @@
     (send ?*persona* put-PressioSangMax ?answer)
 )
 
-
+(defrule pressio-baixa
+    ?p <- (object (is-a Persona)
+            (PressioSangMax ?max)
+            (PressioSangMin ?min))
+    (test (or (< ?max 90) (< ?min 60)))
+    =>
+    (assert (personaTePressioBaixa))
+)
 (defrule pressio-alta
     ?p <- (object (is-a Persona)
             (PressioSangMax ?max)
@@ -922,9 +929,19 @@
     ?p <- (object (is-a Persona)
             (PressioSangMax ?max)
             (PressioSangMin ?min))
-    (test (or (> ?max 145) (> ?min 95)))
+    (test (and (> ?max 145) (> ?min 95)))
     =>
     (assert (personaTePressioMoltAlta))
+)
+
+(defrule determinar-aptitud-pressio-baixa
+    ?e <- (object (is-a Exercici)
+            (Dificultat ?dificultat)
+            (Nom ?exerciseName))
+    (personaTePressioBaixa)
+    (test (eq ?dificultat hard))
+    =>
+    (send ?e put-EsValid no)
 )
 
 (defrule determinar-aptitud-pressio-alta
@@ -974,53 +991,96 @@
    (send ?e put-EsValid no)
 )
 
-(defrule determina-cansament
-   =>
-   (if (yes-or-no-p "Despres d'un minut de carrera sostinguda, tens sensació de cansament/mareig? ")  then (assert (cansamentMareig)))
+  
+(defrule determina-pulsacions
+    =>
+    (printout t "Com a informacio adicional et demanem que facis un minut de carrera sostinguda o pugis i baixis escales" crlf)
+    (printout t "per tal d'obtenir algunes d'ades adicionsals, si no pots o no vols pots passar directament al seguent pas" crlf)
+    (if (yes-or-no-p "Vols fer un minut de carrera o pujar i baixar escales? ") then (assert (ferExerciciExtra)))
 )
-   
+
+(defrule determina-dades-extra
+    (ferExerciciExtra)
+    => 
+    (bind ?answer (ask-integer-question "Despres d'un minut de carrera, quines son les teves pulsacions per minut?" )) 
+    (if (yes-or-no-p "Despres d'un minut de carrera, tens sensació de cansament/mareig? ")  
+        then 
+            (assert (cansamentMareig))
+            (send ?*persona* put-SensacioCansament si)
+        else
+            (send ?*persona* put-SensacioCansament no))
+
+    (if (yes-or-no-p "Despres d'un minut de carrera, tens alguna tibantor muscular?")  
+        then 
+            (assert (tibantorMuscular))
+            (send ?*persona* put-TibantorMuscular si)
+        else 
+            (send ?*persona* put-TibantorMuscular no))
+    (send ?*persona* put-PulsacionsXMin ?answer)
+    (assert (dadesExtraAssignades))
+)
+
+(defrule determina-frequencia-cardiaca-alta
+    ?p <- (object (is-a Persona)
+            (Edat ?edat)
+            (PulsacionsXMin ?pulsacions))
+    (dadesExtraAssignades)
+    =>
+    (if (> ?pulsacions (- 220 ?edat)) then (assert (personaTeFrequenciaCardiacaAlta)))   
+)
+
+(defrule determina-aptitud-frequencia-cardiaca-alta
+    ?e <- (object (is-a Exercici)
+            (Dificultat ?dificultad)
+            (Nom ?exerciseName)
+            (KcalMinuteMax ?kcal))
+    (personaTeFrequenciaCardiacaAlta)
+    (test (or (eq ?dificultad hard) (>= ?kcal 12)))
+    =>
+    (send ?e put-EsValid no)   
+)
 
 (defrule determina-exercicis-cansament
-   ?e <- (object (is-a Cardio)
-           (Dificultat ?dificultad)
-           (Nom ?exerciseName))
-   (cansamentMareig)
-   (test (not(eq ?dificultad easy)))
-   =>
-   (send ?e put-EsValid no))
+    ?e <- (object (is-a Cardio)
+            (Dificultat ?dificultad)
+            (Nom ?exerciseName))
+    (cansamentMareig)
+    (test (not(eq ?dificultad easy)))
+    =>
+    (send ?e put-EsValid no))
 
 (defrule determina-problemes-articulars
-   =>
-   (if (yes-or-no-p "Tens problemes articulars? ")  then (assert (problemesArticulars)))
+    =>
+    (if (yes-or-no-p "Tens problemes articulars? ")  then (assert (problemesArticulars)))
 )
 
 (defrule determina-exercicis-articulars
-   ?e <- (object (is-a Exercici)
-           (TeImpacte ?impacte)
-           (Nom ?exerciseName))
-   (problemesArticulars)
-   (test (eq ?impacte si))
-   =>
-   (send ?e put-EsValid no))
+    ?e <- (object (is-a Exercici)
+            (TeImpacte ?impacte)
+            (Nom ?exerciseName))
+    (problemesArticulars)
+    (test (eq ?impacte si))
+    =>
+    (send ?e put-EsValid no))
 
 (defrule determina-impacte-caloric
    =>
-   (bind ?answer (ask-question "Quin impacte caloric diries que te la teva dieta actual? (baix, normal, alt) " baix normal alt))
-   (assert (impacte ?answer)))
+    (bind ?answer (ask-question "Quin impacte caloric diries que te la teva dieta actual? (baix, normal, alt) " baix normal alt))
+    (assert (impacte ?answer)))
 
     
 (defrule determina-aptitud-ejercicio-edad
-   ?e <- (object (is-a Exercici)
-           (Dificultat ?dificultad)
-           (Nom ?exerciseName))
-   (personaEsGran)
-   (test (eq ?dificultad hard))
-   =>
-   (send ?e put-EsValid no))
+    ?e <- (object (is-a Exercici)
+            (Dificultat ?dificultad)
+            (Nom ?exerciseName))
+    (personaEsGran)
+    (test (eq ?dificultad hard))
+    =>
+    (send ?e put-EsValid no))
 
 (defrule determina-activitat-fisica
    =>
-   (bind ?answer (ask-question "Quin nivell d'activitat física fas al dia a dia (a la feina, aficions, tasques doméstiques...) (sent 1 una rutina molt poc o gens activa i 5 una rutina molt activa )" 1 2 3 4 5))
+   (bind ?answer (ask-question "Quin nivell d'activitat física fas al dia a dia (a la feina, aficions, tasques doméstiques...)" crlf "(sent 1 una rutina molt poc o gens activa i 5 una rutina molt activa )" 1 2 3 4 5))
    (send ?*persona* put-ActivitatFisica ?answer)
    (assert (activitatFisicaAssignada))
 )
@@ -1040,214 +1100,214 @@
    (send ?e put-EsValid si)
 )
 (defrule esquena-dolor-3
-   ?e <-(object (is-a Exercici)
-           (Dificultat ?dif)
-           (GrupsMusculars $?grup)
-           (Nom ?exerciseName))
-   (fa-mal esq 3)
-   (test (or (eq ?dif hard) (eq ?dif moderate) (eq ?dif easy)) )
-   (test (member$ esquena $?grup))
-   =>
-   (send ?e put-EsValid no))
+    ?e <-(object (is-a Exercici)
+            (Dificultat ?dif)
+            (GrupsMusculars $?grup)
+            (Nom ?exerciseName))
+    (fa-mal esq 3)
+    (test (or (eq ?dif hard) (eq ?dif moderate) (eq ?dif easy)) )
+    (test (member$ esquena $?grup))
+    =>
+    (send ?e put-EsValid no))
 (defrule esquena-dolor-2
-   ?e <-(object (is-a Exercici)
-           (Dificultat ?dif)
-           (GrupsMusculars $?grup)
-           (Nom ?exerciseName))
-   (fa-mal esq 2)
-   (test (or (eq ?dif hard) (eq ?dif moderate)) )
-   (test (member$ esquena $?grup))
-   =>
-   (send ?e put-EsValid no))
+    ?e <-(object (is-a Exercici)
+            (Dificultat ?dif)
+            (GrupsMusculars $?grup)
+            (Nom ?exerciseName))
+    (fa-mal esq 2)
+    (test (or (eq ?dif hard) (eq ?dif moderate)) )
+    (test (member$ esquena $?grup))
+    =>
+    (send ?e put-EsValid no))
 (defrule esquena-dolor-1
-   ?e <-(object (is-a Exercici)
-           (Dificultat ?dif)
-           (GrupsMusculars $?grup)
-           (Nom ?exerciseName))
-   (fa-mal esq 1)
-   (test (eq ?dif hard))
-   (test (member$ esquena $?grup))
-   =>
-   (send ?e put-EsValid no))
+    ?e <-(object (is-a Exercici)
+            (Dificultat ?dif)
+            (GrupsMusculars $?grup)
+            (Nom ?exerciseName))
+    (fa-mal esq 1)
+    (test (eq ?dif hard))
+    (test (member$ esquena $?grup))
+    =>
+    (send ?e put-EsValid no))
 
 (defrule bracos-dolor-3
-   ?e <-(object (is-a Exercici)
-           (Dificultat ?dif)
-           (GrupsMusculars $?grup)
-           (Nom ?exerciseName))
-   (fa-mal bra 3)
-   (test (or (eq ?dif hard) (eq ?dif moderate) (eq ?dif easy)) )
-   (test (member$ bracos $?grup))
-   =>
-   (send ?e put-EsValid no))
+    ?e <-(object (is-a Exercici)
+            (Dificultat ?dif)
+            (GrupsMusculars $?grup)
+            (Nom ?exerciseName))
+    (fa-mal bra 3)
+    (test (or (eq ?dif hard) (eq ?dif moderate) (eq ?dif easy)) )
+    (test (member$ bracos $?grup))
+    =>
+    (send ?e put-EsValid no))
 (defrule bracos-dolor-2
-   ?e <-(object (is-a Exercici)
-           (Dificultat ?dif)
-           (GrupsMusculars $?grup)
-           (Nom ?exerciseName))
-   (fa-mal bra 2)
-   (test (or (eq ?dif hard) (eq ?dif moderate)) )
-   (test (member$ bracos $?grup))
-   =>
-   (send ?e put-EsValid no))
+    ?e <-(object (is-a Exercici)
+            (Dificultat ?dif)
+            (GrupsMusculars $?grup)
+            (Nom ?exerciseName))
+    (fa-mal bra 2)
+    (test (or (eq ?dif hard) (eq ?dif moderate)) )
+    (test (member$ bracos $?grup))
+    =>
+    (send ?e put-EsValid no))
 (defrule bracos-dolor-1
-   ?e <-(object (is-a Exercici)
-           (Dificultat ?dif)
-           (GrupsMusculars $?grup)
-           (Nom ?exerciseName))
-   (fa-mal bra 1)
-   (test (eq ?dif hard))
-   (test (member$ bracos $?grup))
-   =>
-   (send ?e put-EsValid no))
+    ?e <-(object (is-a Exercici)
+            (Dificultat ?dif)
+            (GrupsMusculars $?grup)
+            (Nom ?exerciseName))
+    (fa-mal bra 1)
+    (test (eq ?dif hard))
+    (test (member$ bracos $?grup))
+    =>
+    (send ?e put-EsValid no))
 
 (defrule cames-dolor-3
-   ?e <-(object (is-a Exercici)
-           (Dificultat ?dif)
-           (GrupsMusculars $?grup)
-           (Nom ?exerciseName))
-   (fa-mal cam 3)
-   (test (or (eq ?dif hard) (eq ?dif moderate) (eq ?dif easy)) )
-   (test (member$ cames $?grup))
-   =>
-   (send ?e put-EsValid no))
+    ?e <-(object (is-a Exercici)
+            (Dificultat ?dif)
+            (GrupsMusculars $?grup)
+            (Nom ?exerciseName))
+    (fa-mal cam 3)
+    (test (or (eq ?dif hard) (eq ?dif moderate) (eq ?dif easy)) )
+    (test (member$ cames $?grup))
+    =>
+    (send ?e put-EsValid no))
 (defrule cames-dolor-2
-   ?e <-(object (is-a Exercici)
-           (Dificultat ?dif)
-           (GrupsMusculars $?grup)
-           (Nom ?exerciseName))
-   (fa-mal cam 2)
-   (test (or (eq ?dif hard) (eq ?dif moderate)) )
-   (test (member$ cames $?grup))
-   =>
-   (send ?e put-EsValid no))
+    ?e <-(object (is-a Exercici)
+            (Dificultat ?dif)
+            (GrupsMusculars $?grup)
+            (Nom ?exerciseName))
+    (fa-mal cam 2)
+    (test (or (eq ?dif hard) (eq ?dif moderate)) )
+    (test (member$ cames $?grup))
+    =>
+    (send ?e put-EsValid no))
 (defrule cames-dolor-1
-   ?e <-(object (is-a Exercici)
-           (Dificultat ?dif)
-           (GrupsMusculars $?grup)
-           (Nom ?exerciseName))
-   (fa-mal cam 1)
-   (test (eq ?dif hard))
-   (test (member$ cames $?grup))
-   =>
-   (send ?e put-EsValid no))
+    ?e <-(object (is-a Exercici)
+            (Dificultat ?dif)
+            (GrupsMusculars $?grup)
+            (Nom ?exerciseName))
+    (fa-mal cam 1)
+    (test (eq ?dif hard))
+    (test (member$ cames $?grup))
+    =>
+    (send ?e put-EsValid no))
 
 (defrule pit-dolor-3
-   ?e <-(object (is-a Exercici)
-           (Dificultat ?dif)
-           (GrupsMusculars $?grup)
-           (Nom ?exerciseName))
-   (fa-mal pit 3)
-   (test (or (eq ?dif hard) (eq ?dif moderate) (eq ?dif easy)) )
-   (test (member$ pit $?grup))
-   =>
-   (send ?e put-EsValid no))
+    ?e <-(object (is-a Exercici)
+            (Dificultat ?dif)
+            (GrupsMusculars $?grup)
+            (Nom ?exerciseName))
+    (fa-mal pit 3)
+    (test (or (eq ?dif hard) (eq ?dif moderate) (eq ?dif easy)) )
+    (test (member$ pit $?grup))
+    =>
+    (send ?e put-EsValid no))
 (defrule pit-dolor-2
-   ?e <-(object (is-a Exercici)
-           (Dificultat ?dif)
-           (GrupsMusculars $?grup)
-           (Nom ?exerciseName))
-   (fa-mal pit 2)
-   (test (or (eq ?dif hard) (eq ?dif moderate)) )
-   (test (member$ pit $?grup))
-   =>
-   (send ?e put-EsValid no))
+    ?e <-(object (is-a Exercici)
+            (Dificultat ?dif)
+            (GrupsMusculars $?grup)
+            (Nom ?exerciseName))
+    (fa-mal pit 2)
+    (test (or (eq ?dif hard) (eq ?dif moderate)) )
+    (test (member$ pit $?grup))
+    =>
+    (send ?e put-EsValid no))
 (defrule pit-dolor-1
-   ?e <-(object (is-a Exercici)
-           (Dificultat ?dif)
-           (GrupsMusculars $?grup)
-           (name ?exerciseName))
-   (fa-mal pit 1)
-   (test (eq ?dif hard))
-   (test (member$ pit $?grup))
-   =>
-   (send ?e put-EsValid no))
+    ?e <-(object (is-a Exercici)
+            (Dificultat ?dif)
+            (GrupsMusculars $?grup)
+            (name ?exerciseName))
+    (fa-mal pit 1)
+    (test (eq ?dif hard))
+    (test (member$ pit $?grup))
+    =>
+    (send ?e put-EsValid no))
 
 (defrule abdominals-dolor-3
-   ?e <-(object (is-a Exercici)
-           (Dificultat ?dif)
-           (GrupsMusculars $?grup)
-           (Nom ?exerciseName))
-   (fa-mal abd 3)
-   (test (or (eq ?dif hard) (eq ?dif moderate) (eq ?dif easy)) )
-   (test (member$ abdominals $?grup))
-   =>
-   (send ?e put-EsValid no))
+    ?e <-(object (is-a Exercici)
+            (Dificultat ?dif)
+            (GrupsMusculars $?grup)
+            (Nom ?exerciseName))
+    (fa-mal abd 3)
+    (test (or (eq ?dif hard) (eq ?dif moderate) (eq ?dif easy)) )
+    (test (member$ abdominals $?grup))
+    =>
+    (send ?e put-EsValid no))
 (defrule abdominals-dolor-2
-   ?e <-(object (is-a Exercici)
-           (Dificultat ?dif)
-           (GrupsMusculars $?grup)
-           (Nom ?exerciseName))
-   (fa-mal abd 2)
-   (test (or (eq ?dif hard) (eq ?dif moderate)) )
-   (test (member$ abdominals $?grup))
-   =>
-   (send ?e put-EsValid no))
+    ?e <-(object (is-a Exercici)
+            (Dificultat ?dif)
+            (GrupsMusculars $?grup)
+            (Nom ?exerciseName))
+    (fa-mal abd 2)
+    (test (or (eq ?dif hard) (eq ?dif moderate)) )
+    (test (member$ abdominals $?grup))
+    =>
+    (send ?e put-EsValid no))
 (defrule abdominals-dolor-1
-   ?e <-(object (is-a Exercici)
-           (Dificultat ?dif)
-           (GrupsMusculars $?grup)
-           (Nom ?exerciseName))
-   (fa-mal abd 1)
-   (test (eq ?dif hard))
-   (test (member$ abdominals $?grup))
-   =>
-   (send ?e put-EsValid no))
+    ?e <-(object (is-a Exercici)
+            (Dificultat ?dif)
+            (GrupsMusculars $?grup)
+            (Nom ?exerciseName))
+    (fa-mal abd 1)
+    (test (eq ?dif hard))
+    (test (member$ abdominals $?grup))
+    =>
+    (send ?e put-EsValid no))
 
 ;------------------------DEMANAR-DOLORS------------------------
 (defrule mal-esquena
-   =>
-   (bind ?answer (ask-question "Quant de mal et fa l'esquena del 0 (minim) al 3 (maxim): " 0 1 2 3))
-   (assert (fa-mal esq ?answer)))
+    =>
+    (bind ?answer (ask-question "Quant de mal et fa l'esquena del 0 (minim) al 3 (maxim): " 0 1 2 3))
+    (assert (fa-mal esq ?answer)))
 
 (defrule mal-bracos
-   =>
-   (bind ?answer (ask-question "Quant de mal et fan els bracos del 0 (minim) al 3 (maxim): " 0 1 2 3))
-   (assert (fa-mal bra ?answer)))
+    =>
+    (bind ?answer (ask-question "Quant de mal et fan els bracos del 0 (minim) al 3 (maxim): " 0 1 2 3))
+    (assert (fa-mal bra ?answer)))
 
 (defrule mal-cames
-   =>
-   (bind ?answer (ask-question "Quant de mal et fan els cames del 0 (minim) al 3 (maxim): " 0 1 2 3))
-   (assert (fa-mal cam ?answer)))
+    =>
+    (bind ?answer (ask-question "Quant de mal et fan els cames del 0 (minim) al 3 (maxim): " 0 1 2 3))
+    (assert (fa-mal cam ?answer)))
 
 (defrule mal-pit
-   =>
-   (bind ?answer (ask-question "Quant de mal et fan el pit del 0 (minim) al 3 (maxim): " 0 1 2 3))
-   (assert (fa-mal pit ?answer)))
+    =>
+    (bind ?answer (ask-question "Quant de mal et fan el pit del 0 (minim) al 3 (maxim): " 0 1 2 3))
+    (assert (fa-mal pit ?answer)))
 
 (defrule mal-abs
-   =>
-   (bind ?answer (ask-question "Quant de mal et fan els abdominals del 0 (minim) al 3 (maxim): " 0 1 2 3))
-   (assert (fa-mal abd ?answer)))
+    =>
+    (bind ?answer (ask-question "Quant de mal et fan els abdominals del 0 (minim) al 3 (maxim): " 0 1 2 3))
+    (assert (fa-mal abd ?answer)))
 
 ;------------------------SELECCIONAR-OBJECTIU------------------------
 (defrule dir-objectiu
-   =>
-   (bind ?answer (ask-question "Quin objectiu tens per l'entrenament (musculacio, posar_en_forma, baixar_pes, equilibrat, flexibilitat o manteniment):" musculacio posar_en_forma baixar_pes equilibrat flexibilitat manteniment))
-   (if (eq ?answer musculacio) 
-	then (make-instance [Musculacio] of Musculacio)
-    (send [Musculacio] put-Nom Musculacio))
-   (if (eq ?answer posar_en_forma) 
-	then (make-instance [EnForma] of EnForma)
-    (send [EnForma] put-Nom EnForma))
-   (if (eq ?answer baixar_pes) 
-	then (make-instance [BaixarPes] of BaixarPes)
-    (send [BaixarPes] put-Nom BaixarPes))
-   (if (eq ?answer equilibrat) 
-	then (make-instance [Equilibri] of Equilibri)
-    (send [Equilibri] put-Nom Equilibri))
-   (if (eq ?answer flexibilitat) 
-	then (make-instance [Flexibilitat] of Flexibilitat)
-    (send [Flexibilitat] put-Nom Flexibilitat))
-   (if (eq ?answer manteniment) 
-	then (make-instance [Manteniment] of Manteniment)
-    (send [Manteniment] put-Nom Manteniment))
+    =>
+    (bind ?answer (ask-question "Quin objectiu tens per l'entrenament (musculacio, posar_en_forma, baixar_pes, equilibrat, flexibilitat o manteniment):" musculacio posar_en_forma baixar_pes equilibrat flexibilitat manteniment))
+    (if (eq ?answer musculacio) 
+        then (make-instance [Musculacio] of Musculacio)
+        (send [Musculacio] put-Nom Musculacio))
+    (if (eq ?answer posar_en_forma) 
+        then (make-instance [EnForma] of EnForma)
+        (send [EnForma] put-Nom EnForma))
+    (if (eq ?answer baixar_pes) 
+        then (make-instance [BaixarPes] of BaixarPes)
+        (send [BaixarPes] put-Nom BaixarPes))
+    (if (eq ?answer equilibrat) 
+        then (make-instance [Equilibri] of Equilibri)
+        (send [Equilibri] put-Nom Equilibri))
+    (if (eq ?answer flexibilitat) 
+        then (make-instance [Flexibilitat] of Flexibilitat)
+        (send [Flexibilitat] put-Nom Flexibilitat))
+    (if (eq ?answer manteniment) 
+        then (make-instance [Manteniment] of Manteniment)
+        (send [Manteniment] put-Nom Manteniment))
 )
 
 ;------------------------DEMANAR-TEMPS-OBJECTIU------------------------
 (defrule definir-temps-diari
-   ?obj <- (object (is-a Objectius)
-                (TempsDiari ?temps&:(eq ?temps 0)))
+    ?obj <- (object (is-a Objectius)
+                    (TempsDiari ?temps&:(eq ?temps 0)))
     =>
     (bind ?answer (ask-integer-question "Defineix el número de minuts que tens disponibles al dia: "))
     (printout t ?answer crlf)
