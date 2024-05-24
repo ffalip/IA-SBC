@@ -1216,6 +1216,21 @@
     (return ?ejercicio)
 )
 
+
+(deffunction obtener-ejercicio-aleatorio-forca ()
+    (bind ?ejercicios (find-all-instances ((?e Forca)) (eq (send ?e get-EsValid) si)))
+    (bind ?i (random 0 (- (length$ ?ejercicios) 1)))
+    (bind ?ejercicio (nth$ (+ ?i 1) ?ejercicios)) 
+    (return ?ejercicio)
+)
+
+(deffunction obtener-ejercicio-aleatorio-flex ()
+    (bind ?ejercicios (find-all-instances ((?e Flex)) (eq (send ?e get-EsValid) si)))
+    (bind ?i (random 0 (- (length$ ?ejercicios) 1)))
+    (bind ?ejercicio (nth$ (+ ?i 1) ?ejercicios)) 
+    (return ?ejercicio)
+)
+
 (deffunction calcular-duracion_repes (?ejercicio ?temps-max)
     (bind ?Dmin (send ?ejercicio get-DuracioMin))
     (bind ?Dmax (send ?ejercicio get-DuracioMax))
@@ -1259,8 +1274,8 @@
         (bind ?ejercicio (obtener-ejercicio-por-objetivo ?obj))
     )
 
-    (bind ?ejercicio (obtener-ejercicio-aleatorio))
-    (while (and(> ?tiempo-disponible -10) (< ?duracionTotal (- ?tiempo-max 10)) (not(eq ?ejercicio nil))) do
+    (bind ?ejercicio (obtener-ejercicio-aleatorio-forca))
+    (while (and(> ?tiempo-disponible -10) (< ?duracionTotal (- ?tiempo-max 20)) (not(eq ?ejercicio nil))) do
         (bind ?dnr (calcular-duracion_repes ?ejercicio ?tiempo-max))
         (bind ?duracion (nth$ 1 ?dnr))
         (bind ?reps (nth$ 2 ?dnr))
@@ -1272,7 +1287,23 @@
             (printout t "Exercici: " ?ejercicio ", Temps: " ?duracion " minuts, Reps: " ?reps  crlf)
         )
         
-        (bind ?ejercicio (obtener-ejercicio-aleatorio))
+        (bind ?ejercicio (obtener-ejercicio-aleatorio-forca))
+    )
+
+    (bind ?ejercicio (obtener-ejercicio-aleatorio-flex))
+    (while (and(> ?tiempo-disponible -10) (< ?duracionTotal (- ?tiempo-max 5)) (not(eq ?ejercicio nil))) do
+        (bind ?dnr (calcular-duracion_repes ?ejercicio ?tiempo-max))
+        (bind ?duracion (nth$ 1 ?dnr))
+        (bind ?reps (nth$ 2 ?dnr))
+        (if (<= ?duracion ?tiempo-disponible) then
+            (bind $?ejercicios-seleccionados (create$ $?ejercicios-seleccionados ?ejercicio))
+            (bind $?duraciones (create$ $?duraciones ?duracion))
+            (bind ?duracionTotal (+ ?duracionTotal ?duracion))
+            (bind ?tiempo-disponible (- ?tiempo-disponible ?duracion))
+            (printout t "Exercici: " ?ejercicio ", Temps: " ?duracion " minuts, Reps: " ?reps  crlf)
+        )
+        
+        (bind ?ejercicio (obtener-ejercicio-aleatorio-flex))
     )
 
     (assert (dillunsGenerat))
@@ -1310,8 +1341,8 @@
         (bind ?ejercicio (obtener-ejercicio-por-objetivo ?obj))
     )
 
-    (bind ?ejercicio (obtener-ejercicio-aleatorio))
-    (while (and(> ?tiempo-disponible -10) (< ?duracionTotal (- ?tiempo-max 10)) (not(eq ?ejercicio nil))) do
+    (bind ?ejercicio (obtener-ejercicio-aleatorio-forca))
+    (while (and(> ?tiempo-disponible -10) (< ?duracionTotal (- ?tiempo-max 20)) (not(eq ?ejercicio nil))) do
         (bind ?dnr (calcular-duracion_repes ?ejercicio ?tiempo-max))
         (bind ?duracion (nth$ 1 ?dnr))
         (bind ?reps (nth$ 2 ?dnr))
@@ -1323,7 +1354,23 @@
             (printout t "Exercici: " ?ejercicio ", Temps: " ?duracion " minuts, Reps: " ?reps  crlf)
         )
         
-        (bind ?ejercicio (obtener-ejercicio-aleatorio))
+        (bind ?ejercicio (obtener-ejercicio-aleatorio-forca))
+    )
+
+    (bind ?ejercicio (obtener-ejercicio-aleatorio-flex))
+    (while (and(> ?tiempo-disponible -10) (< ?duracionTotal (- ?tiempo-max 5)) (not(eq ?ejercicio nil))) do
+        (bind ?dnr (calcular-duracion_repes ?ejercicio ?tiempo-max))
+        (bind ?duracion (nth$ 1 ?dnr))
+        (bind ?reps (nth$ 2 ?dnr))
+        (if (<= ?duracion ?tiempo-disponible) then
+            (bind $?ejercicios-seleccionados (create$ $?ejercicios-seleccionados ?ejercicio))
+            (bind $?duraciones (create$ $?duraciones ?duracion))
+            (bind ?duracionTotal (+ ?duracionTotal ?duracion))
+            (bind ?tiempo-disponible (- ?tiempo-disponible ?duracion))
+            (printout t "Exercici: " ?ejercicio ", Temps: " ?duracion " minuts, Reps: " ?reps  crlf)
+        )
+        
+        (bind ?ejercicio (obtener-ejercicio-aleatorio-flex))
     )
 
     (assert (dimartsGenerat))
@@ -1361,8 +1408,8 @@
         (bind ?ejercicio (obtener-ejercicio-por-objetivo ?obj))
     )
 
-    (bind ?ejercicio (obtener-ejercicio-aleatorio))
-    (while (and(> ?tiempo-disponible -10) (< ?duracionTotal (- ?tiempo-max 10)) (not(eq ?ejercicio nil))) do
+    (bind ?ejercicio (obtener-ejercicio-aleatorio-forca))
+    (while (and(> ?tiempo-disponible -10) (< ?duracionTotal (- ?tiempo-max 20)) (not(eq ?ejercicio nil))) do
         (bind ?dnr (calcular-duracion_repes ?ejercicio ?tiempo-max))
         (bind ?duracion (nth$ 1 ?dnr))
         (bind ?reps (nth$ 2 ?dnr))
@@ -1374,7 +1421,23 @@
             (printout t "Exercici: " ?ejercicio ", Temps: " ?duracion " minuts, Reps: " ?reps  crlf)
         )
         
-        (bind ?ejercicio (obtener-ejercicio-aleatorio))
+        (bind ?ejercicio (obtener-ejercicio-aleatorio-forca))
+    )
+
+    (bind ?ejercicio (obtener-ejercicio-aleatorio-flex))
+    (while (and(> ?tiempo-disponible -10) (< ?duracionTotal (- ?tiempo-max 5)) (not(eq ?ejercicio nil))) do
+        (bind ?dnr (calcular-duracion_repes ?ejercicio ?tiempo-max))
+        (bind ?duracion (nth$ 1 ?dnr))
+        (bind ?reps (nth$ 2 ?dnr))
+        (if (<= ?duracion ?tiempo-disponible) then
+            (bind $?ejercicios-seleccionados (create$ $?ejercicios-seleccionados ?ejercicio))
+            (bind $?duraciones (create$ $?duraciones ?duracion))
+            (bind ?duracionTotal (+ ?duracionTotal ?duracion))
+            (bind ?tiempo-disponible (- ?tiempo-disponible ?duracion))
+            (printout t "Exercici: " ?ejercicio ", Temps: " ?duracion " minuts, Reps: " ?reps  crlf)
+        )
+        
+        (bind ?ejercicio (obtener-ejercicio-aleatorio-flex))
     )
 
     (assert (dimecresGenerat))
@@ -1412,8 +1475,8 @@
         (bind ?ejercicio (obtener-ejercicio-por-objetivo ?obj))
     )
 
-    (bind ?ejercicio (obtener-ejercicio-aleatorio))
-    (while (and(> ?tiempo-disponible -10) (< ?duracionTotal (- ?tiempo-max 10)) (not(eq ?ejercicio nil))) do
+    (bind ?ejercicio (obtener-ejercicio-aleatorio-forca))
+    (while (and(> ?tiempo-disponible -10) (< ?duracionTotal (- ?tiempo-max 20)) (not(eq ?ejercicio nil))) do
         (bind ?dnr (calcular-duracion_repes ?ejercicio ?tiempo-max))
         (bind ?duracion (nth$ 1 ?dnr))
         (bind ?reps (nth$ 2 ?dnr))
@@ -1425,7 +1488,23 @@
             (printout t "Exercici: " ?ejercicio ", Temps: " ?duracion " minuts, Reps: " ?reps  crlf)
         )
         
-        (bind ?ejercicio (obtener-ejercicio-aleatorio))
+        (bind ?ejercicio (obtener-ejercicio-aleatorio-forca))
+    )
+
+    (bind ?ejercicio (obtener-ejercicio-aleatorio-flex))
+    (while (and(> ?tiempo-disponible -10) (< ?duracionTotal (- ?tiempo-max 5)) (not(eq ?ejercicio nil))) do
+        (bind ?dnr (calcular-duracion_repes ?ejercicio ?tiempo-max))
+        (bind ?duracion (nth$ 1 ?dnr))
+        (bind ?reps (nth$ 2 ?dnr))
+        (if (<= ?duracion ?tiempo-disponible) then
+            (bind $?ejercicios-seleccionados (create$ $?ejercicios-seleccionados ?ejercicio))
+            (bind $?duraciones (create$ $?duraciones ?duracion))
+            (bind ?duracionTotal (+ ?duracionTotal ?duracion))
+            (bind ?tiempo-disponible (- ?tiempo-disponible ?duracion))
+            (printout t "Exercici: " ?ejercicio ", Temps: " ?duracion " minuts, Reps: " ?reps  crlf)
+        )
+        
+        (bind ?ejercicio (obtener-ejercicio-aleatorio-flex))
     )
 
     (assert (dijousGenerat))
@@ -1463,8 +1542,8 @@
         (bind ?ejercicio (obtener-ejercicio-por-objetivo ?obj))
     )
 
-    (bind ?ejercicio (obtener-ejercicio-aleatorio))
-    (while (and(> ?tiempo-disponible -10) (< ?duracionTotal (- ?tiempo-max 10)) (not(eq ?ejercicio nil))) do
+    (bind ?ejercicio (obtener-ejercicio-aleatorio-forca))
+    (while (and(> ?tiempo-disponible -10) (< ?duracionTotal (- ?tiempo-max 20)) (not(eq ?ejercicio nil))) do
         (bind ?dnr (calcular-duracion_repes ?ejercicio ?tiempo-max))
         (bind ?duracion (nth$ 1 ?dnr))
         (bind ?reps (nth$ 2 ?dnr))
@@ -1476,7 +1555,23 @@
             (printout t "Exercici: " ?ejercicio ", Temps: " ?duracion " minuts, Reps: " ?reps  crlf)
         )
         
-        (bind ?ejercicio (obtener-ejercicio-aleatorio))
+        (bind ?ejercicio (obtener-ejercicio-aleatorio-forca))
+    )
+
+    (bind ?ejercicio (obtener-ejercicio-aleatorio-flex))
+    (while (and(> ?tiempo-disponible -10) (< ?duracionTotal (- ?tiempo-max 5)) (not(eq ?ejercicio nil))) do
+        (bind ?dnr (calcular-duracion_repes ?ejercicio ?tiempo-max))
+        (bind ?duracion (nth$ 1 ?dnr))
+        (bind ?reps (nth$ 2 ?dnr))
+        (if (<= ?duracion ?tiempo-disponible) then
+            (bind $?ejercicios-seleccionados (create$ $?ejercicios-seleccionados ?ejercicio))
+            (bind $?duraciones (create$ $?duraciones ?duracion))
+            (bind ?duracionTotal (+ ?duracionTotal ?duracion))
+            (bind ?tiempo-disponible (- ?tiempo-disponible ?duracion))
+            (printout t "Exercici: " ?ejercicio ", Temps: " ?duracion " minuts, Reps: " ?reps  crlf)
+        )
+        
+        (bind ?ejercicio (obtener-ejercicio-aleatorio-flex))
     )
 
     (assert (divendresGenerat))
@@ -1514,8 +1609,8 @@
         (bind ?ejercicio (obtener-ejercicio-por-objetivo ?obj))
     )
 
-    (bind ?ejercicio (obtener-ejercicio-aleatorio))
-    (while (and(> ?tiempo-disponible -10) (< ?duracionTotal (- ?tiempo-max 10)) (not(eq ?ejercicio nil))) do
+    (bind ?ejercicio (obtener-ejercicio-aleatorio-forca))
+    (while (and(> ?tiempo-disponible -10) (< ?duracionTotal (- ?tiempo-max 20)) (not(eq ?ejercicio nil))) do
         (bind ?dnr (calcular-duracion_repes ?ejercicio ?tiempo-max))
         (bind ?duracion (nth$ 1 ?dnr))
         (bind ?reps (nth$ 2 ?dnr))
@@ -1527,7 +1622,23 @@
             (printout t "Exercici: " ?ejercicio ", Temps: " ?duracion " minuts, Reps: " ?reps  crlf)
         )
         
-        (bind ?ejercicio (obtener-ejercicio-aleatorio))
+        (bind ?ejercicio (obtener-ejercicio-aleatorio-forca))
+    )
+
+    (bind ?ejercicio (obtener-ejercicio-aleatorio-flex))
+    (while (and(> ?tiempo-disponible -10) (< ?duracionTotal (- ?tiempo-max 5)) (not(eq ?ejercicio nil))) do
+        (bind ?dnr (calcular-duracion_repes ?ejercicio ?tiempo-max))
+        (bind ?duracion (nth$ 1 ?dnr))
+        (bind ?reps (nth$ 2 ?dnr))
+        (if (<= ?duracion ?tiempo-disponible) then
+            (bind $?ejercicios-seleccionados (create$ $?ejercicios-seleccionados ?ejercicio))
+            (bind $?duraciones (create$ $?duraciones ?duracion))
+            (bind ?duracionTotal (+ ?duracionTotal ?duracion))
+            (bind ?tiempo-disponible (- ?tiempo-disponible ?duracion))
+            (printout t "Exercici: " ?ejercicio ", Temps: " ?duracion " minuts, Reps: " ?reps  crlf)
+        )
+        
+        (bind ?ejercicio (obtener-ejercicio-aleatorio-flex))
     )
 
     (assert (dissabteGenerat))
@@ -1565,8 +1676,8 @@
         (bind ?ejercicio (obtener-ejercicio-por-objetivo ?obj))
     )
 
-    (bind ?ejercicio (obtener-ejercicio-aleatorio))
-    (while (and(> ?tiempo-disponible -10) (< ?duracionTotal (- ?tiempo-max 10)) (not(eq ?ejercicio nil))) do
+    (bind ?ejercicio (obtener-ejercicio-aleatorio-forca))
+    (while (and(> ?tiempo-disponible -10) (< ?duracionTotal (- ?tiempo-max 20)) (not(eq ?ejercicio nil))) do
         (bind ?dnr (calcular-duracion_repes ?ejercicio ?tiempo-max))
         (bind ?duracion (nth$ 1 ?dnr))
         (bind ?reps (nth$ 2 ?dnr))
@@ -1578,10 +1689,25 @@
             (printout t "Exercici: " ?ejercicio ", Temps: " ?duracion " minuts, Reps: " ?reps  crlf)
         )
         
-        (bind ?ejercicio (obtener-ejercicio-aleatorio))
+        (bind ?ejercicio (obtener-ejercicio-aleatorio-forca))
     )
 
-    (assert (dissabteGenerat))
+    (bind ?ejercicio (obtener-ejercicio-aleatorio-flex))
+    (while (and(> ?tiempo-disponible -10) (< ?duracionTotal (- ?tiempo-max 5)) (not(eq ?ejercicio nil))) do
+        (bind ?dnr (calcular-duracion_repes ?ejercicio ?tiempo-max))
+        (bind ?duracion (nth$ 1 ?dnr))
+        (bind ?reps (nth$ 2 ?dnr))
+        (if (<= ?duracion ?tiempo-disponible) then
+            (bind $?ejercicios-seleccionados (create$ $?ejercicios-seleccionados ?ejercicio))
+            (bind $?duraciones (create$ $?duraciones ?duracion))
+            (bind ?duracionTotal (+ ?duracionTotal ?duracion))
+            (bind ?tiempo-disponible (- ?tiempo-disponible ?duracion))
+            (printout t "Exercici: " ?ejercicio ", Temps: " ?duracion " minuts, Reps: " ?reps  crlf)
+        )
+        
+        (bind ?ejercicio (obtener-ejercicio-aleatorio-flex))
+    )
+
     (printout t "Total d'exercicis seleccionats: " (length$ ?ejercicios-seleccionados) crlf)
     (printout t "Temps Total: " ?duracionTotal crlf)
 )
