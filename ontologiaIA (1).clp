@@ -313,7 +313,29 @@
         (EsValid si)
         (ObjectiusComplerts manteniment baixar_pes))
 
-    (press-banca of Forca
+    (press-banca-lleuger of Forca
+        (Dificultat easy)
+        (DuracioMax 15)
+        (DuracioMin 5)
+        (GrupsMusculars bracos pit)
+        (KcalMinuteMax 8)
+        (RepsMax 20)
+        (RepsMin 5)
+        (EsValid si)
+        (ObjectiusComplerts musculacio posar_en_forma))
+
+    (press-banca-moderat of Forca
+        (Dificultat moderate)
+        (DuracioMax 15)
+        (DuracioMin 5)
+        (GrupsMusculars bracos pit)
+        (KcalMinuteMax 8)
+        (RepsMax 20)
+        (RepsMin 5)
+        (EsValid si)
+        (ObjectiusComplerts musculacio posar_en_forma))
+
+    (press-banca-pesat of Forca
         (Dificultat hard)
         (DuracioMax 15)
         (DuracioMin 5)
@@ -324,8 +346,8 @@
         (EsValid si)
         (ObjectiusComplerts musculacio posar_en_forma))
 
-    (sentadilles-amb-pes of Forca
-        (Dificultat hard)
+    (sentadilles-amb-pes-lleuger of Forca
+        (Dificultat easy)
         (DuracioMax 15)
         (DuracioMin 5)
         (GrupsMusculars cames abd)
@@ -335,7 +357,29 @@
         (EsValid si)
         (ObjectiusComplerts musculacio posar_en_forma))
 
-    (flexions of Forca
+    (sentadilles-amb-pes-moderat of Forca
+        (Dificultat moderate)
+        (DuracioMax 15)
+        (DuracioMin 5)
+        (GrupsMusculars cames abd)
+        (KcalMinuteMax 9)
+        (RepsMax 20)
+        (RepsMin 5)
+        (EsValid si)
+        (ObjectiusComplerts musculacio posar_en_forma))
+
+    (sentadilles-amb-pes-pesat of Forca
+        (Dificultat hard)
+        (DuracioMax 15)
+        (DuracioMin 5)
+        (GrupsMusculars cames abd)
+        (KcalMinuteMax 10)
+        (RepsMax 15)
+        (RepsMin 5)
+        (EsValid si)
+        (ObjectiusComplerts musculacio posar_en_forma))
+
+    (flexions-amb-genolls of Forca
         (Dificultat easy)
         (DuracioMax 15)
         (DuracioMin 5)
@@ -346,7 +390,40 @@
         (EsValid si)
         (ObjectiusComplerts posar_en_forma))
 
-    (rem-amb-pes of Forca
+    (flexions of Forca
+        (Dificultat moderat)
+        (DuracioMax 15)
+        (DuracioMin 5)
+        (GrupsMusculars bracos pit)
+        (KcalMinuteMax 6)
+        (RepsMax 50)
+        (RepsMin 5)
+        (EsValid si)
+        (ObjectiusComplerts posar_en_forma))
+
+    (flexions-amb-pes of Forca
+        (Dificultat hard)
+        (DuracioMax 15)
+        (DuracioMin 5)
+        (GrupsMusculars bracos pit)
+        (KcalMinuteMax 8)
+        (RepsMax 50)
+        (RepsMin 5)
+        (EsValid si)
+        (ObjectiusComplerts posar_en_forma))
+
+    (rem-amb-pes-lleuger of Forca
+        (Dificultat easy)
+        (DuracioMax 15)
+        (DuracioMin 5)
+        (GrupsMusculars bracos esquena)
+        (KcalMinuteMax 8)
+        (RepsMax 20)
+        (RepsMin 5)
+        (EsValid si)
+        (ObjectiusComplerts musculacio posar_en_forma))
+
+    (rem-amb-pes-moderat of Forca
         (Dificultat moderate)
         (DuracioMax 15)
         (DuracioMin 5)
@@ -357,7 +434,29 @@
         (EsValid si)
         (ObjectiusComplerts musculacio posar_en_forma))
 
-    (curl-biceps of Forca
+    (rem-amb-pes-pesat of Forca
+        (Dificultat hard)
+        (DuracioMax 10)
+        (DuracioMin 5)
+        (GrupsMusculars bracos esquena)
+        (KcalMinuteMax 10)
+        (RepsMax 15)
+        (RepsMin 5)
+        (EsValid si)
+        (ObjectiusComplerts musculacio posar_en_forma))
+
+    (curl-biceps-lleuger of Forca
+        (Dificultat easy)
+        (DuracioMax 15)
+        (DuracioMin 5)
+        (GrupsMusculars bracos)
+        (KcalMinuteMax 5)
+        (RepsMax 20)
+        (RepsMin 5)
+        (EsValid si)
+        (ObjectiusComplerts musculacio posar_en_forma))
+
+    (curl-biceps-moderat of Forca
         (Dificultat moderate)
         (DuracioMax 15)
         (DuracioMin 5)
@@ -368,8 +467,19 @@
         (EsValid si)
         (ObjectiusComplerts musculacio posar_en_forma))
 
-    (press-militar of Forca
+    (curl-biceps-pesat of Forca
         (Dificultat hard)
+        (DuracioMax 10)
+        (DuracioMin 5)
+        (GrupsMusculars bracos)
+        (KcalMinuteMax 6)
+        (RepsMax 15)
+        (RepsMin 5)
+        (EsValid si)
+        (ObjectiusComplerts musculacio posar_en_forma))
+
+    (press-militar-lleuger of Forca
+        (Dificultat easy)
         (DuracioMax 15)
         (DuracioMin 5)
         (GrupsMusculars bracos pit)
@@ -378,8 +488,41 @@
         (RepsMin 5)
         (EsValid si)
         (ObjectiusComplerts musculacio posar_en_forma))
+    
+    (press-militar-moderat of Forca
+        (Dificultat moderat)
+        (DuracioMax 15)
+        (DuracioMin 5)
+        (GrupsMusculars bracos pit)
+        (KcalMinuteMax 7)
+        (RepsMax 20)
+        (RepsMin 5)
+        (EsValid si)
+        (ObjectiusComplerts musculacio posar_en_forma))
+    
+    (press-militar-pesat of Forca
+        (Dificultat hard)
+        (DuracioMax 10)
+        (DuracioMin 5)
+        (GrupsMusculars bracos pit)
+        (KcalMinuteMax 9)
+        (RepsMax 15)
+        (RepsMin 5)
+        (EsValid si)
+        (ObjectiusComplerts musculacio posar_en_forma))
 
-    (extensio-triceps of Forca
+    (extensio-triceps-lleuger of Forca
+        (Dificultat easy)
+        (DuracioMax 15)
+        (DuracioMin 5)
+        (GrupsMusculars bracos)
+        (KcalMinuteMax 5)
+        (RepsMax 20)
+        (RepsMin 5)
+        (EsValid si)
+        (ObjectiusComplerts musculacio posar_en_forma))
+    
+    (extensio-triceps-moderat of Forca
         (Dificultat moderate)
         (DuracioMax 15)
         (DuracioMin 5)
@@ -389,8 +532,30 @@
         (RepsMin 5)
         (EsValid si)
         (ObjectiusComplerts musculacio posar_en_forma))
+    
+    (extensio-triceps-pesat of Forca
+        (Dificultat hard)
+        (DuracioMax 10)
+        (DuracioMin 5)
+        (GrupsMusculars bracos)
+        (KcalMinuteMax 7)
+        (RepsMax 10)
+        (RepsMin 5)
+        (EsValid si)
+        (ObjectiusComplerts musculacio posar_en_forma))
 
-    (aixecament-lateral of Forca
+    (aixecament-lateral-lleuger of Forca
+        (Dificultat moderate)
+        (DuracioMax 15)
+        (DuracioMin 5)
+        (GrupsMusculars bracos)
+        (KcalMinuteMax 5)
+        (RepsMax 20)
+        (RepsMin 10)
+        (EsValid si)
+        (ObjectiusComplerts musculacio posar_en_forma))
+    
+    (aixecament-lateral-moderat of Forca
         (Dificultat moderate)
         (DuracioMax 15)
         (DuracioMin 5)
@@ -400,8 +565,30 @@
         (RepsMin 5)
         (EsValid si)
         (ObjectiusComplerts musculacio posar_en_forma))
+    
+    (aixecament-lateral-pesat of Forca
+        (Dificultat hard)
+        (DuracioMax 10)
+        (DuracioMin 5)
+        (GrupsMusculars bracos)
+        (KcalMinuteMax 7)
+        (RepsMax 20)
+        (RepsMin 5)
+        (EsValid si)
+        (ObjectiusComplerts musculacio posar_en_forma))
 
-    (lunges-amb-pes of Forca
+    (lunges-amb-pes-lleuger of Forca
+        (Dificultat easy)
+        (DuracioMax 15)
+        (DuracioMin 5)
+        (GrupsMusculars cames)
+        (KcalMinuteMax 8)
+        (RepsMax 20)
+        (RepsMin 5)
+        (EsValid si)
+        (ObjectiusComplerts musculacio posar_en_forma))
+        
+    (lunges-amb-pes-moderat of Forca
         (Dificultat moderate)
         (DuracioMax 15)
         (DuracioMin 5)
@@ -411,14 +598,47 @@
         (RepsMin 5)
         (EsValid si)
         (ObjectiusComplerts musculacio posar_en_forma))
-
-    (pes-mort of Forca
+    
+    (lunges-amb-pes-pesat of Forca
         (Dificultat hard)
-        (DuracioMax 15)
+        (DuracioMax 10)
+        (DuracioMin 5)
+        (GrupsMusculars cames)
+        (KcalMinuteMax 12)
+        (RepsMax 15)
+        (RepsMin 5)
+        (EsValid si)
+        (ObjectiusComplerts musculacio posar_en_forma))
+
+    (pes-mort-lleuger of Forca
+        (Dificultat easy)
+        (DuracioMax 10)
+        (DuracioMin 5)
+        (GrupsMusculars cames esquena abd)
+        (KcalMinuteMax 7)
+        (RepsMax 20)
+        (RepsMin 5)
+        (EsValid si)
+        (ObjectiusComplerts musculacio posar_en_forma))
+
+    (pes-mort-moderat of Forca
+        (Dificultat moderate)
+        (DuracioMax 10)
+        (DuracioMin 5)
+        (GrupsMusculars cames esquena abd)
+        (KcalMinuteMax 9)
+        (RepsMax 20)
+        (RepsMin 5)
+        (EsValid si)
+        (ObjectiusComplerts musculacio posar_en_forma))
+
+    (pes-mort-pesat of Forca
+        (Dificultat hard)
+        (DuracioMax 10)
         (DuracioMin 5)
         (GrupsMusculars cames esquena abd)
         (KcalMinuteMax 11)
-        (RepsMax 20)
+        (RepsMax 10)
         (RepsMin 5)
         (EsValid si)
         (ObjectiusComplerts musculacio posar_en_forma))
@@ -433,6 +653,17 @@
         (RepsMin 5)
         (EsValid si)
         (ObjectiusComplerts posar_en_forma baixar_pes manteniment))
+
+    (abdominals-amb-pes of Forca
+        (Dificultat moderate)
+        (DuracioMax 15)
+        (DuracioMin 5)
+        (GrupsMusculars abdominals)
+        (KcalMinuteMax 6)
+        (RepsMax 50)
+        (RepsMin 5)
+        (EsValid si)
+        (ObjectiusComplerts musculacio posar_en_forma manteniment))
 
     (burpees of Forca
         (Dificultat hard)
@@ -456,6 +687,28 @@
         (EsValid si)
         (ObjectiusComplerts posar_en_forma baixar_pes manteniment))
 
+    (planxa-amb-pes of Forca
+        (Dificultat moderate)
+        (DuracioMax 5)
+        (DuracioMin 1)
+        (GrupsMusculars abd bracos)
+        (KcalMinuteMax 4)
+        (RepsMax 1)
+        (RepsMin 1)
+        (EsValid si)
+        (ObjectiusComplerts posar_en_forma musculacio manteniment))
+
+    (dominades-assistides of Forca
+        (Dificultat moderate)
+        (DuracioMax 10)
+        (DuracioMin 5)
+        (GrupsMusculars bracos esquena abd)
+        (KcalMinuteMax 8)
+        (RepsMax 20)
+        (RepsMin 1)
+        (EsValid si)
+        (ObjectiusComplerts posar_en_forma  manteniment))
+
     (dominades of Forca
         (Dificultat hard)
         (DuracioMax 5)
@@ -465,7 +718,7 @@
         (RepsMax 20)
         (RepsMin 1)
         (EsValid si)
-        (ObjectiusComplerts posar_en_forma  manteniment))
+        (ObjectiusComplerts musculacio posar_en_forma))
 
     (estirament1 of Flex
         (Dificultat easy)
@@ -567,8 +820,6 @@
         (ObjectiusComplerts flexibilitat manteniment))
 )
 
-
-
 (deffunction member (?item $?list)
     (if (lexemep ?item)
         then (bind ?item (lowcase ?item)))
@@ -590,8 +841,8 @@
 
 
 (deffunction yes-or-no-p(?question)
-    (bind ?answer (ask-question ?question yes no y n))
-    (if (or(eq ?answer yes) (eq ?answer y))
+    (bind ?answer (ask-question ?question yes no y n si ))
+    (if (or(eq ?answer yes) (eq ?answer y) (eq ?answer si))
          then TRUE
          else FALSE))
 
@@ -640,6 +891,27 @@
    (if (and(< ?imc 30) (> ?imc 25)) then (assert(personaTeSobrePes)))
    (if (< ?imc 20) then (assert(personaTeInfraPes)))
    (printout t "The IMC of " ?name " is " ?imc crlf))
+
+(defrule determina-cansament
+   =>
+   (if (yes-or-no-p "Despres d'un minut de carrera sostinguda, tens sensació de cansament/mareig? ")  then (assert (cansamentMareig)))
+)
+   
+
+(defrule determina-exercicis-cansament
+   ?e <- (object (is-a Cardio)
+           (Dificultat ?dificultad)
+           (Nom ?exerciseName))
+   (cansamentMareig)
+   (test (not(eq ?dificultad easy)))
+   =>
+   (send ?e put-EsValid no))
+
+(defrule determina-impacte-caloric
+   =>
+   (bind ?answer (ask-question "Quin impacte caloric diries que te la teva dieta actual? (baix, normal, alt) " baix normal alt))
+   (assert (impacte ?answer)))
+
     
 (defrule determina-aptitud-ejercicio-edad
    ?e <- (object (is-a Exercici)
@@ -861,6 +1133,19 @@
     (printout t ?answer crlf)
     (send ?obj put-TempsDiari ?answer)
 )
+
+(defrule elimina-exercicis-alts-en-kcal-si-objectiu-diff-baixar_pes
+   ?e <- (object (is-a Exercici)
+           (KcalMinuteMax ?kcalmax)
+           (Nom ?exerciseName))
+   ?obj <- (object (is-a Objectius)
+            (Nom ?nomObj))
+       
+   (impacte baix)
+   (test (> ?kcalmax 12))
+   (test(not(eq ?nomObj BaixarPes)))
+   =>
+   (send ?e put-EsValid no))
 
 (deffunction obtener-ejercicio-por-objetivo (?obj)
 
