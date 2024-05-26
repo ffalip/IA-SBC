@@ -1613,17 +1613,6 @@
     )
 )
 
-; (deffunction encontrar-ejercicios-mismos-musculos (?ejercicio)
-;    (bind ?musculos (send ?ejercicio get-GrupsMusculars))
-;    (bind $?resultados (create$))
-;     (bind ?resultados (find-all-instances ((?e Flex))
-;                         (and
-;                             (eq (send ?e get-EsValid) si)
-;                             (eq ?musculos (send ?otro-ejercicio get-GrupsMusculars))
-;                         )))
-;     (if (> (length$ ?resultados) 0) then(return ?resultados))
-;     (return  nil)
-; )
 ;----------------CALCULAR-DURACIO-I-REPS-D'UN-EXERCICI---------------
 (deffunction calcular-duracion_repes (?ejercicio ?temps-max ?persona)
     (bind ?Dmin (send ?ejercicio get-DuracioMin))
@@ -1705,8 +1694,16 @@
 
 ;--------------------------------ASSIGNACIO-D'EXERCICIS--------------------------------
 
+(defrule exercicis-disponibles
+    ?obj <- (object (is-a Objectius) (TempsDiari ?tiempo-max&:(<> ?tiempo-max 0)))
+=>
+    (bind ?ejercicios (find-all-instances ((?e Exercici)) (eq (send ?e get-EsValid) si)))
+    (if (>(length$ ?ejercicios ) 0) then (assert(exercicisDisponibles))
+    else (assert(exercicisNoDisponibles)))
+)
 ;------------------------DILLUNS------------------------
 (defrule generar-ejercicios-lunes-objectiu
+    (exercicisDisponibles)
     ?obj <- (object (is-a Objectius) (TempsDiari ?tiempo-max&:(<> ?tiempo-max 0)))
     =>
     (printout t "----------------------------------------" crlf)
@@ -2223,6 +2220,11 @@
     (printout t crlf)
 )
 
+(defrule generar-ejercicios-diumenge-objectiu
+    (exercicisNoDisponibles)
+    =>
+    (printout t "Segons les teves condicions, no hi ha exercicis aptes per a un entrenament" crlf)
+)
 
 ;------------------------INICI------------------------
 (defrule welcome
