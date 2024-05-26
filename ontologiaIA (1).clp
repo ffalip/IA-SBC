@@ -1580,17 +1580,14 @@
 
 (deffunction obtener-ejercicio-aleatorio-flex1 ($?ejercicios-seleccionados)
     (bind $?gruposMuscularesSeleccionados (create$))
-    ; Recolecta todos los grupos musculares de los ejercicios seleccionados
     (foreach ?ejercicio ?ejercicios-seleccionados
         (bind $?gruposMusculares (union$ ?gruposMuscularesSeleccionados (send ?ejercicio get-GrupsMusculars)))
     )
-    ; Filtra los ejercicios Flex que trabajan los mismos grupos musculares
     (bind ?ejercicios (find-all-instances ((?e Flex))
                         (and
                             (eq (send ?e get-EsValid) si)
                             (neq (intersection$ $?gruposMuscularesSeleccionados (send ?e get-GrupsMusculars)) nil)
                         )))
-    ; Verifica que haya ejercicios válidos antes de seleccionarlos aleatoriamente
     (if (> (length$ ?ejercicios) 0) then
         (bind ?i (random 0 (- (length$ ?ejercicios) 1)))
         (bind ?ejercicio (nth$ (+ ?i 1) ?ejercicios)) 
@@ -1599,6 +1596,18 @@
         (return nil)
     )
 )
+
+; (deffunction encontrar-ejercicios-mismos-musculos (?ejercicio)
+;    (bind ?musculos (send ?ejercicio get-GrupsMusculars))
+;    (bind $?resultados (create$))
+;     (bind ?resultados (find-all-instances ((?e Flex))
+;                         (and
+;                             (eq (send ?e get-EsValid) si)
+;                             (eq ?musculos (send ?otro-ejercicio get-GrupsMusculars))
+;                         )))
+;     (if (> (length$ ?resultados) 0) then(return ?resultados))
+;     (return  nil)
+; )
 ;----------------CALCULAR-DURACIO-I-REPS-D'UN-EXERCICI---------------
 (deffunction calcular-duracion_repes (?ejercicio ?temps-max ?persona)
     (bind ?Dmin (send ?ejercicio get-DuracioMin))
@@ -1654,9 +1663,7 @@
     (bind ?duracionTotal 0)
 
     (bind ?ejercicio (obtener-ejercicio-por-objetivo ?obj))
-    
     (while (and(> ?tiempo-disponible 10) (< ?duracionTotal (- ?tiempo-max 15)) (not(eq ?ejercicio nil))  (not(eq (length$ $?ejercicios-seleccionados) (length$ $?ejercicios-objetivo-completos)))) do
- 
         (bind ?dnr (calcular-duracion_repes ?ejercicio ?tiempo-max ?*persona*))
         (bind ?duracion (nth$ 1 ?dnr))
         (bind ?reps (nth$ 2 ?dnr))
