@@ -402,7 +402,7 @@
         (ObjectiusComplerts posar_en_forma))
 
     (flexions of Forca
-        (Dificultat moderat)
+        (Dificultat moderate)
         (DuracioMax 15)
         (DuracioMin 5)
         (GrupsMusculars bracos pit)
