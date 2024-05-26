@@ -1687,11 +1687,11 @@
     )
 
     (bind ?ejercicio (obtener-ejercicio-aleatorio-flex1 $?ejercicios-seleccionados))
-    (while (and(> ?tiempo-disponible -5) (< ?duracionTotal (- ?tiempo-max 5)) (not(eq ?ejercicio nil))) do
+    (while (and(> ?tiempo-disponible 0) (not(eq ?ejercicio nil))) do
         (bind ?dnr (calcular-duracion_repes ?ejercicio ?tiempo-max ?*persona*))
         (bind ?duracion (nth$ 1 ?dnr))
         (bind ?reps (nth$ 2 ?dnr))
-        (if (<= ?duracion ?tiempo-disponible) then
+        (if (<= ?duracion (+ ?tiempo-disponible 10)) then
             (bind $?ejercicios-seleccionados (create$ $?ejercicios-seleccionados ?ejercicio))
             (bind $?duraciones (create$ $?duraciones ?duracion))
             (bind ?duracionTotal (+ ?duracionTotal ?duracion))
@@ -1757,11 +1757,11 @@
     )
 
     (bind ?ejercicio (obtener-ejercicio-aleatorio-flex1 $?ejercicios-seleccionados))
-    (while (and(> ?tiempo-disponible -5) (< ?duracionTotal (- ?tiempo-max 5)) (not(eq ?ejercicio nil))) do
+    (while (and(> ?tiempo-disponible 0) (not(eq ?ejercicio nil))) do
         (bind ?dnr (calcular-duracion_repes ?ejercicio ?tiempo-max ?*persona*))
         (bind ?duracion (nth$ 1 ?dnr))
         (bind ?reps (nth$ 2 ?dnr))
-        (if (<= ?duracion ?tiempo-disponible) then
+        (if (<= ?duracion (+ ?tiempo-disponible 10)) then
             (bind $?ejercicios-seleccionados (create$ $?ejercicios-seleccionados ?ejercicio))
             (bind $?duraciones (create$ $?duraciones ?duracion))
             (bind ?duracionTotal (+ ?duracionTotal ?duracion))
@@ -1827,11 +1827,11 @@
     )
 
     (bind ?ejercicio (obtener-ejercicio-aleatorio-flex1 $?ejercicios-seleccionados))
-    (while (and(> ?tiempo-disponible -5) (< ?duracionTotal (- ?tiempo-max 5)) (not(eq ?ejercicio nil))) do
+    (while (and(> ?tiempo-disponible 0) (not(eq ?ejercicio nil))) do
         (bind ?dnr (calcular-duracion_repes ?ejercicio ?tiempo-max ?*persona*))
         (bind ?duracion (nth$ 1 ?dnr))
         (bind ?reps (nth$ 2 ?dnr))
-        (if (<= ?duracion ?tiempo-disponible) then
+        (if (<= ?duracion (+ ?tiempo-disponible 10)) then
             (bind $?ejercicios-seleccionados (create$ $?ejercicios-seleccionados ?ejercicio))
             (bind $?duraciones (create$ $?duraciones ?duracion))
             (bind ?duracionTotal (+ ?duracionTotal ?duracion))
@@ -1897,11 +1897,11 @@
     )
 
     (bind ?ejercicio (obtener-ejercicio-aleatorio-flex1 $?ejercicios-seleccionados))
-    (while (and(> ?tiempo-disponible -5) (< ?duracionTotal (- ?tiempo-max 5)) (not(eq ?ejercicio nil))) do
+    (while (and(> ?tiempo-disponible 0) (not(eq ?ejercicio nil))) do
         (bind ?dnr (calcular-duracion_repes ?ejercicio ?tiempo-max ?*persona*))
         (bind ?duracion (nth$ 1 ?dnr))
         (bind ?reps (nth$ 2 ?dnr))
-        (if (<= ?duracion ?tiempo-disponible) then
+        (if (<= ?duracion (+ ?tiempo-disponible 10)) then
             (bind $?ejercicios-seleccionados (create$ $?ejercicios-seleccionados ?ejercicio))
             (bind $?duraciones (create$ $?duraciones ?duracion))
             (bind ?duracionTotal (+ ?duracionTotal ?duracion))
@@ -1967,11 +1967,11 @@
     )
 
     (bind ?ejercicio (obtener-ejercicio-aleatorio-flex1 $?ejercicios-seleccionados))
-    (while (and(> ?tiempo-disponible -5) (< ?duracionTotal (- ?tiempo-max 5)) (not(eq ?ejercicio nil))) do
+    (while (and(> ?tiempo-disponible 0) (not(eq ?ejercicio nil))) do
         (bind ?dnr (calcular-duracion_repes ?ejercicio ?tiempo-max ?*persona*))
         (bind ?duracion (nth$ 1 ?dnr))
         (bind ?reps (nth$ 2 ?dnr))
-        (if (<= ?duracion ?tiempo-disponible) then
+        (if (<= ?duracion (+ ?tiempo-disponible 10)) then
             (bind $?ejercicios-seleccionados (create$ $?ejercicios-seleccionados ?ejercicio))
             (bind $?duraciones (create$ $?duraciones ?duracion))
             (bind ?duracionTotal (+ ?duracionTotal ?duracion))
@@ -2037,11 +2037,11 @@
     )
 
     (bind ?ejercicio (obtener-ejercicio-aleatorio-flex1 $?ejercicios-seleccionados))
-    (while (and(> ?tiempo-disponible -5) (< ?duracionTotal (- ?tiempo-max 5)) (not(eq ?ejercicio nil))) do
+    (while (and(> ?tiempo-disponible 0) (not(eq ?ejercicio nil))) do
         (bind ?dnr (calcular-duracion_repes ?ejercicio ?tiempo-max ?*persona*))
         (bind ?duracion (nth$ 1 ?dnr))
         (bind ?reps (nth$ 2 ?dnr))
-        (if (<= ?duracion ?tiempo-disponible) then
+        (if (<= ?duracion (+ ?tiempo-disponible 10))then
             (bind $?ejercicios-seleccionados (create$ $?ejercicios-seleccionados ?ejercicio))
             (bind $?duraciones (create$ $?duraciones ?duracion))
             (bind ?duracionTotal (+ ?duracionTotal ?duracion))
@@ -2105,6 +2105,7 @@
         
         (bind ?ejercicio (obtener-ejercicio-aleatorio-forca))
     )
+
     (if (neq ?nomObj Flexibilitat)  then
         (bind ?ejercicio (obtener-ejercicio-aleatorio-flex1 $?ejercicios-seleccionados))
         (while (and(> ?tiempo-disponible -5) (< ?duracionTotal (- ?tiempo-max 5)) (not(eq ?ejercicio nil))) do
@@ -2123,11 +2124,11 @@
         )
     )
     else (bind ?ejercicio (obtener-ejercicio-aleatorio-flex))
-        (while (and(> ?tiempo-disponible -5) (< ?duracionTotal (- ?tiempo-max 5)) (not(eq ?ejercicio nil))) do
+        (while (and(> ?tiempo-disponible 0)  (not(eq ?ejercicio nil))) do
             (bind ?dnr (calcular-duracion_repes ?ejercicio ?tiempo-max ?*persona*))
             (bind ?duracion (nth$ 1 ?dnr))
             (bind ?reps (nth$ 2 ?dnr))
-            (if (<= ?duracion ?tiempo-disponible) then
+            (if (<= ?duracion (+ ?tiempo-disponible 10)) then
                 (bind $?ejercicios-seleccionados (create$ $?ejercicios-seleccionados ?ejercicio))
                 (bind $?duraciones (create$ $?duraciones ?duracion))
                 (bind ?duracionTotal (+ ?duracionTotal ?duracion))
