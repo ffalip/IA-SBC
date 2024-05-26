@@ -938,7 +938,7 @@
     (printout t ?question)
     (bind ?answer (read))
     (while (not (integerp ?answer)) do
-        (printout t "Resposata invÅ•lida. Siusplau entra un valor enter." crlf)
+        (printout t "Resposata invàlida. Siusplau entra un valor enter." crlf)
         (printout t ?question)
         (bind ?answer (read)))
     ?answer)
@@ -969,13 +969,13 @@
 
 (defrule determina-PressioSangMin
     =>
-    (bind ?answer (ask-integer-question "Quina Ã©s la teva pressiÃ³ sanguÃ­nia mÃ­nima? (mmHg) " ))
+    (bind ?answer (ask-integer-question "Quina és la teva pressió sanguínia mínima? (mmHg) " ))
     (send ?*persona* put-PressioSangMin ?answer)
 )
 
 (defrule determina-PressioSangMax
     =>
-    (bind ?answer (ask-integer-question "Quina Ã©s la teva pressiÃ³ sanguÃ­nia mÅ•xima? (mmHg) " ))
+    (bind ?answer (ask-integer-question "Quina és la teva pressió sanguínia màxima? (mmHg) " ))
     (send ?*persona* put-PressioSangMax ?answer)
 )
 
@@ -1048,7 +1048,7 @@
    (if (> ?imc 30) then (assert(personaTeObesitat)))
    (if (and(< ?imc 30) (> ?imc 25)) then (assert(personaTeSobrePes)))
    (if (< ?imc 20) then (assert(personaTeInfraPes)))
-   (printout t "El teu IMC Ã©s " ?imc crlf)
+   (printout t "El teu IMC és " ?imc crlf)
 )
 
 (defrule determina-exercicis-IMC
@@ -1065,23 +1065,23 @@
   
 (defrule determina-exercici-extra
     =>
-    (printout t "Com a informaciÃ³ addicional et demanem que facis un minut de carrera sostinguda o pugis i baixis escales" crlf)
-    (printout t "per tal d'obtenir algunes dades adicions als, si no pots o no vols pots passar directament al segÃ¼ent pas." crlf)
+    (printout t "Com a informació addicional et demanem que facis un minut de carrera sostinguda o pugis i baixis escales" crlf)
+    (printout t "per tal d'obtenir algunes dades adicions als, si no pots o no vols pots passar directament al següent pas." crlf)
     (if (yes-or-no-p "Vols fer un minut de carrera o pujar i baixar escales? ") then (assert (ferExerciciExtra)))
 )
 
 (defrule determina-dades-extra
     (ferExerciciExtra)
     => 
-    (bind ?answer (ask-integer-question "DesprÃ©s d'un minut de carrera, quines sÃ³n les teves pulsacions per minut? " )) 
-    (if (yes-or-no-p "DesprÃ©s d'un minut de carrera, tens sensaciÃ³ de cansament/mareig? ")  
+    (bind ?answer (ask-integer-question "Després d'un minut de carrera, quines són les teves pulsacions per minut? " )) 
+    (if (yes-or-no-p "Després d'un minut de carrera, tens sensació de cansament/mareig? ")  
         then 
             (assert (cansamentMareig))
             (send ?*persona* put-SensacioCansament si)
         else
             (send ?*persona* put-SensacioCansament no))
 
-    (if (yes-or-no-p "DesprÃ©s d'un minut de carrera, tens alguna tibantor muscular? ")  
+    (if (yes-or-no-p "Després d'un minut de carrera, tens alguna tibantor muscular? ")  
         then 
             (assert (tibantorMuscular))
             (send ?*persona* put-TibantorMuscular si)
@@ -1157,7 +1157,7 @@
 
 (defrule determina-impacte-caloric
    =>
-    (bind ?answer (ask-question "Quin impacte calÅˆric diries que te la teva dieta actual? (baix, normal, alt) " baix normal alt))
+    (bind ?answer (ask-question "Quin impacte calòric diries que te la teva dieta actual? (baix, normal, alt) " baix normal alt))
     (assert (impacte ?answer)))
 
     
@@ -1172,7 +1172,7 @@
 
 (defrule determina-activitat-fisica
    =>
-   (bind ?answer (ask-question "Del 1 al 5 com valores el nivell d'activitat fÃ­sica que fas al dia a dia? (a la feina, aficions, tasques domÃ©stiques...) " 1 2 3 4 5))
+   (bind ?answer (ask-question "Del 1 al 5 com valores el nivell d'activitat física que fas al dia a dia? (a la feina, aficions, tasques doméstiques...) " 1 2 3 4 5))
    (send ?*persona* put-ActivitatFisica ?answer)
    (assert (activitatFisicaAssignada))
 )
@@ -1368,33 +1368,33 @@
 ;------------------------DEMANAR-DOLORS------------------------
 (defrule mal-esquena
     =>
-    (bind ?answer (ask-question "Quant de mal et fa l'esquena del 0 (mÃ­nim) al 3 (mÅ•xim): " 0 1 2 3))
+    (bind ?answer (ask-question "Quant de mal et fa l'esquena del 0 (mínim) al 3 (màxim): " 0 1 2 3))
     (assert (fa-mal esq ?answer)))
 
 (defrule mal-bracos
     =>
-    (bind ?answer (ask-question "Quant de mal et fan els bracos del 0 (mÃ­nim) al 3 (mÅ•xim): " 0 1 2 3))
+    (bind ?answer (ask-question "Quant de mal et fan els bracos del 0 (mínim) al 3 (màxim): " 0 1 2 3))
     (assert (fa-mal bra ?answer)))
 
 (defrule mal-cames
     =>
-    (bind ?answer (ask-question "Quant de mal et fan les cames del 0 (mÃ­nim) al 3 (mÅ•xim): " 0 1 2 3))
+    (bind ?answer (ask-question "Quant de mal et fan les cames del 0 (mínim) al 3 (màxim): " 0 1 2 3))
     (assert (fa-mal cam ?answer)))
 
 (defrule mal-pit
     =>
-    (bind ?answer (ask-question "Quant de mal et fan el pit del 0 (mÃ­nim) al 3 (mÅ•xim): " 0 1 2 3))
+    (bind ?answer (ask-question "Quant de mal et fan el pit del 0 (mínim) al 3 (màxim): " 0 1 2 3))
     (assert (fa-mal pit ?answer)))
 
 (defrule mal-abs
     =>
-    (bind ?answer (ask-question "Quant de mal et fan els abdominals del 0 (mÃ­nim) al 3 (mÅ•xim): " 0 1 2 3))
+    (bind ?answer (ask-question "Quant de mal et fan els abdominals del 0 (mínim) al 3 (màxim): " 0 1 2 3))
     (assert (fa-mal abd ?answer)))
 
 ;------------------------SELECCIONAR-OBJECTIU------------------------
 (defrule dir-objectiu
     =>
-    (bind ?answer (ask-question "Quin dels segÃ¼ents objectius s'adequa mÃ©s al teu objectiu per l'entrenament? (musculacio, posar_en_forma, baixar_pes, equilibrat, flexibilitat o manteniment) " musculacio posar_en_forma baixar_pes equilibrat flexibilitat manteniment))
+    (bind ?answer (ask-question "Quin dels següents objectius s'adequa més al teu objectiu per l'entrenament? (musculacio, posar_en_forma, baixar_pes, equilibrat, flexibilitat o manteniment) " musculacio posar_en_forma baixar_pes equilibrat flexibilitat manteniment))
     (if (eq ?answer musculacio) 
         then (make-instance [Musculacio] of Musculacio)
         (send [Musculacio] put-Nom Musculacio))
@@ -1666,6 +1666,45 @@
     (return (create$ (integer ?duracion) (integer ?reps)))
 )
 
+(deffunction calcular-duracion_repes_estiraments (?ejercicio ?temps-max ?persona)
+    (bind ?Dmin (/ (send ?ejercicio get-DuracioMin) 2 )) 
+    (bind ?Dmax (/ (send ?ejercicio get-DuracioMax) 2 ))
+
+    (bind ?Rmin (send ?ejercicio get-RepsMin))
+    (bind ?Rmax (send ?ejercicio get-RepsMax))
+    (bind ?scale-factor (/ (- ?temps-max 30) 90))
+
+    (bind ?adjusted-Dmax (integer(+ ?Dmin (* ?scale-factor (- ?Dmax ?Dmin)))))
+
+    (bind ?duracion ?adjusted-Dmax)
+    (bind ?reps (integer(+ ?Rmin (* ?scale-factor (- ?Rmax ?Rmin)))))
+
+    (bind ?act (send ?persona get-ActivitatFisica))
+
+    ;si te sensacio de cansament o tibantor, es redueix el temps d'entrenament coms si fos menys activa
+    (bind ?teSC (send ?persona get-SensacioCansament))
+    (bind ?teTM (send ?persona get-TibantorMuscular))
+    (if (and (or (eq ?teSC si) (eq ?teTM si)) (> ?act 1)) then (bind ?act (- ?act 1))) 
+
+    (bind ?scale (*(- ?act  3) 0.1))
+    (bind ?duracion (+ ?duracion (* ?duracion ?scale))) 
+    (bind ?reps (+ ?reps (* ?reps ?scale)))
+    
+    (if (> ?duracion ?Dmax) 
+        then (bind ?duracion ?Dmax)
+        else (if (< ?duracion ?Dmin) 
+            then (bind ?duracion ?Dmin))
+    ) 
+
+    (if (> ?reps ?Rmax) 
+        then (bind ?reps ?Rmax)
+        else (if (< ?reps ?Rmin) 
+            then (bind ?reps ?Rmin))
+    )
+
+    (return (create$ (integer ?duracion) (integer ?reps)))
+)
+
 ;--------------------------------ASSIGNACIO-D'EXERCICIS--------------------------------
 
 ;------------------------DILLUNS------------------------
@@ -1701,7 +1740,7 @@
 
     (bind ?ejercicio (obtener-ejercicio-aleatorio-forca))
     (while (and(> ?tiempo-disponible -5) (< ?duracionTotal (- ?tiempo-max 20)) (not(eq ?ejercicio nil))) do
-        (bind ?dnr (calcular-duracion_repes ?ejercicio ?tiempo-max ?*persona*))
+        (bind ?dnr (calcular-duracion_repes_estiraments ?ejercicio ?tiempo-max ?*persona*))
         (bind ?duracion (nth$ 1 ?dnr))
         (bind ?reps (nth$ 2 ?dnr))
         (if (<= ?duracion ?tiempo-disponible) then
@@ -1717,7 +1756,7 @@
 
     (bind ?ejercicio (obtener-ejercicio-aleatorio-flex1 $?ejercicios-seleccionados))
     (while (and(> ?tiempo-disponible 0)  (not(eq ?ejercicio nil))) do
-        (bind ?dnr (calcular-duracion_repes ?ejercicio ?tiempo-max ?*persona*))
+        (bind ?dnr (calcular-duracion_repes_estiraments ?ejercicio ?tiempo-max ?*persona*))
         (bind ?duracion (nth$ 1 ?dnr))
         (bind ?reps (nth$ 2 ?dnr))
         (if (<= ?duracion (+ ?tiempo-disponible 10)) then
@@ -1773,7 +1812,7 @@
 
     (bind ?ejercicio (obtener-ejercicio-aleatorio-forca))
     (while (and(> ?tiempo-disponible -5) (< ?duracionTotal (- ?tiempo-max 20)) (not(eq ?ejercicio nil))) do
-        (bind ?dnr (calcular-duracion_repes ?ejercicio ?tiempo-max ?*persona*))
+        (bind ?dnr (calcular-duracion_repes_estiraments ?ejercicio ?tiempo-max ?*persona*))
         (bind ?duracion (nth$ 1 ?dnr))
         (bind ?reps (nth$ 2 ?dnr))
         (if (<= ?duracion ?tiempo-disponible) then
@@ -1789,7 +1828,7 @@
 
     (bind ?ejercicio (obtener-ejercicio-aleatorio-flex1 $?ejercicios-seleccionados))
     (while (and(> ?tiempo-disponible 0) (not(eq ?ejercicio nil))) do
-        (bind ?dnr (calcular-duracion_repes ?ejercicio ?tiempo-max ?*persona*))
+        (bind ?dnr (calcular-duracion_repes_estiraments ?ejercicio ?tiempo-max ?*persona*))
         (bind ?duracion (nth$ 1 ?dnr))
         (bind ?reps (nth$ 2 ?dnr))
         (if (<= ?duracion (+ ?tiempo-disponible 10)) then
@@ -1845,7 +1884,7 @@
 
     (bind ?ejercicio (obtener-ejercicio-aleatorio-forca))
     (while (and(> ?tiempo-disponible -5) (< ?duracionTotal (- ?tiempo-max 20)) (not(eq ?ejercicio nil))) do
-        (bind ?dnr (calcular-duracion_repes ?ejercicio ?tiempo-max ?*persona*))
+        (bind ?dnr (calcular-duracion_repes_estiraments ?ejercicio ?tiempo-max ?*persona*))
         (bind ?duracion (nth$ 1 ?dnr))
         (bind ?reps (nth$ 2 ?dnr))
         (if (<= ?duracion ?tiempo-disponible) then
@@ -1861,7 +1900,7 @@
 
     (bind ?ejercicio (obtener-ejercicio-aleatorio-flex1 $?ejercicios-seleccionados))
     (while (and(> ?tiempo-disponible 0) (not(eq ?ejercicio nil))) do
-        (bind ?dnr (calcular-duracion_repes ?ejercicio ?tiempo-max ?*persona*))
+        (bind ?dnr (calcular-duracion_repes_estiraments ?ejercicio ?tiempo-max ?*persona*))
         (bind ?duracion (nth$ 1 ?dnr))
         (bind ?reps (nth$ 2 ?dnr))
         (if (<= ?duracion (+ ?tiempo-disponible 10)) then
@@ -1917,7 +1956,7 @@
 
     (bind ?ejercicio (obtener-ejercicio-aleatorio-forca))
     (while (and(> ?tiempo-disponible -5) (< ?duracionTotal (- ?tiempo-max 20)) (not(eq ?ejercicio nil))) do
-        (bind ?dnr (calcular-duracion_repes ?ejercicio ?tiempo-max ?*persona*))
+        (bind ?dnr (calcular-duracion_repes_estiraments ?ejercicio ?tiempo-max ?*persona*))
         (bind ?duracion (nth$ 1 ?dnr))
         (bind ?reps (nth$ 2 ?dnr))
         (if (<= ?duracion ?tiempo-disponible) then
@@ -1933,7 +1972,7 @@
 
     (bind ?ejercicio (obtener-ejercicio-aleatorio-flex1 $?ejercicios-seleccionados))
     (while (and(> ?tiempo-disponible 0) (not(eq ?ejercicio nil))) do
-        (bind ?dnr (calcular-duracion_repes ?ejercicio ?tiempo-max ?*persona*))
+        (bind ?dnr (calcular-duracion_repes_estiraments ?ejercicio ?tiempo-max ?*persona*))
         (bind ?duracion (nth$ 1 ?dnr))
         (bind ?reps (nth$ 2 ?dnr))
         (if (<= ?duracion (+ ?tiempo-disponible 10)) then
@@ -1989,7 +2028,7 @@
 
     (bind ?ejercicio (obtener-ejercicio-aleatorio-forca))
     (while (and(> ?tiempo-disponible -5) (< ?duracionTotal (- ?tiempo-max 20)) (not(eq ?ejercicio nil))) do
-        (bind ?dnr (calcular-duracion_repes ?ejercicio ?tiempo-max ?*persona*))
+        (bind ?dnr (calcular-duracion_repes_estiraments ?ejercicio ?tiempo-max ?*persona*))
         (bind ?duracion (nth$ 1 ?dnr))
         (bind ?reps (nth$ 2 ?dnr))
         (if (<= ?duracion ?tiempo-disponible) then
@@ -2005,7 +2044,7 @@
 
     (bind ?ejercicio (obtener-ejercicio-aleatorio-flex1 $?ejercicios-seleccionados))
     (while (and(> ?tiempo-disponible 0) (not(eq ?ejercicio nil))) do
-        (bind ?dnr (calcular-duracion_repes ?ejercicio ?tiempo-max ?*persona*))
+        (bind ?dnr (calcular-duracion_repes_estiraments ?ejercicio ?tiempo-max ?*persona*))
         (bind ?duracion (nth$ 1 ?dnr))
         (bind ?reps (nth$ 2 ?dnr))
         (if (<= ?duracion (+ ?tiempo-disponible 10)) then
@@ -2061,7 +2100,7 @@
 
     (bind ?ejercicio (obtener-ejercicio-aleatorio-forca))
     (while (and(> ?tiempo-disponible -5) (< ?duracionTotal (- ?tiempo-max 20)) (not(eq ?ejercicio nil))) do
-        (bind ?dnr (calcular-duracion_repes ?ejercicio ?tiempo-max ?*persona*))
+        (bind ?dnr (calcular-duracion_repes_estiraments ?ejercicio ?tiempo-max ?*persona*))
         (bind ?duracion (nth$ 1 ?dnr))
         (bind ?reps (nth$ 2 ?dnr))
         (if (<= ?duracion ?tiempo-disponible) then
@@ -2077,7 +2116,7 @@
 
     (bind ?ejercicio (obtener-ejercicio-aleatorio-flex1 $?ejercicios-seleccionados))
     (while (and(> ?tiempo-disponible 0) (not(eq ?ejercicio nil))) do
-        (bind ?dnr (calcular-duracion_repes ?ejercicio ?tiempo-max ?*persona*))
+        (bind ?dnr (calcular-duracion_repes_estiraments ?ejercicio ?tiempo-max ?*persona*))
         (bind ?duracion (nth$ 1 ?dnr))
         (bind ?reps (nth$ 2 ?dnr))
         (if (<= ?duracion (+ ?tiempo-disponible 10))then
@@ -2150,7 +2189,7 @@
     (if (neq ?nomObj Flexibilitat)  then
         (bind ?ejercicio (obtener-ejercicio-aleatorio-flex1 $?ejercicios-seleccionados))
         (while (and(> ?tiempo-disponible -5) (< ?duracionTotal (- ?tiempo-max 5)) (not(eq ?ejercicio nil))) do
-            (bind ?dnr (calcular-duracion_repes ?ejercicio ?tiempo-max ?*persona*))
+            (bind ?dnr (calcular-duracion_repes_estiraments ?ejercicio ?tiempo-max ?*persona*))
             (bind ?duracion (nth$ 1 ?dnr))
             (bind ?reps (nth$ 2 ?dnr))
             (if (<= ?duracion ?tiempo-disponible) then
@@ -2166,7 +2205,7 @@
     )
     else (bind ?ejercicio (obtener-ejercicio-aleatorio-flex))
         (while (and(> ?tiempo-disponible 0)  (not(eq ?ejercicio nil))) do
-            (bind ?dnr (calcular-duracion_repes ?ejercicio ?tiempo-max ?*persona*))
+            (bind ?dnr (calcular-duracion_repes_estiraments ?ejercicio ?tiempo-max ?*persona*))
             (bind ?duracion (nth$ 1 ?dnr))
             (bind ?reps (nth$ 2 ?dnr))
             (if (<= ?duracion (+ ?tiempo-disponible 10)) then
@@ -2208,5 +2247,5 @@
     (printout t "  / _` | |/   / _ \\ | '_ \\  | __| | '__|  / _ \\ | '_ \\   / _` | | '_ ` _ \\   / _ \\ | '_ \\  | __|" crlf)
     (printout t " | (_| |     |  __/ | | | | | |_  | |    |  __/ | | | | | (_| | | | | | | | |  __/ | | | | | |_        " crlf)
     (printout t "  \\__,_|      \\___| |_| |_|  \\__| |_|     \\___| |_| |_|  \\__,_| |_| |_| |_|  \\___| |_| |_|  \\__|" crlf crlf)
-    (printout t "Benvingut al generador de programes d'entrenament, abans de res et demanem que contestis algunes preguntes per poder adaptar-te al mÅ•xim l'entrenament." crlf crlf)
+    (printout t "Benvingut al generador de programes d'entrenament, abans de res et demanem que contestis algunes preguntes per poder adaptar-te al màxim l'entrenament." crlf crlf)
 )
