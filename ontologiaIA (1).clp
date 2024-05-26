@@ -1183,6 +1183,7 @@
    (not (problemesArticulars))
    (not (cansamentMareig))
    (not (personaTePressioMoltAlta))
+   (not (personaEsGran))
    =>
    (send ?e put-EsValid si)
    (assert (deterimar-si-noapte-es-apte))
@@ -1687,7 +1688,7 @@
     )
 
     (bind ?ejercicio (obtener-ejercicio-aleatorio-flex1 $?ejercicios-seleccionados))
-    (while (and(> ?tiempo-disponible 0) (not(eq ?ejercicio nil))) do
+    (while (and(> ?tiempo-disponible 0)  (not(eq ?ejercicio nil))) do
         (bind ?dnr (calcular-duracion_repes ?ejercicio ?tiempo-max ?*persona*))
         (bind ?duracion (nth$ 1 ?dnr))
         (bind ?reps (nth$ 2 ?dnr))
