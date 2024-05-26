@@ -938,7 +938,7 @@
     (printout t ?question)
     (bind ?answer (read))
     (while (not (integerp ?answer)) do
-        (printout t "Resposata invàlida. Siusplau entra un valor enter." crlf)
+        (printout t "Resposata invÅ•lida. Siusplau entra un valor enter." crlf)
         (printout t ?question)
         (bind ?answer (read)))
     ?answer)
@@ -969,13 +969,13 @@
 
 (defrule determina-PressioSangMin
     =>
-    (bind ?answer (ask-integer-question "Quina és la teva pressió sanguínia mínima? (mmHg) " ))
+    (bind ?answer (ask-integer-question "Quina Ã©s la teva pressiÃ³ sanguÃ­nia mÃ­nima? (mmHg) " ))
     (send ?*persona* put-PressioSangMin ?answer)
 )
 
 (defrule determina-PressioSangMax
     =>
-    (bind ?answer (ask-integer-question "Quina és la teva pressió sanguínia màxima? (mmHg) " ))
+    (bind ?answer (ask-integer-question "Quina Ã©s la teva pressiÃ³ sanguÃ­nia mÅ•xima? (mmHg) " ))
     (send ?*persona* put-PressioSangMax ?answer)
 )
 
@@ -1048,7 +1048,7 @@
    (if (> ?imc 30) then (assert(personaTeObesitat)))
    (if (and(< ?imc 30) (> ?imc 25)) then (assert(personaTeSobrePes)))
    (if (< ?imc 20) then (assert(personaTeInfraPes)))
-   (printout t "El teu IMC és " ?imc crlf)
+   (printout t "El teu IMC Ã©s " ?imc crlf)
 )
 
 (defrule determina-exercicis-IMC
@@ -1065,23 +1065,23 @@
   
 (defrule determina-exercici-extra
     =>
-    (printout t "Com a informació addicional et demanem que facis un minut de carrera sostinguda o pugis i baixis escales" crlf)
-    (printout t "per tal d'obtenir algunes dades adicions als, si no pots o no vols pots passar directament al següent pas." crlf)
+    (printout t "Com a informaciÃ³ addicional et demanem que facis un minut de carrera sostinguda o pugis i baixis escales" crlf)
+    (printout t "per tal d'obtenir algunes dades adicions als, si no pots o no vols pots passar directament al segÃ¼ent pas." crlf)
     (if (yes-or-no-p "Vols fer un minut de carrera o pujar i baixar escales? ") then (assert (ferExerciciExtra)))
 )
 
 (defrule determina-dades-extra
     (ferExerciciExtra)
     => 
-    (bind ?answer (ask-integer-question "Després d'un minut de carrera, quines són les teves pulsacions per minut? " )) 
-    (if (yes-or-no-p "Després d'un minut de carrera, tens sensació de cansament/mareig? ")  
+    (bind ?answer (ask-integer-question "DesprÃ©s d'un minut de carrera, quines sÃ³n les teves pulsacions per minut? " )) 
+    (if (yes-or-no-p "DesprÃ©s d'un minut de carrera, tens sensaciÃ³ de cansament/mareig? ")  
         then 
             (assert (cansamentMareig))
             (send ?*persona* put-SensacioCansament si)
         else
             (send ?*persona* put-SensacioCansament no))
 
-    (if (yes-or-no-p "Després d'un minut de carrera, tens alguna tibantor muscular? ")  
+    (if (yes-or-no-p "DesprÃ©s d'un minut de carrera, tens alguna tibantor muscular? ")  
         then 
             (assert (tibantorMuscular))
             (send ?*persona* put-TibantorMuscular si)
@@ -1157,7 +1157,7 @@
 
 (defrule determina-impacte-caloric
    =>
-    (bind ?answer (ask-question "Quin impacte calòric diries que te la teva dieta actual? (baix, normal, alt) " baix normal alt))
+    (bind ?answer (ask-question "Quin impacte calÅˆric diries que te la teva dieta actual? (baix, normal, alt) " baix normal alt))
     (assert (impacte ?answer)))
 
     
@@ -1172,7 +1172,7 @@
 
 (defrule determina-activitat-fisica
    =>
-   (bind ?answer (ask-question "Del 1 al 5 com valores el nivell d'activitat física que fas al dia a dia? (a la feina, aficions, tasques doméstiques...) " 1 2 3 4 5))
+   (bind ?answer (ask-question "Del 1 al 5 com valores el nivell d'activitat fÃ­sica que fas al dia a dia? (a la feina, aficions, tasques domÃ©stiques...) " 1 2 3 4 5))
    (send ?*persona* put-ActivitatFisica ?answer)
    (assert (activitatFisicaAssignada))
 )
@@ -1368,33 +1368,33 @@
 ;------------------------DEMANAR-DOLORS------------------------
 (defrule mal-esquena
     =>
-    (bind ?answer (ask-question "Quant de mal et fa l'esquena del 0 (mínim) al 3 (màxim): " 0 1 2 3))
+    (bind ?answer (ask-question "Quant de mal et fa l'esquena del 0 (mÃ­nim) al 3 (mÅ•xim): " 0 1 2 3))
     (assert (fa-mal esq ?answer)))
 
 (defrule mal-bracos
     =>
-    (bind ?answer (ask-question "Quant de mal et fan els bracos del 0 (mínim) al 3 (màxim): " 0 1 2 3))
+    (bind ?answer (ask-question "Quant de mal et fan els bracos del 0 (mÃ­nim) al 3 (mÅ•xim): " 0 1 2 3))
     (assert (fa-mal bra ?answer)))
 
 (defrule mal-cames
     =>
-    (bind ?answer (ask-question "Quant de mal et fan les cames del 0 (mínim) al 3 (màxim): " 0 1 2 3))
+    (bind ?answer (ask-question "Quant de mal et fan les cames del 0 (mÃ­nim) al 3 (mÅ•xim): " 0 1 2 3))
     (assert (fa-mal cam ?answer)))
 
 (defrule mal-pit
     =>
-    (bind ?answer (ask-question "Quant de mal et fan el pit del 0 (mínim) al 3 (màxim): " 0 1 2 3))
+    (bind ?answer (ask-question "Quant de mal et fan el pit del 0 (mÃ­nim) al 3 (mÅ•xim): " 0 1 2 3))
     (assert (fa-mal pit ?answer)))
 
 (defrule mal-abs
     =>
-    (bind ?answer (ask-question "Quant de mal et fan els abdominals del 0 (mínim) al 3 (màxim): " 0 1 2 3))
+    (bind ?answer (ask-question "Quant de mal et fan els abdominals del 0 (mÃ­nim) al 3 (mÅ•xim): " 0 1 2 3))
     (assert (fa-mal abd ?answer)))
 
 ;------------------------SELECCIONAR-OBJECTIU------------------------
 (defrule dir-objectiu
     =>
-    (bind ?answer (ask-question "Quin dels següents objectius s'adequa més al teu objectiu per l'entrenament? (musculacio, posar_en_forma, baixar_pes, equilibrat, flexibilitat o manteniment) " musculacio posar_en_forma baixar_pes equilibrat flexibilitat manteniment))
+    (bind ?answer (ask-question "Quin dels segÃ¼ents objectius s'adequa mÃ©s al teu objectiu per l'entrenament? (musculacio, posar_en_forma, baixar_pes, equilibrat, flexibilitat o manteniment) " musculacio posar_en_forma baixar_pes equilibrat flexibilitat manteniment))
     (if (eq ?answer musculacio) 
         then (make-instance [Musculacio] of Musculacio)
         (send [Musculacio] put-Nom Musculacio))
@@ -2188,7 +2188,7 @@
 
 
 ;------------------------INICI------------------------
-(defrule wellcome
+(defrule welcome
     (declare (salience 100))
     =>
     (printout t "  ____                                                                  _                              " crlf)          
@@ -2208,5 +2208,5 @@
     (printout t "  / _` | |/   / _ \\ | '_ \\  | __| | '__|  / _ \\ | '_ \\   / _` | | '_ ` _ \\   / _ \\ | '_ \\  | __|" crlf)
     (printout t " | (_| |     |  __/ | | | | | |_  | |    |  __/ | | | | | (_| | | | | | | | |  __/ | | | | | |_        " crlf)
     (printout t "  \\__,_|      \\___| |_| |_|  \\__| |_|     \\___| |_| |_|  \\__,_| |_| |_| |_|  \\___| |_| |_|  \\__|" crlf crlf)
-    (printout t "Benvingut al generador de programes d'entrenament, abans de res et demanem que contestis algunes preguntes per poder adaptar-te al màxim l'entrenament." crlf crlf)
+    (printout t "Benvingut al generador de programes d'entrenament, abans de res et demanem que contestis algunes preguntes per poder adaptar-te al mÅ•xim l'entrenament." crlf crlf)
 )
