@@ -6,22 +6,110 @@
 ;;; :Date 02/05/2024 10:12:21
 
 ; Classe exercici
-;;; ---------------------------------------------------------
-;;; ontologia.clp
-;;; Translated by owl2clips
-;;; Translated to CLIPS from ontology ontologiaIA.ttl
-;;; :Date 26/05/2024 17:47:35
+(defclass Exercici
+    (is-a USER)
+    (role concrete)
+    (pattern-match reactive)
+    (slot Nom
+        (type SYMBOL)
+        (create-accessor read-write))
+    (slot Dificultat
+        (type SYMBOL)
+        (create-accessor read-write))
+    (slot DuracioMax
+        (type INTEGER)
+        (create-accessor read-write))
+    (slot DuracioMin
+        (type INTEGER)
+        (create-accessor read-write))
+    (multislot GrupsMusculars
+        (type SYMBOL) ; Corrected syntax
+        (create-accessor read-write))
+    (slot IndicatGentGran
+        (type SYMBOL)
+        (create-accessor read-write))
+    (slot KcalMinuteMax
+        (type INTEGER)
+        (create-accessor read-write))
+    (slot KcalMinuteMin
+        (type INTEGER)
+        (create-accessor read-write))
+    (slot RepsMax
+        (type INTEGER)
+        (create-accessor read-write))
+    (slot RepsMin
+        (type INTEGER)
+        (create-accessor read-write))
+    (slot EsValid
+        (type SYMBOL)
+        (create-accessor read-write))
+    (multislot ObjectiusComplerts
+        (type SYMBOL)
+        (create-accessor read-write))
+    (slot TeImpacte
+        (type SYMBOL)
+        (create-accessor read-write))
+)
 
-(defclass Objectius "Classe per representar els objectius que pot tenir un entrenament juntament amb el seu temps objectiu."
+
+(defclass Cardio
+    (is-a Exercici)
+    (role concrete)
+    (pattern-match reactive)
+)
+
+(defclass Flex
+    (is-a Exercici)
+    (role concrete)
+    (pattern-match reactive)
+)
+
+(defclass Forca
+    (is-a Exercici)
+    (role concrete)
+    (pattern-match reactive)
+)
+
+(defclass Salut
+    (is-a USER)
+    (role concrete)
+    (pattern-match reactive)
+)
+
+(defclass Dieta
+    (is-a Salut)
+    (role concrete)
+    (pattern-match reactive)
+    (slot IngestaCalorica
+        (type SYMBOL)
+        (create-accessor read-write))
+)
+
+(defclass Problemes_articulars
+    (is-a Salut)
+    (role concrete)
+    (pattern-match reactive)
+)
+
+(defclass Problemes_musculars
+    (is-a Salut)
+    (role concrete)
+    (pattern-match reactive)
+    (slot GrupsMusculars
+        (type SYMBOL)
+        (create-accessor read-write))
+)
+
+(defclass Objectius
     (is-a USER)
     (role concrete)
     (pattern-match reactive)
     ;;; Objectiu de temps diari d'entrenement en minuts
-    (slot Nom
-        (type STRING)
-        (create-accessor read-write))
     (slot TempsDiari
         (type INTEGER)
+        (create-accessor read-write))
+    (slot Nom
+        (type SYMBOL)
         (create-accessor read-write))
 )
 
@@ -35,6 +123,7 @@
     (is-a Objectius)
     (role concrete)
     (pattern-match reactive)
+
 )
 
 (defclass Equilibri
@@ -61,71 +150,7 @@
     (pattern-match reactive)
 )
 
-(defclass Exercici "Classe per representar els exercicis que es poden fer en un etrenament."
-    (is-a USER)
-    (role concrete)
-    (pattern-match reactive)
-    ;;; Dificultat d'un exercici, pot ser facil, moderada o dificil.
-    (slot Dificultat
-        (type SYMBOL)
-        (create-accessor read-write))
-    ;;; Duracio maxima d'un exercici.
-    (slot DuracioMax
-        (type INTEGER)
-        (create-accessor read-write))
-    ;;; Duracio minima d'un exercici.
-    (slot DuracioMin
-        (type INTEGER)
-        (create-accessor read-write))
-    ;;; Grups musculars que un exercici treballa. Els grups musculars s'han dividit en Cames, Abdominals, Esquena, Pit i Bracos.
-    (multislot GrupsMusculars
-        (type SYMBOL)
-        (create-accessor read-write))
-    ;;; Kcal consumides per minut per un exercici.
-    (multislot KcalMinut
-        (type INTEGER)
-        (create-accessor read-write))
-    ;;; Nombre maxim de repeticions que es poden fer per un exercici.
-    (slot RepsMax
-        (type INTEGER)
-        (create-accessor read-write))
-    ;;; Nombre minim de repeticions que es poden fer per un exercici.
-    (slot RepsMin
-        (type INTEGER)
-        (create-accessor read-write))
-    ;;; Liista d'objectius pels quals es bo l'exercici.
-    (multislot ObjectiusComplerts
-        (type STRING)
-        (create-accessor read-write))
-    ;;; L'exercici es valid, per defecte els exercicis dificils es posen a no i la resta a si.
-    (multislot esValid
-        (type SYMBOL)
-        (create-accessor read-write))
-    ;;; L'exercici és d'impacte.
-    (slot TeImpacte
-        (type SYMBOL)
-        (create-accessor read-write))
-)
-
-(defclass Cardio "Subclasse d'exercici que conte els exercicis de cardio."
-    (is-a Exercici)
-    (role concrete)
-    (pattern-match reactive)
-)
-
-(defclass Flex "Subclasse d'exercici que conte els exercicis de flexibilitat."
-    (is-a Exercici)
-    (role concrete)
-    (pattern-match reactive)
-)
-
-(defclass Forca "Subclasse d'exercici que conte els exercicis de forca."
-    (is-a Exercici)
-    (role concrete)
-    (pattern-match reactive)
-)
-
-(defclass Entrenament "Classe per representar entrenaments. Un entrenament te un objectiu i un conjunt d'exercicis assignats."
+(defclass Entrenament
     (is-a USER)
     (role concrete)
     (pattern-match reactive)
@@ -137,80 +162,45 @@
         (create-accessor read-write))
 )
 
-(defclass Persona "Classe per representar una persona o usuari que demana un entrenament."
+(defclass Persona "Classe per representar les persones/usuaris"
     (is-a USER)
     (role concrete)
     (pattern-match reactive)
     (slot Solicita
         (type INSTANCE)
         (create-accessor read-write))
-    ;;; Amb un valor del 1 al 5 es represent com d'activa es una persona al seu dia a dia, ja sigui per la seva feina, aficions, tasques dom�stiques, etc.
+    (slot Te
+        (type INSTANCE)
+        (create-accessor read-write))
     (slot ActivitatFisica
         (type SYMBOL)
         (create-accessor read-write))
-    ;;; Altura en centimetres de la persona.
     (slot Altura
         (type FLOAT)
         (create-accessor read-write))
-    ;;; Edat de la persona.
     (slot Edat
         (type INTEGER)
         (create-accessor read-write))
-    ;;; IMC de la persona calculat a partir de l'alcada i el pes.
     (slot IMC
         (type FLOAT)
         (create-accessor read-write))
-    ;;; Pes en kilograms de la persona.
     (slot Pes
         (type FLOAT)
         (create-accessor read-write))
-    ;;; Valor maxim de la presio sanguinia (sistolica).
-    (slot PressioSangMax
-        (type FLOAT)
-        (create-accessor read-write))
-    ;;; Valor minim de la presio sanguinia (diastolica).
-    (slot PressioSangMin
-        (type FLOAT)
-        (create-accessor read-write))
-    ;;; En cas de que l'usuari decideixi fer un minut de carrera sostinguda aquest atribut correspon al nombre de pulsacions per minut despres del minut de carrera.
     (slot PulsacionsXMin
         (type INTEGER)
         (create-accessor read-write))
-    ;;; En cas de que l'usuari decideixi fer un minut de carrera sostinguda pren per valor si o no segons si te sensacio de cansament/mareig.
     (slot SensacioCansament
         (type SYMBOL)
         (create-accessor read-write))
-    ;;; En cas de que l'usuari decideixi fer un minut de carrera sostinguda pren per valor si o no segons si te tibantor muscular.
     (multislot TibantorMuscular
         (type SYMBOL)
         (create-accessor read-write))
-    ;;; Entre Baix, Normal i Alt representa l'impacte caloric de la dieta de la persona.
-    (multislot impacteDieta
-        (type SYMBOL)
+    (slot PressioSangMax
+        (type FLOAT)
         (create-accessor read-write))
-    ;;; Representa el mal (si te alguna lesio, problema muscular, etc.) que li fan els abdominals a la persona en un rang del 0 (gens de mal) al 3 (incapac de entrenar el grup muscular en concret).
-    (multislot malAbdominals
-        (type SYMBOL)
-        (create-accessor read-write))
-    ;;; Simbolitza si la persona te algun problema/dolor a les articulacions.
-    (multislot malArticulacions
-        (type SYMBOL)
-        (create-accessor read-write))
-    ;;; Representa el mal (si te alguna lesio, problema muscular, etc.) que li fan els bracos a la persona en un rang del 0 (gens de mal) al 3 (incapac d'entrenar el grup muscular en concret).
-    (multislot malBracos
-        (type SYMBOL)
-        (create-accessor read-write))
-    ;;; Representa el mal (si te alguna lesio, problema muscular, etc.) que li fan les cames a la persona en un rang del 0 (gens de mal) al 3 (incapac d'entrenar el grup muscular en concret).
-    (multislot malCames
-        (type SYMBOL)
-        (create-accessor read-write))
-    ;;; Representa el mal (si te alguna lesio, problema muscular, etc.) que li fa l'esquena a la persona en un rang del 0 (gens de mal) al 3 (incapac d'entrenar el grup muscular en concret).
-    (multislot malEsquena
-        (type SYMBOL)
-        (create-accessor read-write))
-    ;;; Representa el mal (si te alguna lesio, problema muscular, etc.) que li fa el pit a la persona en un rang del 0 (gens de mal) al 3 (incapac d'entrenar el grup muscular en concret).
-    (multislot malPit
-        (type SYMBOL)
+    (slot PressioSangMin
+        (type FLOAT)
         (create-accessor read-write))
 )
 
@@ -223,10 +213,10 @@
         (DuracioMax 30)
         (DuracioMin 10)
         (GrupsMusculars cames)
-        (KcalMinut 6)
+        (KcalMinuteMax 6)
         (RepsMax 1)
         (RepsMin 1)
-        (esValid si)
+        (EsValid si)
         (ObjectiusComplerts manteniment baixar_pes))
 
     (correr of Cardio
@@ -234,10 +224,10 @@
         (DuracioMax 30)
         (DuracioMin 10)
         (GrupsMusculars cames)
-        (KcalMinut 10)
+        (KcalMinuteMax 10)
         (RepsMax 1)
         (RepsMin 1)
-        (esValid si)
+        (EsValid si)
         (ObjectiusComplerts manteniment baixar_pes))
 
     (correr-intens of Cardio
@@ -245,10 +235,10 @@
         (DuracioMax 30)
         (DuracioMin 10)
         (GrupsMusculars cames)
-        (KcalMinut 15)
+        (KcalMinuteMax 15)
         (RepsMax 1)
         (RepsMin 1)
-        (esValid si)
+        (EsValid si)
         (ObjectiusComplerts manteniment baixar_pes posar_en_forma)
         (TeImpacte si))
         
@@ -258,10 +248,10 @@
         (DuracioMax 5)
         (DuracioMin 2)
         (GrupsMusculars cames)
-        (KcalMinut 19)
+        (KcalMinuteMax 19)
         (RepsMax 1)
         (RepsMin 1)
-        (esValid si)
+        (EsValid si)
         (ObjectiusComplerts baixar_pes posar_en_forma musculacio)
         (TeImpacte si))
 
@@ -270,10 +260,10 @@
         (DuracioMax 30)
         (DuracioMin 10)
         (GrupsMusculars cames)
-        (KcalMinut 8)
+        (KcalMinuteMax 8)
         (RepsMax 1)
         (RepsMin 1)
-        (esValid si)
+        (EsValid si)
         (ObjectiusComplerts manteniment baixar_pes))
 
     (bicicleta-intensa of Cardio
@@ -281,10 +271,10 @@
         (DuracioMax 15)
         (DuracioMin 5)
         (GrupsMusculars cames)
-        (KcalMinut 16)
+        (KcalMinuteMax 16)
         (RepsMax 1)
         (RepsMin 1)
-        (esValid si)
+        (EsValid si)
         (ObjectiusComplerts manteniment baixar_pes posar_en_forma musculacio))
 
     (rem of Cardio
@@ -292,10 +282,10 @@
         (DuracioMax 20)
         (DuracioMin 10)
         (GrupsMusculars bracos esquena)
-        (KcalMinut 8)
+        (KcalMinuteMax 8)
         (RepsMax 1)
         (RepsMin 1)
-        (esValid si)
+        (EsValid si)
         (ObjectiusComplerts manteniment baixar_pes posar_en_forma))
 
     (rem-intens of Cardio
@@ -303,10 +293,10 @@
         (DuracioMax 10)
         (DuracioMin 5)
         (GrupsMusculars bracos esquena)
-        (KcalMinut 15)
+        (KcalMinuteMax 15)
         (RepsMax 1)
         (RepsMin 1)
-        (esValid si)
+        (EsValid si)
         (ObjectiusComplerts manteniment baixar_pes posar_en_forma musculacio))
 
     (stepper of Cardio
@@ -314,10 +304,10 @@
         (DuracioMax 20)
         (DuracioMin 10)
         (GrupsMusculars cames)
-        (KcalMinut 12)
+        (KcalMinuteMax 12)
         (RepsMax 1)
         (RepsMin 1)
-        (esValid si)
+        (EsValid si)
         (ObjectiusComplerts manteniment baixar_pes)
         (TeImpacte si))
 
@@ -326,10 +316,10 @@
         (DuracioMax 30)
         (DuracioMin 10)
         (GrupsMusculars bracos cames)
-        (KcalMinut 11)
+        (KcalMinuteMax 11)
         (RepsMax 1)
         (RepsMin 1)
-        (esValid si)
+        (EsValid si)
         (ObjectiusComplerts manteniment baixar_pes))
 
     (press-banca-lleuger of Forca
@@ -337,10 +327,10 @@
         (DuracioMax 15)
         (DuracioMin 5)
         (GrupsMusculars bracos pit)
-        (KcalMinut 8)
+        (KcalMinuteMax 8)
         (RepsMax 30)
         (RepsMin 10)
-        (esValid si)
+        (EsValid si)
         (ObjectiusComplerts musculacio posar_en_forma))
 
     (press-banca-moderat of Forca
@@ -348,10 +338,10 @@
         (DuracioMax 15)
         (DuracioMin 5)
         (GrupsMusculars bracos pit)
-        (KcalMinut 8)
+        (KcalMinuteMax 8)
         (RepsMax 30)
         (RepsMin 10)
-        (esValid si)
+        (EsValid si)
         (ObjectiusComplerts musculacio posar_en_forma))
 
     (press-banca-pesat of Forca
@@ -359,10 +349,10 @@
         (DuracioMax 15)
         (DuracioMin 5)
         (GrupsMusculars bracos pit)
-        (KcalMinut 8)
+        (KcalMinuteMax 8)
         (RepsMax 20)
         (RepsMin 5)
-        (esValid no)
+        (EsValid no)
         (ObjectiusComplerts musculacio posar_en_forma)
         (TeImpacte si))
 
@@ -371,10 +361,10 @@
         (DuracioMax 15)
         (DuracioMin 5)
         (GrupsMusculars cames abd)
-        (KcalMinut 10)
+        (KcalMinuteMax 10)
         (RepsMax 45)
         (RepsMin 15)
-        (esValid si)
+        (EsValid si)
         (ObjectiusComplerts musculacio posar_en_forma))
 
     (sentadilles-amb-pes-moderat of Forca
@@ -382,10 +372,10 @@
         (DuracioMax 15)
         (DuracioMin 5)
         (GrupsMusculars cames abd)
-        (KcalMinut 9)
+        (KcalMinuteMax 9)
         (RepsMax 30)
         (RepsMin 10)
-        (esValid si)
+        (EsValid si)
         (ObjectiusComplerts musculacio posar_en_forma))
 
     (sentadilles-amb-pes-pesat of Forca
@@ -393,10 +383,10 @@
         (DuracioMax 15)
         (DuracioMin 5)
         (GrupsMusculars cames abd)
-        (KcalMinut 10)
+        (KcalMinuteMax 10)
         (RepsMax 15)
         (RepsMin 5)
-        (esValid no)
+        (EsValid no)
         (ObjectiusComplerts musculacio posar_en_forma)
         (TeImpacte si))
 
@@ -405,21 +395,21 @@
         (DuracioMax 15)
         (DuracioMin 5)
         (GrupsMusculars bracos pit)
-        (KcalMinut 5)
+        (KcalMinuteMax 5)
         (RepsMax 60)
         (RepsMin 10)
-        (esValid si)
+        (EsValid si)
         (ObjectiusComplerts posar_en_forma))
 
     (flexions of Forca
-        (Dificultat moderate)
+        (Dificultat moderat)
         (DuracioMax 15)
         (DuracioMin 5)
         (GrupsMusculars bracos pit)
-        (KcalMinut 6)
+        (KcalMinuteMax 6)
         (RepsMax 50)
         (RepsMin 10)
-        (esValid si)
+        (EsValid si)
         (ObjectiusComplerts posar_en_forma))
 
     (flexions-amb-pes of Forca
@@ -427,10 +417,10 @@
         (DuracioMax 15)
         (DuracioMin 5)
         (GrupsMusculars bracos pit)
-        (KcalMinut 8)
+        (KcalMinuteMax 8)
         (RepsMax 40)
         (RepsMin 5)
-        (esValid no)
+        (EsValid no)
         (ObjectiusComplerts posar_en_forma)
         (TeImpacte si))
 
@@ -439,10 +429,10 @@
         (DuracioMax 15)
         (DuracioMin 5)
         (GrupsMusculars bracos esquena)
-        (KcalMinut 8)
+        (KcalMinuteMax 8)
         (RepsMax 45)
         (RepsMin 15)
-        (esValid si)
+        (EsValid si)
         (ObjectiusComplerts musculacio posar_en_forma))
 
     (rem-amb-pes-moderat of Forca
@@ -450,10 +440,10 @@
         (DuracioMax 15)
         (DuracioMin 5)
         (GrupsMusculars bracos esquena)
-        (KcalMinut 8)
+        (KcalMinuteMax 8)
         (RepsMax 30)
         (RepsMin 10)
-        (esValid si)
+        (EsValid si)
         (ObjectiusComplerts musculacio posar_en_forma))
 
     (rem-amb-pes-pesat of Forca
@@ -461,10 +451,10 @@
         (DuracioMax 10)
         (DuracioMin 5)
         (GrupsMusculars bracos esquena)
-        (KcalMinut 10)
+        (KcalMinuteMax 10)
         (RepsMax 15)
         (RepsMin 5)
-        (esValid no)
+        (EsValid no)
         (ObjectiusComplerts musculacio posar_en_forma)
         (TeImpacte si))
 
@@ -473,10 +463,10 @@
         (DuracioMax 15)
         (DuracioMin 5)
         (GrupsMusculars bracos)
-        (KcalMinut 5)
+        (KcalMinuteMax 5)
         (RepsMax 45)
         (RepsMin 15)
-        (esValid si)
+        (EsValid si)
         (ObjectiusComplerts musculacio posar_en_forma))
 
     (curl-biceps-moderat of Forca
@@ -484,10 +474,10 @@
         (DuracioMax 15)
         (DuracioMin 5)
         (GrupsMusculars bracos)
-        (KcalMinut 5)
+        (KcalMinuteMax 5)
         (RepsMax 30)
         (RepsMin 10)
-        (esValid si)
+        (EsValid si)
         (ObjectiusComplerts musculacio posar_en_forma))
 
     (curl-biceps-pesat of Forca
@@ -495,10 +485,10 @@
         (DuracioMax 10)
         (DuracioMin 5)
         (GrupsMusculars bracos)
-        (KcalMinut 6)
+        (KcalMinuteMax 6)
         (RepsMax 15)
         (RepsMin 5)
-        (esValid no)
+        (EsValid no)
         (ObjectiusComplerts musculacio posar_en_forma)
         (TeImpacte si))
 
@@ -507,10 +497,10 @@
         (DuracioMax 15)
         (DuracioMin 5)
         (GrupsMusculars bracos pit)
-        (KcalMinut 7)
+        (KcalMinuteMax 7)
         (RepsMax 30)
         (RepsMin 10)
-        (esValid si)
+        (EsValid si)
         (ObjectiusComplerts musculacio posar_en_forma))
     
     (press-militar-moderat of Forca
@@ -518,10 +508,10 @@
         (DuracioMax 15)
         (DuracioMin 5)
         (GrupsMusculars bracos pit)
-        (KcalMinut 7)
+        (KcalMinuteMax 7)
         (RepsMax 20)
         (RepsMin 8)
-        (esValid si)
+        (EsValid si)
         (ObjectiusComplerts musculacio posar_en_forma))
     
     (press-militar-pesat of Forca
@@ -529,10 +519,10 @@
         (DuracioMax 10)
         (DuracioMin 5)
         (GrupsMusculars bracos pit)
-        (KcalMinut 9)
+        (KcalMinuteMax 9)
         (RepsMax 15)
         (RepsMin 5)
-        (esValid no)
+        (EsValid no)
         (ObjectiusComplerts musculacio posar_en_forma)
         (TeImpacte si))
 
@@ -541,10 +531,10 @@
         (DuracioMax 15)
         (DuracioMin 5)
         (GrupsMusculars bracos)
-        (KcalMinut 5)
+        (KcalMinuteMax 5)
         (RepsMax 45)
         (RepsMin 15)
-        (esValid si)
+        (EsValid si)
         (ObjectiusComplerts musculacio posar_en_forma))
     
     (extensio-triceps-moderat of Forca
@@ -552,10 +542,10 @@
         (DuracioMax 15)
         (DuracioMin 5)
         (GrupsMusculars bracos)
-        (KcalMinut 5)
+        (KcalMinuteMax 5)
         (RepsMax 30)
         (RepsMin 10)
-        (esValid si)
+        (EsValid si)
         (ObjectiusComplerts musculacio posar_en_forma))
     
     (extensio-triceps-pesat of Forca
@@ -563,10 +553,10 @@
         (DuracioMax 10)
         (DuracioMin 5)
         (GrupsMusculars bracos)
-        (KcalMinut 7)
+        (KcalMinuteMax 7)
         (RepsMax 10)
         (RepsMin 5)
-        (esValid no)
+        (EsValid no)
         (ObjectiusComplerts musculacio posar_en_forma)
         (TeImpacte si))
 
@@ -575,10 +565,10 @@
         (DuracioMax 15)
         (DuracioMin 5)
         (GrupsMusculars bracos)
-        (KcalMinut 5)
+        (KcalMinuteMax 5)
         (RepsMax 30)
         (RepsMin 10)
-        (esValid si)
+        (EsValid si)
         (ObjectiusComplerts musculacio posar_en_forma))
     
     (aixecament-lateral-moderat of Forca
@@ -586,10 +576,10 @@
         (DuracioMax 15)
         (DuracioMin 5)
         (GrupsMusculars bracos)
-        (KcalMinut 6)
+        (KcalMinuteMax 6)
         (RepsMax 24)
         (RepsMin 8)
-        (esValid si)
+        (EsValid si)
         (ObjectiusComplerts musculacio posar_en_forma))
     
     (aixecament-lateral-pesat of Forca
@@ -597,10 +587,10 @@
         (DuracioMax 10)
         (DuracioMin 5)
         (GrupsMusculars bracos)
-        (KcalMinut 7)
+        (KcalMinuteMax 7)
         (RepsMax 10)
         (RepsMin 5)
-        (esValid no)
+        (EsValid no)
         (ObjectiusComplerts musculacio posar_en_forma)
         (TeImpacte si))
 
@@ -609,10 +599,10 @@
         (DuracioMax 15)
         (DuracioMin 5)
         (GrupsMusculars cames)
-        (KcalMinut 8)
+        (KcalMinuteMax 8)
         (RepsMax 30)
         (RepsMin 10)
-        (esValid si)
+        (EsValid si)
         (ObjectiusComplerts musculacio posar_en_forma))
         
     (lunges-amb-pes-moderat of Forca
@@ -620,10 +610,10 @@
         (DuracioMax 15)
         (DuracioMin 5)
         (GrupsMusculars cames)
-        (KcalMinut 9)
+        (KcalMinuteMax 9)
         (RepsMax 24)
         (RepsMin 8)
-        (esValid si)
+        (EsValid si)
         (ObjectiusComplerts musculacio posar_en_forma))
     
     (lunges-amb-pes-pesat of Forca
@@ -631,10 +621,10 @@
         (DuracioMax 10)
         (DuracioMin 5)
         (GrupsMusculars cames)
-        (KcalMinut 12)
+        (KcalMinuteMax 12)
         (RepsMax 15)
         (RepsMin 5)
-        (esValid no)
+        (EsValid no)
         (ObjectiusComplerts musculacio posar_en_forma)
         (TeImpacte si))
 
@@ -643,10 +633,10 @@
         (DuracioMax 10)
         (DuracioMin 5)
         (GrupsMusculars cames esquena abd)
-        (KcalMinut 7)
+        (KcalMinuteMax 7)
         (RepsMax 20)
         (RepsMin 10)
-        (esValid si)
+        (EsValid si)
         (ObjectiusComplerts musculacio posar_en_forma))
 
     (pes-mort-moderat of Forca
@@ -654,10 +644,10 @@
         (DuracioMax 10)
         (DuracioMin 5)
         (GrupsMusculars cames esquena abd)
-        (KcalMinut 9)
+        (KcalMinuteMax 9)
         (RepsMax 16)
         (RepsMin 8)
-        (esValid si)
+        (EsValid si)
         (ObjectiusComplerts musculacio posar_en_forma))
 
     (pes-mort-pesat of Forca
@@ -665,10 +655,10 @@
         (DuracioMax 10)
         (DuracioMin 5)
         (GrupsMusculars cames esquena abd)
-        (KcalMinut 11)
+        (KcalMinuteMax 11)
         (RepsMax 10)
         (RepsMin 5)
-        (esValid no)
+        (EsValid no)
         (ObjectiusComplerts musculacio posar_en_forma)
         (TeImpacte si))
 
@@ -677,10 +667,10 @@
         (DuracioMax 15)
         (DuracioMin 5)
         (GrupsMusculars abd)
-        (KcalMinut 6)
+        (KcalMinuteMax 6)
         (RepsMax 50)
         (RepsMin 15)
-        (esValid si)
+        (EsValid si)
         (ObjectiusComplerts posar_en_forma baixar_pes manteniment))
 
     (abdominals-amb-pes of Forca
@@ -688,10 +678,10 @@
         (DuracioMax 15)
         (DuracioMin 5)
         (GrupsMusculars abd)
-        (KcalMinut 6)
+        (KcalMinuteMax 6)
         (RepsMax 24)
         (RepsMin 8)
-        (esValid si)
+        (EsValid si)
         (ObjectiusComplerts musculacio posar_en_forma manteniment))
 
     (burpees of Forca
@@ -699,10 +689,10 @@
         (DuracioMax 10)
         (DuracioMin 5)
         (GrupsMusculars cames bracos pit abd)
-        (KcalMinut 15)
+        (KcalMinuteMax 15)
         (RepsMax 16)
         (RepsMin 8)
-        (esValid si)
+        (EsValid si)
         (ObjectiusComplerts posar_en_forma baixar_pes manteniment)
         (TeImpacte si))
 
@@ -711,10 +701,10 @@
         (DuracioMax 5)
         (DuracioMin 1)
         (GrupsMusculars abd )
-        (KcalMinut 4)
+        (KcalMinuteMax 4)
         (RepsMax 1)
         (RepsMin 1)
-        (esValid si)
+        (EsValid si)
         (ObjectiusComplerts posar_en_forma baixar_pes manteniment))
 
     (planxa-amb-pes of Forca
@@ -722,10 +712,10 @@
         (DuracioMax 5)
         (DuracioMin 1)
         (GrupsMusculars abd )
-        (KcalMinut 4)
+        (KcalMinuteMax 4)
         (RepsMax 1)
         (RepsMin 1)
-        (esValid si)
+        (EsValid si)
         (ObjectiusComplerts posar_en_forma musculacio manteniment))
 
     (dominades-assistides of Forca
@@ -733,10 +723,10 @@
         (DuracioMax 10)
         (DuracioMin 5)
         (GrupsMusculars bracos esquena abd)
-        (KcalMinut 8)
+        (KcalMinuteMax 8)
         (RepsMax 15)
         (RepsMin 5)
-        (esValid si)
+        (EsValid si)
         (ObjectiusComplerts posar_en_forma  manteniment))
 
     (dominades of Forca
@@ -744,10 +734,10 @@
         (DuracioMax 5)
         (DuracioMin 1)
         (GrupsMusculars bracos esquena abd)
-        (KcalMinut 10)
+        (KcalMinuteMax 10)
         (RepsMax 15)
         (RepsMin 2)
-        (esValid no)
+        (EsValid no)
         (ObjectiusComplerts musculacio posar_en_forma))
 
     (estirament-cames-1 of Flex
@@ -755,10 +745,10 @@
         (DuracioMax 5)
         (DuracioMin 1)
         (GrupsMusculars cames)
-        (KcalMinut 4)
+        (KcalMinuteMax 4)
         (RepsMax 1)
         (RepsMin 1)
-        (esValid si)
+        (EsValid si)
         (ObjectiusComplerts flexibilitat))
 
     (estirament-cames-2 of Flex
@@ -766,10 +756,10 @@
         (DuracioMax 5)
         (DuracioMin 1)
         (GrupsMusculars cames)
-        (KcalMinut 4)
+        (KcalMinuteMax 4)
         (RepsMax 1)
         (RepsMin 1)
-        (esValid si)
+        (EsValid si)
         (ObjectiusComplerts flexibilitat))
 
     (estirament-cames-3 of Flex
@@ -777,10 +767,10 @@
         (DuracioMax 5)
         (DuracioMin 1)
         (GrupsMusculars cames)
-        (KcalMinut 4)
+        (KcalMinuteMax 4)
         (RepsMax 1)
         (RepsMin 1)
-        (esValid si)
+        (EsValid si)
         (ObjectiusComplerts flexibilitat))
 
     (estirament-bracos-esquena of Flex
@@ -788,10 +778,10 @@
         (DuracioMax 5)
         (DuracioMin 1)
         (GrupsMusculars bracos esquena)
-        (KcalMinut 4)
+        (KcalMinuteMax 4)
         (RepsMax 1)
         (RepsMin 1)
-        (esValid si)
+        (EsValid si)
         (ObjectiusComplerts flexibilitat))
 
     (estirament-cames-4 of Flex
@@ -799,10 +789,10 @@
         (DuracioMax 5)
         (DuracioMin 1)
         (GrupsMusculars cames)
-        (KcalMinut 4)
+        (KcalMinuteMax 4)
         (RepsMax 1)
         (RepsMin 1)
-        (esValid si)
+        (EsValid si)
         (ObjectiusComplerts flexibilitat))      
       
     (estirament-cames-esquena of Flex
@@ -810,10 +800,10 @@
         (DuracioMax 5)
         (DuracioMin 1)
         (GrupsMusculars cames esquena)
-        (KcalMinut 4)
+        (KcalMinuteMax 4)
         (RepsMax 1)
         (RepsMin 1)
-        (esValid si)
+        (EsValid si)
         (ObjectiusComplerts flexibilitat))
 
     (estirament-cames-5 of Flex
@@ -821,10 +811,10 @@
         (DuracioMax 5)
         (DuracioMin 1)
         (GrupsMusculars cames)
-        (KcalMinut 4)
+        (KcalMinuteMax 4)
         (RepsMax 1)
         (RepsMin 1)
-        (esValid si)
+        (EsValid si)
         (ObjectiusComplerts flexibilitat))
 
     (estirament-bracos of Flex
@@ -832,10 +822,10 @@
         (DuracioMax 5)
         (DuracioMin 1)
         (GrupsMusculars bracos)
-        (KcalMinut 4)
+        (KcalMinuteMax 4)
         (RepsMax 1)
         (RepsMin 1)
-        (esValid si)
+        (EsValid si)
         (ObjectiusComplerts flexibilitat))
 
     (estirament-esquena-bracos-cames of Flex
@@ -843,10 +833,10 @@
         (DuracioMax 5)
         (DuracioMin 1)
         (GrupsMusculars esquena bracos cames)
-        (KcalMinut 4)
+        (KcalMinuteMax 4)
         (RepsMax 1)
         (RepsMin 1)
-        (esValid si)
+        (EsValid si)
         (ObjectiusComplerts flexibilitat))
     
     (estirament-esquena of Flex
@@ -854,10 +844,10 @@
         (DuracioMax 5)
         (DuracioMin 1)
         (GrupsMusculars esquena)
-        (KcalMinut 4)
+        (KcalMinuteMax 4)
         (RepsMax 1)
         (RepsMin 1)
-        (esValid si)
+        (EsValid si)
         (ObjectiusComplerts flexibilitat))
     
     (estirament-bracos-pit of Flex
@@ -865,10 +855,10 @@
         (DuracioMax 5)
         (DuracioMin 1)
         (GrupsMusculars bracos pit)
-        (KcalMinut 4)
+        (KcalMinuteMax 4)
         (RepsMax 1)
         (RepsMin 1)
-        (esValid si)
+        (EsValid si)
         (ObjectiusComplerts flexibilitat))
     
     (estirament-pit of Flex
@@ -876,10 +866,10 @@
         (DuracioMax 5)
         (DuracioMin 1)
         (GrupsMusculars pit)
-        (KcalMinut 4)
+        (KcalMinuteMax 4)
         (RepsMax 1)
         (RepsMin 1)
-        (esValid si)
+        (EsValid si)
         (ObjectiusComplerts flexibilitat))
     
     (estirament-pit-abdominals-cames of Flex
@@ -887,10 +877,10 @@
         (DuracioMax 5)
         (DuracioMin 1)
         (GrupsMusculars pit abd cames)
-        (KcalMinut 4)
+        (KcalMinuteMax 4)
         (RepsMax 1)
         (RepsMin 1)
-        (esValid si)
+        (EsValid si)
         (ObjectiusComplerts flexibilitat))
     
     (estirament-abdominals of Flex
@@ -898,10 +888,10 @@
         (DuracioMax 5)
         (DuracioMin 1)
         (GrupsMusculars abd)
-        (KcalMinut 4)
+        (KcalMinuteMax 4)
         (RepsMax 1)
         (RepsMin 1)
-        (esValid si)
+        (EsValid si)
         (ObjectiusComplerts flexibilitat))
     
     (estirament-abdominals-pit-esquena of Flex
@@ -909,10 +899,10 @@
         (DuracioMax 5)
         (DuracioMin 1)
         (GrupsMusculars abd pit esquena)
-        (KcalMinut 4)
+        (KcalMinuteMax 4)
         (RepsMax 1)
         (RepsMin 1)
-        (esValid si)
+        (EsValid si)
         (ObjectiusComplerts flexibilitat))
 )
 
@@ -948,7 +938,7 @@
     (printout t ?question)
     (bind ?answer (read))
     (while (not (integerp ?answer)) do
-        (printout t "Resposata inv�lida. Siusplau entra un valor enter." crlf)
+        (printout t "Resposata invalida. Siusplau entra un valor enter." crlf)
         (printout t ?question)
         (bind ?answer (read)))
     ?answer)
@@ -962,7 +952,7 @@
    =>
    (bind ?answer (ask-integer-question "Quants anys tens? "))
    (send ?*persona* put-Edat ?answer)
-   (if (> ?answer 60) then 
+   (if (> ?answer 65) then 
        (assert (personaEsGran))))
 
 (defrule determina-altura
@@ -979,13 +969,13 @@
 
 (defrule determina-PressioSangMin
     =>
-    (bind ?answer (ask-integer-question "Quina �s la teva pressi� sangu�nia m�nima? (mmHg) " ))
+    (bind ?answer (ask-integer-question "Quina es la teva pressio sanguinia minima? (mmHg) " ))
     (send ?*persona* put-PressioSangMin ?answer)
 )
 
 (defrule determina-PressioSangMax
     =>
-    (bind ?answer (ask-integer-question "Quina �s la teva pressi� sangu�nia m�xima? (mmHg) " ))
+    (bind ?answer (ask-integer-question "Quina es la teva pressio sanguinia maxima? (mmHg) " ))
     (send ?*persona* put-PressioSangMax ?answer)
 )
 
@@ -1017,29 +1007,32 @@
 
 (defrule determinar-aptitud-pressio-baixa
     ?e <- (object (is-a Exercici)
-            (Dificultat ?dificultat))
+            (Dificultat ?dificultat)
+            (Nom ?exerciseName))
     (personaTePressioBaixa)
     (test (eq ?dificultat hard))
     =>
-    (send ?e put-esValid no)
+    (send ?e put-EsValid no)
 )
 
 (defrule determinar-aptitud-pressio-alta
     ?e <- (object (is-a Exercici)
-            (Dificultat ?dificultat))
+            (Dificultat ?dificultat)
+            (Nom ?exerciseName))
     (personaTePressioAlta)
     (test (eq ?dificultat hard))
     =>
-    (send ?e put-esValid no)
+    (send ?e put-EsValid no)
 )
 
 (defrule determinar-aptitud-pressio-molt-alta
     ?e <- (object (is-a Exercici)
-            (Dificultat ?dificultat))
+            (Dificultat ?dificultat)
+            (Nom ?exerciseName))
     (personaTePressioMoltAlta)
     (test (eq ?dificultat moderate))
     =>
-    (send ?e put-esValid no)
+    (send ?e put-EsValid no)
 )
 
 (defrule calcula-IMC
@@ -1055,39 +1048,40 @@
    (if (> ?imc 30) then (assert(personaTeObesitat)))
    (if (and(< ?imc 30) (> ?imc 25)) then (assert(personaTeSobrePes)))
    (if (< ?imc 20) then (assert(personaTeInfraPes)))
-   (printout t "El teu IMC �s " ?imc crlf)
+   (printout t "El teu IMC es " ?imc crlf)
 )
 
 (defrule determina-exercicis-IMC
 
    (or (personaTeInfraPes) (personaTeObesitat) (personaTeSobrePes))
    ?e <- (object (is-a Exercici)
-           (Dificultat ?dificultad))
+           (Dificultat ?dificultad)
+           (Nom ?exerciseName))
     (test(eq ?dificultad hard))
    =>
-   (send ?e put-esValid no)
+   (send ?e put-EsValid no)
 )
 
   
 (defrule determina-exercici-extra
     =>
-    (printout t "Com a informaci� addicional et demanem que facis un minut de carrera sostinguda o pugis i baixis escales" crlf)
-    (printout t "per tal d'obtenir algunes dades adicions als, si no pots o no vols pots passar directament al seg�ent pas." crlf)
+    (printout t "Com a informacio addicional et demanem que facis un minut de carrera sostinguda o pugis i baixis escales" crlf)
+    (printout t "per tal d'obtenir algunes dades adicions als, si no pots o no vols pots passar directament al següent pas." crlf)
     (if (yes-or-no-p "Vols fer un minut de carrera o pujar i baixar escales? ") then (assert (ferExerciciExtra)))
 )
 
 (defrule determina-dades-extra
     (ferExerciciExtra)
     => 
-    (bind ?answer (ask-integer-question "Despr�s d'un minut de carrera, quines s�n les teves pulsacions per minut? " )) 
-    (if (yes-or-no-p "Despr�s d'un minut de carrera, tens sensaci� de cansament/mareig? ")  
+    (bind ?answer (ask-integer-question "Despres d'un minut de carrera, quines son les teves pulsacions per minut? " )) 
+    (if (yes-or-no-p "Despres d'un minut de carrera, tens sensacio de cansament/mareig? ")  
         then 
             (assert (cansamentMareig))
             (send ?*persona* put-SensacioCansament si)
         else
             (send ?*persona* put-SensacioCansament no))
 
-    (if (yes-or-no-p "Despr�s d'un minut de carrera, tens alguna tibantor muscular? ")  
+    (if (yes-or-no-p "Despres d'un minut de carrera, tens alguna tibantor muscular? ")  
         then 
             (assert (tibantorMuscular))
             (send ?*persona* put-TibantorMuscular si)
@@ -1104,7 +1098,7 @@
     (tibantorMuscular)
     (test (or (eq ?dificultad hard) (eq ?impacte si)))
     =>
-    (send ?e put-esValid no)
+    (send ?e put-EsValid no)
 )
 
 (defrule determina-aptitud-cansament-mareig
@@ -1114,7 +1108,7 @@
     (cansamentMareig)
     (test (or (eq ?dificultad hard) (eq ?impacte si)))
     =>
-    (send ?e put-esValid no) 
+    (send ?e put-EsValid no) 
 
 )
 
@@ -1130,20 +1124,22 @@
 (defrule determina-aptitud-frequencia-cardiaca-alta
     ?e <- (object (is-a Exercici)
             (Dificultat ?dificultad)
-            (KcalMinut ?kcal))
+            (Nom ?exerciseName)
+            (KcalMinuteMax ?kcal))
     (personaTeFrequenciaCardiacaAlta)
     (test (or (eq ?dificultad hard) (>= ?kcal 12)))
     =>
-    (send ?e put-esValid no)   
+    (send ?e put-EsValid no)   
 )
 
 (defrule determina-exercicis-cansament
     ?e <- (object (is-a Cardio)
-            (Dificultat ?dificultad))
+            (Dificultat ?dificultad)
+            (Nom ?exerciseName))
     (cansamentMareig)
     (test (not(eq ?dificultad easy)))
     =>
-    (send ?e put-esValid no))
+    (send ?e put-EsValid no))
 
 (defrule determina-problemes-articulars
     =>
@@ -1152,30 +1148,32 @@
 
 (defrule determina-exercicis-articulars
     ?e <- (object (is-a Exercici)
-            (TeImpacte ?impacte))
+            (TeImpacte ?impacte)
+            (Nom ?exerciseName))
     (problemesArticulars)
     (test (eq ?impacte si))
     =>
-    (send ?e put-esValid no))
+    (send ?e put-EsValid no))
 
 (defrule determina-impacte-caloric
    =>
-    (bind ?answer (ask-question "Quin impacte cal�ric diries que te la teva dieta actual? (baix, normal, alt) " baix normal alt))
+    (bind ?answer (ask-question "Quin impacte caloric diries que te la teva dieta actual? (baix, normal, alt) " baix normal alt))
     (assert (impacte ?answer)))
 
     
 (defrule determina-aptitud-ejercicio-edad
     ?e <- (object (is-a Exercici)
             (Dificultat ?dificultad)
+            (Nom ?exerciseName)
             (TeImpacte ?impacte))
     (personaEsGran)
     (test (or(eq ?dificultad hard) (eq ?impacte si)))
     =>
-    (send ?e put-esValid no))
+    (send ?e put-EsValid no))
 
 (defrule determina-activitat-fisica
    =>
-   (bind ?answer (ask-question "Del 1 al 5 com valores el nivell d'activitat f�sica que fas al dia a dia? (a la feina, aficions, tasques dom�stiques...) " 1 2 3 4 5))
+   (bind ?answer (ask-question "Del 1 al 5 com valores el nivell d'activitat fisica que fas al dia a dia? (a la feina, aficions, tasques domestiques...) " 1 2 3 4 5))
    (send ?*persona* put-ActivitatFisica ?answer)
    (assert (activitatFisicaAssignada))
 )
@@ -1194,128 +1192,136 @@
    (not (personaTePressioMoltAlta))
    (not (personaEsGran))
    =>
-   (send ?e put-esValid si)
+   (send ?e put-EsValid si)
    (assert (deterimar-si-noapte-es-apte))
 )
 
 (defrule esquena-dolor-3
+    (deterimar-si-noapte-es-apte)
     ?e <-(object (is-a Exercici)
             (Dificultat ?dif)
-            (GrupsMusculars $?grup))
+            (GrupsMusculars $?grup)
+            (Nom ?exerciseName))
     (fa-mal esq 3)
     (test (or (eq ?dif hard) (eq ?dif moderate) (eq ?dif easy)) )
     (test (member$ esquena $?grup))
     =>
-    (send ?e put-esValid no))
+    (send ?e put-EsValid no))
 (defrule esquena-dolor-2
-
+    (deterimar-si-noapte-es-apte)
     ?e <-(object (is-a Exercici)
             (Dificultat ?dif)
-            (GrupsMusculars $?grup))
+            (GrupsMusculars $?grup)
+            (Nom ?exerciseName))
     (fa-mal esq 2)
     (test (or (eq ?dif hard) (eq ?dif moderate)) )
     (test (member$ esquena $?grup))
     =>
-    (send ?e put-esValid no))
+    (send ?e put-EsValid no))
 (defrule esquena-dolor-1
-
+    (deterimar-si-noapte-es-apte)
     ?e <-(object (is-a Exercici)
             (Dificultat ?dif)
-            (GrupsMusculars $?grup))
+            (GrupsMusculars $?grup)
+            (Nom ?exerciseName))
     (fa-mal esq 1)
     (test (eq ?dif hard))
     (test (member$ esquena $?grup))
     =>
-    (send ?e put-esValid no))
+    (send ?e put-EsValid no))
 
 (defrule bracos-dolor-3
-
+    (deterimar-si-noapte-es-apte)
     ?e <-(object (is-a Exercici)
             (Dificultat ?dif)
-            (GrupsMusculars $?grup))
+            (GrupsMusculars $?grup)
+            (Nom ?exerciseName))
     (fa-mal bra 3)
     (test (or (eq ?dif hard) (eq ?dif moderate) (eq ?dif easy)) )
     (test (member$ bracos $?grup))
     =>
-    (send ?e put-esValid no))
+    (send ?e put-EsValid no))
 (defrule bracos-dolor-2
-
+    (deterimar-si-noapte-es-apte)
     ?e <-(object (is-a Exercici)
             (Dificultat ?dif)
-            (GrupsMusculars $?grup))
+            (GrupsMusculars $?grup)
+            (Nom ?exerciseName))
     (fa-mal bra 2)
     (test (or (eq ?dif hard) (eq ?dif moderate)) )
     (test (member$ bracos $?grup))
     =>
-    (send ?e put-esValid no))
+    (send ?e put-EsValid no))
 (defrule bracos-dolor-1
-
+    (deterimar-si-noapte-es-apte)
     ?e <-(object (is-a Exercici)
             (Dificultat ?dif)
-            (GrupsMusculars $?grup))
+            (GrupsMusculars $?grup)
+            (Nom ?exerciseName))
     (fa-mal bra 1)
     (test (eq ?dif hard))
     (test (member$ bracos $?grup))
     =>
-    (send ?e put-esValid no))
+    (send ?e put-EsValid no))
 
 (defrule cames-dolor-3
-
+    (deterimar-si-noapte-es-apte)
     ?e <-(object (is-a Exercici)
             (Dificultat ?dif)
-            (GrupsMusculars $?grup))
+            (GrupsMusculars $?grup)
+            (Nom ?exerciseName))
     (fa-mal cam 3)
     (test (or (eq ?dif hard) (eq ?dif moderate) (eq ?dif easy)) )
     (test (member$ cames $?grup))
     =>
-    (send ?e put-esValid no))
+    (send ?e put-EsValid no))
 (defrule cames-dolor-2
-
+    (deterimar-si-noapte-es-apte)
     ?e <-(object (is-a Exercici)
             (Dificultat ?dif)
             (GrupsMusculars $?grup)
-            )
+            (Nom ?exerciseName))
     (fa-mal cam 2)
     (test (or (eq ?dif hard) (eq ?dif moderate)) )
     (test (member$ cames $?grup))
     =>
-    (send ?e put-esValid no))
+    (send ?e put-EsValid no))
 (defrule cames-dolor-1
-
+    (deterimar-si-noapte-es-apte)
     ?e <-(object (is-a Exercici)
             (Dificultat ?dif)
             (GrupsMusculars $?grup)
-            )
+            (Nom ?exerciseName))
     (fa-mal cam 1)
     (test (eq ?dif hard))
     (test (member$ cames $?grup))
     =>
-    (send ?e put-esValid no))
+    (send ?e put-EsValid no))
 
 (defrule pit-dolor-3
- 
+    (deterimar-si-noapte-es-apte)
     ?e <-(object (is-a Exercici)
             (Dificultat ?dif)
             (GrupsMusculars $?grup)
-            )
+            (Nom ?exerciseName))
     (fa-mal pit 3)
     (test (or (eq ?dif hard) (eq ?dif moderate) (eq ?dif easy)) )
     (test (member$ pit $?grup))
     =>
-    (send ?e put-esValid no))
+    (send ?e put-EsValid no))
 (defrule pit-dolor-2
-
+    (deterimar-si-noapte-es-apte)
     ?e <-(object (is-a Exercici)
             (Dificultat ?dif)
             (GrupsMusculars $?grup)
-            )
+            (Nom ?exerciseName))
     (fa-mal pit 2)
     (test (or (eq ?dif hard) (eq ?dif moderate)) )
     (test (member$ pit $?grup))
     =>
-    (send ?e put-esValid no))
+    (send ?e put-EsValid no))
 (defrule pit-dolor-1
-
+    (deterimar-si-noapte-es-apte)
     ?e <-(object (is-a Exercici)
             (Dificultat ?dif)
             (GrupsMusculars $?grup)
@@ -1324,70 +1330,72 @@
     (test (eq ?dif hard))
     (test (member$ pit $?grup))
     =>
-    (send ?e put-esValid no))
+    (send ?e put-EsValid no))
 
 (defrule abdominals-dolor-3
-
+    (deterimar-si-noapte-es-apte)
     ?e <-(object (is-a Exercici)
             (Dificultat ?dif)
             (GrupsMusculars $?grup)
-            )
+            (Nom ?exerciseName))
     (fa-mal abd 3)
     (test (or (eq ?dif hard) (eq ?dif moderate) (eq ?dif easy)) )
-    (test (member$ abd $?grup))
+    (test (member$ abdominals $?grup))
     =>
-    (send ?e put-esValid no))
+    (send ?e put-EsValid no))
 (defrule abdominals-dolor-2
+    (deterimar-si-noapte-es-apte)
     ?e <-(object (is-a Exercici)
             (Dificultat ?dif)
             (GrupsMusculars $?grup)
-            )
+            (Nom ?exerciseName))
     (fa-mal abd 2)
     (test (or (eq ?dif hard) (eq ?dif moderate)) )
-    (test (member$ abd $?grup))
+    (test (member$ abdominals $?grup))
     =>
-    (send ?e put-esValid no))
+    (send ?e put-EsValid no))
 (defrule abdominals-dolor-1
+    (deterimar-si-noapte-es-apte)
     ?e <-(object (is-a Exercici)
             (Dificultat ?dif)
             (GrupsMusculars $?grup)
-            )
+            (Nom ?exerciseName))
     (fa-mal abd 1)
     (test (eq ?dif hard))
-    (test (member$ abd $?grup))
+    (test (member$ abdominals $?grup))
     =>
-    (send ?e put-esValid no))
+    (send ?e put-EsValid no))
 
 ;------------------------DEMANAR-DOLORS------------------------
 (defrule mal-esquena
     =>
-    (bind ?answer (ask-question "Quant de mal et fa l'esquena del 0 (m�nim) al 3 (m�xim): " 0 1 2 3))
+    (bind ?answer (ask-question "Quina limitacio presentes per realitzar exercicis d'esquena. Del 0 (minim) al 3 (maxim): " 0 1 2 3))
     (assert (fa-mal esq ?answer)))
 
 (defrule mal-bracos
     =>
-    (bind ?answer (ask-question "Quant de mal et fan els bracos del 0 (m�nim) al 3 (m�xim): " 0 1 2 3))
+    (bind ?answer (ask-question "Quina limitacio presentes per realitzar exercicis de bracos. Del 0 (minim) al 3 (maxim): " 0 1 2 3))
     (assert (fa-mal bra ?answer)))
 
 (defrule mal-cames
     =>
-    (bind ?answer (ask-question "Quant de mal et fan les cames del 0 (m�nim) al 3 (m�xim): " 0 1 2 3))
+    (bind ?answer (ask-question "Quina limitacio presentes per realitzar exercicis de cames. Del 0 (minim) al 3 (maxim): " 0 1 2 3))
     (assert (fa-mal cam ?answer)))
 
 (defrule mal-pit
     =>
-    (bind ?answer (ask-question "Quant de mal et fan el pit del 0 (m�nim) al 3 (m�xim): " 0 1 2 3))
+    (bind ?answer (ask-question "Quina limitacio presentes per realitzar exercicis de pit. Del 0 (minim) al 3 (maxim): " 0 1 2 3))
     (assert (fa-mal pit ?answer)))
 
 (defrule mal-abs
     =>
-    (bind ?answer (ask-question "Quant de mal et fan els abdominals del 0 (m�nim) al 3 (m�xim): " 0 1 2 3))
+    (bind ?answer (ask-question "Quina limitacio presentes per realitzar exercicis d'abdominals. Del 0 (minim) al 3 (maxim): " 0 1 2 3))
     (assert (fa-mal abd ?answer)))
 
 ;------------------------SELECCIONAR-OBJECTIU------------------------
 (defrule dir-objectiu
     =>
-    (bind ?answer (ask-question "Quin dels seg�ents objectius s'adequa m�s al teu objectiu per l'entrenament? (musculacio, posar_en_forma, baixar_pes, equilibrat, flexibilitat o manteniment) " musculacio posar_en_forma baixar_pes equilibrat flexibilitat manteniment))
+    (bind ?answer (ask-question "Quin dels següents objectius s'adequa mes al teu objectiu per l'entrenament? (musculacio, posar_en_forma, baixar_pes, equilibrat, flexibilitat o manteniment) " musculacio posar_en_forma baixar_pes equilibrat flexibilitat manteniment))
     (if (eq ?answer musculacio) 
         then (make-instance [Musculacio] of Musculacio)
         (send [Musculacio] put-Nom Musculacio))
@@ -1420,8 +1428,8 @@
 
 (defrule elimina-exercicis-alts-en-kcal-si-objectiu-diff-baixar_pes
    ?e <- (object (is-a Exercici)
-           (KcalMinut ?kcalmax)
-           )
+           (KcalMinuteMax ?kcalmax)
+           (Nom ?exerciseName))
    ?obj <- (object (is-a Objectius)
             (Nom ?nomObj))
        
@@ -1429,7 +1437,7 @@
    (test (> ?kcalmax 12))
    (test(not(eq ?nomObj BaixarPes)))
    =>
-   (send ?e put-esValid no))
+   (send ?e put-EsValid no))
 
 ;----------------OBTENIR-EXERCICIS-BONS-DE-CADA-OBJECTIU----------------
 (deffunction obtener-ejercicio-por-objetivo (?obj)
@@ -1438,7 +1446,7 @@
     (if (eq ?nomObj Manteniment) then
         (bind ?ejercicios (find-all-instances ((?e Exercici))
             (and
-                (eq (send ?e get-esValid) si)
+                (eq (send ?e get-EsValid) si)
                 (member$ manteniment (send ?e get-ObjectiusComplerts)))))
                 
         (if (> (length$ ?ejercicios) 0) then
@@ -1452,7 +1460,7 @@
     (if (eq ?nomObj Musculacio) then
         (bind ?ejercicios (find-all-instances ((?e Exercici))
             (and
-                (eq (send ?e get-esValid) si)
+                (eq (send ?e get-EsValid) si)
                 (member$ musculacio (send ?e get-ObjectiusComplerts)))))
                 
         (if (> (length$ ?ejercicios) 0) then
@@ -1466,7 +1474,7 @@
     (if (eq ?nomObj EnForma) then
         (bind ?ejercicios (find-all-instances ((?e Exercici))
             (and
-                (eq (send ?e get-esValid) si)
+                (eq (send ?e get-EsValid) si)
                 (member$ posar_en_forma (send ?e get-ObjectiusComplerts)))))
                 
         (if (> (length$ ?ejercicios) 0) then
@@ -1480,7 +1488,7 @@
     (if (eq ?nomObj BaixarPes) then
         (bind ?ejercicios (find-all-instances ((?e Exercici))
             (and
-                (eq (send ?e get-esValid) si)
+                (eq (send ?e get-EsValid) si)
                 (member$ baixar_pes (send ?e get-ObjectiusComplerts)))))
                 
         (if (> (length$ ?ejercicios) 0) then
@@ -1494,7 +1502,7 @@
     (if (eq ?nomObj Flexibilitat) then
         (bind ?ejercicios (find-all-instances ((?e Exercici))
             (and
-                (eq (send ?e get-esValid) si)
+                (eq (send ?e get-EsValid) si)
                 (member$ flexibilitat (send ?e get-ObjectiusComplerts)))))
                 
         (if (> (length$ ?ejercicios) 0) then
@@ -1516,7 +1524,7 @@
     (if (eq ?nomObj Manteniment) then
         (bind ?ejercicios (find-all-instances ((?e Exercici))
             (and
-                (eq (send ?e get-esValid) si)
+                (eq (send ?e get-EsValid) si)
                 (member$ manteniment (send ?e get-ObjectiusComplerts)))))
                 
         (return ?ejercicios)
@@ -1524,7 +1532,7 @@
     (if (eq ?nomObj Musculacio) then
         (bind ?ejercicios (find-all-instances ((?e Exercici))
             (and
-                (eq (send ?e get-esValid) si)
+                (eq (send ?e get-EsValid) si)
                 (member$ musculacio (send ?e get-ObjectiusComplerts)))))
                 
         (return ?ejercicios)
@@ -1532,7 +1540,7 @@
     (if (eq ?nomObj EnForma) then
         (bind ?ejercicios (find-all-instances ((?e Exercici))
             (and
-                (eq (send ?e get-esValid) si)
+                (eq (send ?e get-EsValid) si)
                 (member$ posar_en_forma (send ?e get-ObjectiusComplerts)))))
                 
         (return ?ejercicios)
@@ -1540,7 +1548,7 @@
     (if (eq ?nomObj BaixarPes) then
         (bind ?ejercicios (find-all-instances ((?e Exercici))
             (and
-                (eq (send ?e get-esValid) si)
+                (eq (send ?e get-EsValid) si)
                 (member$ baixar_pes (send ?e get-ObjectiusComplerts)))))
                 
         (return ?ejercicios)
@@ -1548,14 +1556,14 @@
     (if (eq ?nomObj Flexibilitat) then
         (bind ?ejercicios (find-all-instances ((?e Exercici))
             (and
-                (eq (send ?e get-esValid) si)
+                (eq (send ?e get-EsValid) si)
                 (member$ flexibilitat (send ?e get-ObjectiusComplerts)))))
                 
         (return ?ejercicios)
     )
     (if (eq ?nomObj Equilibri) then
         (bind ?ejercicios (find-all-instances ((?e Exercici))
-                (eq (send ?e get-esValid) si)
+                (eq (send ?e get-EsValid) si)
                 ))
                 
         (return ?ejercicios)
@@ -1568,7 +1576,7 @@
 
 
 (deffunction obtener-ejercicio-aleatorio ()
-    (bind ?ejercicios (find-all-instances ((?e Exercici)) (eq (send ?e get-esValid) si)))
+    (bind ?ejercicios (find-all-instances ((?e Exercici)) (eq (send ?e get-EsValid) si)))
     (bind ?i (random 0 (- (length$ ?ejercicios) 1)))
     (bind ?ejercicio (nth$ (+ ?i 1) ?ejercicios)) 
     (return ?ejercicio)
@@ -1576,14 +1584,14 @@
 
 
 (deffunction obtener-ejercicio-aleatorio-forca ()
-    (bind ?ejercicios (find-all-instances ((?e Forca)) (eq (send ?e get-esValid) si)))
+    (bind ?ejercicios (find-all-instances ((?e Forca)) (eq (send ?e get-EsValid) si)))
     (bind ?i (random 0 (- (length$ ?ejercicios) 1)))
     (bind ?ejercicio (nth$ (+ ?i 1) ?ejercicios)) 
     (return ?ejercicio)
 )
 
 (deffunction obtener-ejercicio-aleatorio-flex ()
-    (bind ?ejercicios (find-all-instances ((?e Flex)) (eq (send ?e get-esValid) si)))
+    (bind ?ejercicios (find-all-instances ((?e Flex)) (eq (send ?e get-EsValid) si)))
     (bind ?i (random 0 (- (length$ ?ejercicios) 1)))
     (bind ?ejercicio (nth$ (+ ?i 1) ?ejercicios)) 
     (return ?ejercicio)
@@ -1596,7 +1604,7 @@
     )
     (bind ?ejercicios (find-all-instances ((?e Flex))
                         (and
-                            (eq (send ?e get-esValid) si)
+                            (eq (send ?e get-EsValid) si)
                             (neq (intersection$ $?gruposMuscularesSeleccionados (send ?e get-GrupsMusculars)) nil)
                         )))
     (if (> (length$ ?ejercicios) 0) then
@@ -1608,6 +1616,17 @@
     )
 )
 
+; (deffunction encontrar-ejercicios-mismos-musculos (?ejercicio)
+;    (bind ?musculos (send ?ejercicio get-GrupsMusculars))
+;    (bind $?resultados (create$))
+;     (bind ?resultados (find-all-instances ((?e Flex))
+;                         (and
+;                             (eq (send ?e get-EsValid) si)
+;                             (eq ?musculos (send ?otro-ejercicio get-GrupsMusculars))
+;                         )))
+;     (if (> (length$ ?resultados) 0) then(return ?resultados))
+;     (return  nil)
+; )
 ;----------------CALCULAR-DURACIO-I-REPS-D'UN-EXERCICI---------------
 (deffunction calcular-duracion_repes (?ejercicio ?temps-max ?persona)
     (bind ?Dmin (send ?ejercicio get-DuracioMin))
@@ -1649,8 +1668,8 @@
 )
 
 (deffunction calcular-duracion_repes_estiraments (?ejercicio ?temps-max ?persona)
-    (bind ?Dmin (/ (send ?ejercicio get-DuracioMin) 2 )) 
-    (bind ?Dmax (/ (send ?ejercicio get-DuracioMax) 2 ))
+    (bind ?Dmin (max (/ (send ?ejercicio get-DuracioMin) 2) 2 )) 
+    (bind ?Dmax (max (/ (send ?ejercicio get-DuracioMax) 2) 2 ))
 
     (bind ?Rmin (send ?ejercicio get-RepsMin))
     (bind ?Rmax (send ?ejercicio get-RepsMax))
@@ -1689,16 +1708,8 @@
 
 ;--------------------------------ASSIGNACIO-D'EXERCICIS--------------------------------
 
-(defrule exercicis-disponibles
-    ?obj <- (object (is-a Objectius) (TempsDiari ?tiempo-max&:(<> ?tiempo-max 0)))
-=>
-    (bind ?ejercicios (find-all-instances ((?e Exercici)) (eq (send ?e get-esValid) si)))
-    (if (>(length$ ?ejercicios ) 5) then (assert(exercicisDisponibles))
-    else (assert(exercicisNoDisponibles)))
-)
 ;------------------------DILLUNS------------------------
 (defrule generar-ejercicios-lunes-objectiu
-    (exercicisDisponibles)
     ?obj <- (object (is-a Objectius) (TempsDiari ?tiempo-max&:(<> ?tiempo-max 0)))
     =>
     (printout t "----------------------------------------" crlf)
@@ -2215,11 +2226,6 @@
     (printout t crlf)
 )
 
-(defrule generar-ejercicios-diumenge-objectiu
-    (exercicisNoDisponibles)
-    =>
-    (printout t "Segons les teves condicions, no hi ha exercicis aptes per a un entrenament" crlf)
-)
 
 ;------------------------INICI------------------------
 (defrule welcome
@@ -2242,5 +2248,5 @@
     (printout t "  / _` | |/   / _ \\ | '_ \\  | __| | '__|  / _ \\ | '_ \\   / _` | | '_ ` _ \\   / _ \\ | '_ \\  | __|" crlf)
     (printout t " | (_| |     |  __/ | | | | | |_  | |    |  __/ | | | | | (_| | | | | | | | |  __/ | | | | | |_        " crlf)
     (printout t "  \\__,_|      \\___| |_| |_|  \\__| |_|     \\___| |_| |_|  \\__,_| |_| |_| |_|  \\___| |_| |_|  \\__|" crlf crlf)
-    (printout t "Benvingut al generador de programes d'entrenament, abans de res et demanem que contestis algunes preguntes per poder adaptar-te al m�xim l'entrenament." crlf crlf)
+    (printout t "Benvingut al generador de programes d'entrenament, abans de res et demanem que contestis algunes preguntes per poder adaptar-te al maxim l'entrenament." crlf crlf)
 )
