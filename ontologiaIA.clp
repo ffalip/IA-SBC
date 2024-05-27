@@ -6,110 +6,19 @@
 ;;; :Date 02/05/2024 10:12:21
 
 ; Classe exercici
-(defclass Exercici
-    (is-a USER)
-    (role concrete)
-    (pattern-match reactive)
-    (slot Nom
-        (type SYMBOL)
-        (create-accessor read-write))
-    (slot Dificultat
-        (type SYMBOL)
-        (create-accessor read-write))
-    (slot DuracioMax
-        (type INTEGER)
-        (create-accessor read-write))
-    (slot DuracioMin
-        (type INTEGER)
-        (create-accessor read-write))
-    (multislot GrupsMusculars
-        (type SYMBOL) ; Corrected syntax
-        (create-accessor read-write))
-    (slot IndicatGentGran
-        (type SYMBOL)
-        (create-accessor read-write))
-    (slot KcalMinuteMax
-        (type INTEGER)
-        (create-accessor read-write))
-    (slot KcalMinuteMin
-        (type INTEGER)
-        (create-accessor read-write))
-    (slot RepsMax
-        (type INTEGER)
-        (create-accessor read-write))
-    (slot RepsMin
-        (type INTEGER)
-        (create-accessor read-write))
-    (slot EsValid
-        (type SYMBOL)
-        (create-accessor read-write))
-    (multislot ObjectiusComplerts
-        (type SYMBOL)
-        (create-accessor read-write))
-    (slot TeImpacte
-        (type SYMBOL)
-        (create-accessor read-write))
-)
+;;; ---------------------------------------------------------
+;;; ontologia.clp
+;;; Translated by owl2clips
+;;; Translated to CLIPS from ontology ontologiaIA.ttl
+;;; :Date 26/05/2024 17:47:35
 
-
-(defclass Cardio
-    (is-a Exercici)
-    (role concrete)
-    (pattern-match reactive)
-)
-
-(defclass Flex
-    (is-a Exercici)
-    (role concrete)
-    (pattern-match reactive)
-)
-
-(defclass Forca
-    (is-a Exercici)
-    (role concrete)
-    (pattern-match reactive)
-)
-
-(defclass Salut
-    (is-a USER)
-    (role concrete)
-    (pattern-match reactive)
-)
-
-(defclass Dieta
-    (is-a Salut)
-    (role concrete)
-    (pattern-match reactive)
-    (slot IngestaCalorica
-        (type SYMBOL)
-        (create-accessor read-write))
-)
-
-(defclass Problemes_articulars
-    (is-a Salut)
-    (role concrete)
-    (pattern-match reactive)
-)
-
-(defclass Problemes_musculars
-    (is-a Salut)
-    (role concrete)
-    (pattern-match reactive)
-    (slot GrupsMusculars
-        (type SYMBOL)
-        (create-accessor read-write))
-)
-
-(defclass Objectius
+(defclass Objectius "Classe per representar els objectius que pot tenir un entrenament juntament amb el seu temps objectiu."
     (is-a USER)
     (role concrete)
     (pattern-match reactive)
     ;;; Objectiu de temps diari d'entrenement en minuts
     (slot TempsDiari
         (type INTEGER)
-        (create-accessor read-write))
-    (slot Nom
-        (type SYMBOL)
         (create-accessor read-write))
 )
 
@@ -123,10 +32,9 @@
     (is-a Objectius)
     (role concrete)
     (pattern-match reactive)
-
 )
 
-(defclass Equilibri
+(defclass Equilibir
     (is-a Objectius)
     (role concrete)
     (pattern-match reactive)
@@ -150,7 +58,67 @@
     (pattern-match reactive)
 )
 
-(defclass Entrenament
+(defclass Exercici "Classe per representar els exercicis que es poden fer en un etrenament."
+    (is-a USER)
+    (role concrete)
+    (pattern-match reactive)
+    ;;; Dificultat d'un exercici, pot ser facil, moderada o dificil.
+    (slot Dificultat
+        (type SYMBOL)
+        (create-accessor read-write))
+    ;;; Duracio maxima d'un exercici.
+    (slot DuracioMax
+        (type INTEGER)
+        (create-accessor read-write))
+    ;;; Duracio minima d'un exercici.
+    (slot DuracioMin
+        (type INTEGER)
+        (create-accessor read-write))
+    ;;; Grups musculars que un exercici treballa. Els grups musculars s'han dividit en Cames, Abdominals, Esquena, Pit i Bracos.
+    (slot GrupsMusculars
+        (type SYMBOL)
+        (create-accessor read-write))
+    ;;; Kcal consumides per minut per un exercici.
+    (multislot KcalMinut
+        (type INTEGER)
+        (create-accessor read-write))
+    ;;; Nombre maxim de repeticions que es poden fer per un exercici.
+    (slot RepsMax
+        (type INTEGER)
+        (create-accessor read-write))
+    ;;; Nombre minim de repeticions que es poden fer per un exercici.
+    (slot RepsMin
+        (type INTEGER)
+        (create-accessor read-write))
+    ;;; Liista d'objectius pels quals es bo l'exercici.
+    (multislot objectiusExercici
+        (type STRING)
+        (create-accessor read-write))
+    ;;; L'exercici es valid, per defecte els exercicis dificils es posen a no i la resta a si.
+    (multislot esValid
+        (type SYMBOL)
+        (create-accessor read-write))
+)
+
+(defclass Cardio "Subclasse d'exercici que conte els exercicis de cardio."
+    (is-a Exercici)
+    (role concrete)
+    (pattern-match reactive)
+)
+
+(defclass Flex "Subclasse d'exercici que conte els exercicis de flexibilitat."
+    (is-a Exercici)
+    (role concrete)
+    (pattern-match reactive)
+)
+
+(defclass Forca "Subclasse d'exercici que conte els exercicis de forca."
+    (is-a Exercici)
+    (role concrete)
+    (pattern-match reactive)
+)
+
+(defclass Entrenament "Classe per representar entrenaments. Un entrenament te un objectiu i un conjunt d'exercicis assignats."
     (is-a USER)
     (role concrete)
     (pattern-match reactive)
@@ -162,45 +130,80 @@
         (create-accessor read-write))
 )
 
-(defclass Persona "Classe per representar les persones/usuaris"
+(defclass Persona "Classe per representar una persona o usuari que demana un entrenament."
     (is-a USER)
     (role concrete)
     (pattern-match reactive)
     (slot Solicita
         (type INSTANCE)
         (create-accessor read-write))
-    (slot Te
-        (type INSTANCE)
-        (create-accessor read-write))
+    ;;; Amb un valor del 1 al 5 es represent com d'activa es una persona al seu dia a dia, ja sigui per la seva feina, aficions, tasques dom�stiques, etc.
     (slot ActivitatFisica
         (type SYMBOL)
         (create-accessor read-write))
+    ;;; Altura en centimetres de la persona.
     (slot Altura
         (type FLOAT)
         (create-accessor read-write))
+    ;;; Edat de la persona.
     (slot Edat
         (type INTEGER)
         (create-accessor read-write))
+    ;;; IMC de la persona calculat a partir de l'alcada i el pes.
     (slot IMC
         (type FLOAT)
         (create-accessor read-write))
+    ;;; Pes en kilograms de la persona.
     (slot Pes
         (type FLOAT)
         (create-accessor read-write))
-    (slot PulsacionsXMin
-        (type INTEGER)
-        (create-accessor read-write))
-    (slot SensacioCansament
-        (type SYMBOL)
-        (create-accessor read-write))
-    (multislot TibantorMuscular
-        (type SYMBOL)
-        (create-accessor read-write))
+    ;;; Valor maxim de la presio sanguinia (sistolica).
     (slot PressioSangMax
         (type FLOAT)
         (create-accessor read-write))
+    ;;; Valor minim de la presio sanguinia (diastolica).
     (slot PressioSangMin
         (type FLOAT)
+        (create-accessor read-write))
+    ;;; En cas de que l'usuari decideixi fer un minut de carrera sostinguda aquest atribut correspon al nombre de pulsacions per minut despres del minut de carrera.
+    (slot PulsacionsXMin
+        (type INTEGER)
+        (create-accessor read-write))
+    ;;; En cas de que l'usuari decideixi fer un minut de carrera sostinguda pren per valor si o no segons si te sensacio de cansament/mareig.
+    (slot SensacioCansament
+        (type SYMBOL)
+        (create-accessor read-write))
+    ;;; En cas de que l'usuari decideixi fer un minut de carrera sostinguda pren per valor si o no segons si te tibantor muscular.
+    (multislot TibantorMuscular
+        (type SYMBOL)
+        (create-accessor read-write))
+    ;;; Entre Baix, Normal i Alt representa l'impacte caloric de la dieta de la persona.
+    (multislot impacteDieta
+        (type SYMBOL)
+        (create-accessor read-write))
+    ;;; Representa el mal (si te alguna lesio, problema muscular, etc.) que li fan els abdominals a la persona en un rang del 0 (gens de mal) al 3 (incapac de entrenar el grup muscular en concret).
+    (multislot malAbdominals
+        (type SYMBOL)
+        (create-accessor read-write))
+    ;;; Simbolitza si la persona te algun problema/dolor a les articulacions.
+    (multislot malArticulacions
+        (type SYMBOL)
+        (create-accessor read-write))
+    ;;; Representa el mal (si te alguna lesio, problema muscular, etc.) que li fan els bracos a la persona en un rang del 0 (gens de mal) al 3 (incapac d'entrenar el grup muscular en concret).
+    (multislot malBracos
+        (type SYMBOL)
+        (create-accessor read-write))
+    ;;; Representa el mal (si te alguna lesio, problema muscular, etc.) que li fan les cames a la persona en un rang del 0 (gens de mal) al 3 (incapac d'entrenar el grup muscular en concret).
+    (multislot malCames
+        (type SYMBOL)
+        (create-accessor read-write))
+    ;;; Representa el mal (si te alguna lesio, problema muscular, etc.) que li fa l'esquena a la persona en un rang del 0 (gens de mal) al 3 (incapac d'entrenar el grup muscular en concret).
+    (multislot malEsquena
+        (type SYMBOL)
+        (create-accessor read-write))
+    ;;; Representa el mal (si te alguna lesio, problema muscular, etc.) que li fa el pit a la persona en un rang del 0 (gens de mal) al 3 (incapac d'entrenar el grup muscular en concret).
+    (multislot malPit
+        (type SYMBOL)
         (create-accessor read-write))
 )
 
