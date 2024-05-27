@@ -1698,7 +1698,7 @@
     ?obj <- (object (is-a Objectius) (TempsDiari ?tiempo-max&:(<> ?tiempo-max 0)))
 =>
     (bind ?ejercicios (find-all-instances ((?e Exercici)) (eq (send ?e get-EsValid) si)))
-    (if (>(length$ ?ejercicios ) 0) then (assert(exercicisDisponibles))
+    (if (>(length$ ?ejercicios ) 5) then (assert(exercicisDisponibles))
     else (assert(exercicisNoDisponibles)))
 )
 ;------------------------DILLUNS------------------------
