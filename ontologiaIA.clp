@@ -955,7 +955,7 @@
    =>
    (bind ?answer (ask-integer-question "Quants anys tens? "))
    (send ?*persona* put-Edat ?answer)
-   (if (> ?answer 65) then 
+   (if (> ?answer 60) then 
        (assert (personaEsGran))))
 
 (defrule determina-altura
