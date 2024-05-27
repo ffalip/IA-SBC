@@ -958,6 +958,11 @@
 (defrule determina-altura
    =>
    (bind ?answer (ask-integer-question "Quant medeixes? (cm) "))
+   (while (< ?answer 100)
+        (printout t "L'alcada ha de ser superior a 100 cm. Si us plau, torna-ho a intentar." crlf)
+        (bind ?answer (ask-integer-question "Quant medeixes? (cm) "))
+   )
+
    (send ?*persona* put-Altura ?answer)
    (assert (alturaAssignada)))
 
@@ -1422,6 +1427,10 @@
                     (TempsDiari ?temps&:(eq ?temps 0)))
     =>
     (bind ?answer (ask-integer-question "Quants minuts al dia vols dedicar a l'entrenament? "))
+    (while (< ?answer 30)
+        (printout t "El temps minim son 30 minuts." crlf)
+        (bind ?answer (ask-integer-question "Quants minuts al dia vols dedicar a l'entrenament? "))
+    )
     (printout t ?answer crlf)
     (send ?obj put-TempsDiari ?answer)
 )
